@@ -1,4 +1,5 @@
 # VoxTek Computer Store
+CSC186 Group Project
 # Members
 1. shahxvi
 2. llezram
