@@ -1,22 +1,22 @@
-public class Admin /* extends User */ {
+public class Admin extends User {
     private int id;
     private String password;
 
     /* Contructors */
     public Admin() {
-        // super();
+        super();
         id = 0;
         password = "";
     }
 
     public Admin(String name, int phoneNumber, int id, String password) {
-        // super(name, phoneNumber);
+        super(name, phoneNumber);
         this.id = id;
         this.password = password;
     }
 
     public Admin(Admin other) {
-        // super(admin);
+        super(admin);
         this.id = other.id;
         this.password = other.password;
     }
