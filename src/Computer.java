@@ -13,10 +13,10 @@ public class Computer extends Product {
 
     public Computer() {
         super();
-        cpu = "";
-        memoryMB = 0;
-        storageMB = 0;
-        storageType = "";
+        this.cpu = "";
+        this.memoryMB = 0;
+        this.storageMB = 0;
+        this.storageType = "";
     }
 
     public Computer(String brand, String model, double price, String cpu, int memoryMB, int storageMB,
@@ -29,11 +29,11 @@ public class Computer extends Product {
     }
 
     public Computer(Computer other) {
-        super(other.getBrand(), other.getModel(), other.getPrice());
-        cpu = other.cpu;
-        memoryMB = other.memoryMB;
-        storageMB = other.storageMB;
-        storageType = other.storageType;
+        super(other);
+        this.cpu = other.cpu;
+        this.memoryMB = other.memoryMB;
+        this.storageMB = other.storageMB;
+        this.storageType = other.storageType;
     }
 
     /* Setters */
@@ -91,7 +91,7 @@ public class Computer extends Product {
                 // Stores data of each fields to object
                 setBrand(token.nextToken());
                 setModel(token.nextToken());
-                setPrice(Integer.parseInt(token.nextToken()));
+                setPrice(Double.parseDouble(token.nextToken()));
                 setCPU(token.nextToken());
                 setMemoryMB(Integer.parseInt(token.nextToken()));
                 setStorageMB(Integer.parseInt(token.nextToken()));
