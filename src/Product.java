@@ -1,3 +1,6 @@
+// MIT License
+// Copyright (c) 2025 Shah
+
 import java.io.*;
 
 public abstract class Product {
@@ -55,5 +58,11 @@ public abstract class Product {
     }
     /* Getter */
 
+    /* getInventory()
+     * This method must be implemented by every subclass.
+     * The inventory of the product would be stored in a file that the subclass must read and store it into memory.
+     *
+     * The subclass would hold only a record hence you must pass a recordPosition.
+     * */
     protected abstract void getInventory(File inputFile, int recordPosition);
 }
