@@ -1,10 +1,29 @@
 // MIT License
+// Copyright (c) 2025 Shah
 // Copyright (c) 2025 Raden
 
 public abstract class User {
     String name;
     int phoneNumber;
 
+    /* Constructors */
+    public User() {
+        name = "";
+        phoneNumber = 0;
+    }
+
+    public User(String name, int phoneNumber) {
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+    }
+
+    public User(User other) {
+        this.name = other.name;
+        this.phoneNumber = other.phoneNumber;
+    }
+    /* Constructors */
+
+    /* Setters */
     protected void setName(String name) {
         this.name = name;
     }
@@ -12,7 +31,9 @@ public abstract class User {
     protected void setPhoneNumber(int phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+    /* Setters */
 
+    /* Getters */
     public String getName() {
         return name;
     }
@@ -20,8 +41,5 @@ public abstract class User {
     public int getPhoneNumber() {
         return phoneNumber;
     }
-
-    public String toString() {
-        return name + " " + phoneNumber;
-    }
+    /* Getters */
 }
