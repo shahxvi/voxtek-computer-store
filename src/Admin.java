@@ -16,7 +16,7 @@ public class Admin extends User {
     }
 
     public Admin(Admin other) {
-        super(admin);
+        super(other);
         this.id = other.id;
         this.password = other.password;
     }
