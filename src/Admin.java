@@ -1,3 +1,6 @@
+// MIT License
+// Copyright (c) 2025 Shah
+
 public class Admin extends User {
     private int id;
     private String password;

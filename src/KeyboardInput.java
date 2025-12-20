@@ -23,7 +23,7 @@ public class KeyboardInput {
         return input;
     }
 
-    public static char getValidCharacter() {
+    public static char getConfirmation() {
         keyboard = new Scanner(System.in);
         char input;
 
