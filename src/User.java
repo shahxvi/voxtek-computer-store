@@ -3,8 +3,8 @@
 // Copyright (c) 2025 Raden
 
 public abstract class User {
-    String name;
-    int phoneNumber;
+    private String name;
+    private int phoneNumber;
 
     /* Constructors */
     public User() {

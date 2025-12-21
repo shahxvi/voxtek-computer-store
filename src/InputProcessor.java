@@ -2,8 +2,9 @@
 // Copyright (c) 2025 Shah
 
 import java.util.Scanner;
+import javax.swing.JOptionPane;
 
-public class KeyboardInput {
+public class InputProcessor {
     private static Scanner keyboard;
 
     public static int getValidInteger(int floor, int ceiling) {
@@ -45,29 +46,19 @@ public class KeyboardInput {
         return input;
     }
 
-    public static int getIntegerOnly() {
-        keyboard = new Scanner(System.in);
-        String strInput;
-
+    public static int getIntegerOnly(String strInput) {
         int integerOnly;
-        boolean isValid = false;
+        boolean invalid = false;
 
         do {
-            strInput = keyboard.nextLine();
-
             for (int i = 0; i < strInput.length(); i++) {
                 if (!Character.isDigit(strInput.charAt(i))) {
-                    isValid = false;
+                    invalid = true;
                     break;
                 }
             }
+        } while (invalid);
 
-            if (!isValid) {
-                System.out.print("Please enter valid integer: ");
-            }
-        } while (!isValid);
-
-        keyboard.close();
         integerOnly = Integer.parseInt(strInput);
 
         return integerOnly;

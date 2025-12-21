@@ -105,5 +105,12 @@ public class Computer extends Product {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+
+    }
+
+    @Override
+    public void updateInventory(PrintWriter outputFile) {
+        outputFile.printf("%s;%s;%.2f;%s;%d;%d;%s", getBrand(), getModel(), getPrice(), cpu, memoryMB, storageMB,
+                storageType);
     }
 }

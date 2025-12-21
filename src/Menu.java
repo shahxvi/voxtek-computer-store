@@ -1,18 +1,18 @@
 // MIT License
 // Copyright (c) 2025 Shah
 
-import java.util.Scanner;
 import javax.swing.*;
 
 public class Menu {
     public static int main() {
         String str;
-        Object[] options = { "Customer", "Admin", "Cancel" };
+        Object[] options = { "Customer", "Admin", "Exit" };
         str = "Welcome to VoxTek Computer Store\n";
         str += "Please choose your option: ";
 
-        int chosenOption = JOptionPane.showOptionDialog(null, str, "VoxTek Computer Store", JOptionPane.DEFAULT_OPTION,
-                JOptionPane.PLAIN_MESSAGE, null, options, options[2]);
+        int chosenOption = JOptionPane.showOptionDialog(null, str, "VoxTek", JOptionPane.DEFAULT_OPTION,
+                JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+
         return chosenOption;
     }
 
@@ -24,33 +24,42 @@ public class Menu {
         }
     }
 
-    // for admins only
+    /* for admins only */
     public static void adminLogin(Admin admin) {
-        Scanner keyboardInput = new Scanner(System.in);
-        String id, password;
+        String strInput;
+        int id;
+        String password;
+        boolean validID, validPassword;
 
-        id = JOptionPane.showInputDialog(null, "Please enter your ID");
-        System.out.println(id);
+        do {
+            strInput = JOptionPane.showInputDialog("Please enter your ID");
 
-        keyboardInput.close();
+            // Exits if the user cancels
+            if (strInput == null) {
+                return; // Go back to main
+            }
+
+            id = Integer.parseInt(strInput);
+            password = JOptionPane.showInputDialog("Please enter your password");
+
+            // Check if ID or Password Matches
+            validID = admin.verifyID(id);
+            validPassword = admin.verifyPassword(password);
+
+            if (!validID || !validPassword) {
+                JOptionPane.showMessageDialog(null, "Incorrect ID or Password");
+            }
+        } while (!validID || !validPassword);
     }
 
-    // for admins only
     public static void editInventory() {
         System.out.println("1. Computers");
         System.out.println("2. Keyboards\n");
         System.out.println("Please choose inventory to edit: ");
     }
+    /* for admins only */
 
-    public static void clearScreen() {
-        try {
-            String osName = System.getProperty("os.name");
-            if (osName.startsWith("Windows"))
-                new ProcessBuilder("cls").inheritIO().start().waitFor();
-            else
-                new ProcessBuilder("clear").inheritIO().start().waitFor();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
+    /* Input Processors */
+
+    /* Input Processors */
 }
