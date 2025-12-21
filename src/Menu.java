@@ -2,19 +2,18 @@
 // Copyright (c) 2025 Shah
 
 import java.util.Scanner;
+import javax.swing.*;
 
 public class Menu {
-    public static void main() {
-        System.out.println("██╗   ██╗ ██████╗ ██╗  ██╗████████╗███████╗██╗  ██╗");
-        System.out.println("██║   ██║██╔═══██╗╚██╗██╔╝╚══██╔══╝██╔════╝██║ ██╔╝");
-        System.out.println("██║   ██║██║   ██║ ╚███╔╝    ██║   █████╗  █████╔╝ ");
-        System.out.println("╚██╗ ██╔╝██║   ██║ ██╔██╗    ██║   ██╔══╝  ██╔═██╗ ");
-        System.out.println(" ╚████╔╝ ╚██████╔╝██╔╝ ██╗   ██║   ███████╗██║  ██╗");
-        System.out.println("  ╚═══╝   ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝  ╚═╝");
-        System.out.println("Welcome to VoxTek Computer Store\n");
-        System.out.println("1. Customer");
-        System.out.println("2. Admin\n");
-        System.out.print("Please choose your option: ");
+    public static int main() {
+        String str;
+        Object[] options = { "Customer", "Admin", "Cancel" };
+        str = "Welcome to VoxTek Computer Store\n";
+        str += "Please choose your option: ";
+
+        int chosenOption = JOptionPane.showOptionDialog(null, str, "VoxTek Computer Store", JOptionPane.DEFAULT_OPTION,
+                JOptionPane.PLAIN_MESSAGE, null, options, options[2]);
+        return chosenOption;
     }
 
     public static void computerList(String[][] inventory) {
@@ -30,10 +29,8 @@ public class Menu {
         Scanner keyboardInput = new Scanner(System.in);
         String id, password;
 
-        System.out.println("Please enter your ID: ");
-        id = keyboardInput.nextLine();
-        System.out.println("Please enter your password: ");
-        password = keyboardInput.nextLine();
+        id = JOptionPane.showInputDialog(null, "Please enter your ID");
+        System.out.println(id);
 
         keyboardInput.close();
     }

@@ -31,38 +31,42 @@ public abstract class Product {
     /* Contructors */
 
     /* Setters */
-    public void setBrand(String brand) {
+    public final void setBrand(String brand) {
         this.brand = brand;
     }
 
-    public void setModel(String model) {
+    public final void setModel(String model) {
         this.model = model;
     }
 
-    public void setPrice(double price) {
+    public final void setPrice(double price) {
         this.price = price;
     }
     /* Setters */
 
     /* Getter */
-    public String getBrand() {
+    public final String getBrand() {
         return brand;
     }
 
-    public String getModel() {
+    public final String getModel() {
         return model;
     }
 
-    public double getPrice() {
+    public final double getPrice() {
         return price;
     }
     /* Getter */
 
-    /* getInventory()
+    /*
+     * getInventory()
      * This method must be implemented by every subclass.
-     * The inventory of the product would be stored in a file that the subclass must read and store it into memory.
+     * The inventory of the product would be stored in a file that the subclass must
+     * read and store it into memory.
      *
      * The subclass would hold only a record hence you must pass a recordPosition.
-     * */
+     */
     protected abstract void getInventory(File inputFile, int recordPosition);
+
+    protected abstract void updateInventory(PrintWriter outputFile);
 }
