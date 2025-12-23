@@ -9,24 +9,21 @@ public class Main {
     public static void main(String[] args) {
         int intOption;
         String strOption;
-        boolean choseCustomer, choseExit, isAdminConfigured, choseAdmin, adminLoggedIn;
+        boolean choseCustomer, choseExit, choseAdmin;
+
+        File adminFile = new File("admin.txt");
+        File computerFile = new File("computers.txt");
+        // File keyboardFile = new File("keyboards.txt");
 
         Admin admin = new Admin();
-        File adminFile = new File("admin.txt");
 
         /* Initialize Computers */
-        File computerFile = new File("computers.txt");
-        int computerCount = getInventorySize(computerFile);
-        Computer[] computers = new Computer[computerCount];
-        for (int i = 0; i < computerCount; i++) {
-            computers[i] = new Computer();
-            computers[i].getInventory(computerFile, i);
-        }
+        Computer[] computers = new Computer[getInventorySize(computerFile)];
+        initializeInventory(computers, computerFile);
 
         /* Initialize Keyboards */
-        File keyboardFile = new File("keyboards.txt");
-        // int keyboardCount = getRecordSize(keyboardFile);
-        // Keyboard[] keyboards = new Keyboard[keyboardCount];
+        // Keyboard[] keyboards = new Keyboard[getInventorySize(keyboardFile)];
+        // initializeInventory(keyboards, keybaordFile);
 
         // The crux of the program
         do {
@@ -81,7 +78,15 @@ public class Main {
         System.exit(0);
     }
 
-    /* Methods */
+    public static void initializeInventory(Product[] products, File file) {
+        if (products instanceof Computer[]) {
+            for (int i = 0; i < products.length; i++) {
+                products[i] = new Computer();
+                products[i].getInventory(file, i);
+            }
+        }
+    }
+
     public static int mainMenu() {
         String str;
         Object[] options = { "Customer", "Admin", "Exit" };
@@ -95,7 +100,7 @@ public class Main {
     }
 
     /* TODO: Make this polymorphic (using Product) */
-    public static void computerList(String[][] inventory) {
+    public static void productList(String[][] inventory) {
         for (int record = 0; record < inventory.length; record++) {
             for (int field = 0; field < inventory[record].length; field++) {
                 System.out.printf("%-1d %s\n", record, inventory[record][field].toString()); // Log
@@ -152,7 +157,7 @@ public class Main {
     }
 
     /*
-     * Creates the admin fild if it isn't already
+     * Creates the admin file if it isn't already
      */
     public static boolean createAdminFile(Admin admin, File file) {
         String[] messages = {
