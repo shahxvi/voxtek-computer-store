@@ -9,7 +9,7 @@ public class Main {
     public static void main(String[] args) {
         int intOption;
         String strOption;
-        boolean choseCustomer, choseAdmin, choseExit, adminIsInitialized, editComputers, editKeyboards;
+        boolean choseCustomer, choseAdmin, choseExit, isAdminConfigured;
 
         Admin admin = new Admin();
         File adminFile = new File("admin.txt");
@@ -35,15 +35,15 @@ public class Main {
             }
 
             if (choseAdmin) {
-                adminIsInitialized = initializeAdmin(admin, adminFile);
+                isAdminConfigured = loadAdmin(admin, adminFile);
 
-                if (!adminIsInitialized) {
-                    continue;
+                if (!isAdminConfigured) {
+                    continue; // Skips the admin login and the looping will show the mainMenu()
                 }
 
                 adminLogin(admin);
 
-                strOption = editInventory();
+                strOption = chooseInventoryToEdit();
                 if (strOption.equalsIgnoreCase("Computers")) {
                     // edit computer instances
                 } else if (strOption.equalsIgnoreCase("Keyboards")) {
@@ -82,8 +82,8 @@ public class Main {
      * This method initializes an admin class by retrieving its attribute from file
      * it returns true after the admin class has been initialized
      */
-    public static boolean initializeAdmin(Admin admin, File file) {
-        boolean initialized = false, choseCreateAdminFile = false, choseExit = false;
+    public static boolean loadAdmin(Admin admin, File file) {
+        boolean isInitialized = false, choseCreateAdminFile = false, choseExit = false, adminLoaded = false;
 
         do {
             try {
@@ -103,10 +103,11 @@ public class Main {
                     admin.setPassword(token.nextToken());
                 }
                 inputFile.close();
-                initialized = true;
 
-            } catch (FileNotFoundException e) {
-                // initialized is still false here
+                adminLoaded = true;
+                isInitialized = true;
+            } catch (FileNotFoundException e) { // or if the file is empty
+                // isInitialized is still false here
                 JOptionPane.showMessageDialog(null, "Admin file not found.");
                 int intOption = JOptionPane.showConfirmDialog(null, "Would you like to create the admin file?");
 
@@ -114,17 +115,18 @@ public class Main {
                 choseCreateAdminFile = (intOption == 0);
 
                 if (choseCreateAdminFile) {
-                    initialized = createAdminFile(file); // initialized be false if the user cancels halfway
-                    if (initialized) {
+                    isInitialized = createAdminFile(file); // isInitialized is false if the user cancels halfway
+                    if (isInitialized) {
                         JOptionPane.showMessageDialog(null, "Admin file created.");
                     }
                 }
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
-        } while (!initialized && !choseExit);
+        } while ((!isInitialized && !choseExit) || (isInitialized && !adminLoaded));
 
-        return initialized;
+        System.out.println("adminLoaded: " + adminLoaded);
+        return isInitialized;
     }
 
     /*
@@ -143,13 +145,19 @@ public class Main {
                     "Enter admin's password"
             };
 
-            for (String message : messages) {
-                strInput = JOptionPane.showInputDialog(message);
+            for (int i = 0; i < messages.length; i++) {
+                strInput = JOptionPane.showInputDialog(messages[i]);
                 if (strInput == null) {
                     // Admin cancels, file stays empty because we never closed it
                     return false;
                 }
-                adminFile.print(strInput.trim() + ";");
+
+                // add delimeter after every input except the last one
+                if (i < messages.length - 1) {
+                    adminFile.print(strInput.trim() + ";");
+                } else {
+                    adminFile.print(strInput.trim());
+                }
             }
             adminFile.close();
         } catch (FileNotFoundException e) {
@@ -196,7 +204,7 @@ public class Main {
      * will return one of the following possibilities:
      * - Computers, Keyboards, and null
      */
-    public static String editInventory() {
+    public static String chooseInventoryToEdit() {
         Object[] options = { "Computers", "Keyboards" };
         String chosenOption = (String) JOptionPane.showInputDialog(null, "Please choose an inventory to edit",
                 "Edit Inventory", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
