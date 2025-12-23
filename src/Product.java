@@ -67,7 +67,12 @@ public abstract class Product {
      *
      * The subclass would hold only a record hence you must pass a recordPosition.
      */
-    protected abstract void getInventory(File inputFile, int recordPosition);
+    protected abstract void loadInventory(File inputFile, int recordPosition);
+
+    protected abstract String toRecord();
 
     protected abstract void writeToFile(PrintWriter outputFile);
+
+    public abstract String toString();
+
 }

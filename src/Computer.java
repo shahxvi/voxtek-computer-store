@@ -5,27 +5,25 @@ import java.io.*;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
-import javax.swing.JOptionPane;
-
 public class Computer extends Product {
     private String cpu;
-    private int memoryBG;
+    private int memoryGB;
     private int storageGB;
     private String storageType;
 
     public Computer() {
         super();
         this.cpu = "";
-        this.memoryBG = 0;
+        this.memoryGB = 0;
         this.storageGB = 0;
         this.storageType = "";
     }
 
-    public Computer(String brand, String model, double price, String cpu, int memoryBG, int storageGB,
+    public Computer(String brand, String model, double price, String cpu, int memoryGB, int storageGB,
             String storageType) {
         super(brand, model, price);
         this.cpu = cpu;
-        this.memoryBG = memoryBG;
+        this.memoryGB = memoryGB;
         this.storageGB = storageGB;
         this.storageType = storageType;
     }
@@ -33,7 +31,7 @@ public class Computer extends Product {
     public Computer(Computer other) {
         super(other);
         this.cpu = other.cpu;
-        this.memoryBG = other.memoryBG;
+        this.memoryGB = other.memoryGB;
         this.storageGB = other.storageGB;
         this.storageType = other.storageType;
     }
@@ -43,11 +41,11 @@ public class Computer extends Product {
         this.cpu = cpu;
     }
 
-    public void setMemoryMB(int memoryBG) {
-        this.memoryBG = memoryBG;
+    public void setMemoryGB(int memoryGB) {
+        this.memoryGB = memoryGB;
     }
 
-    public void setStorageMB(int storageGB) {
+    public void setStorageGB(int storageGB) {
         this.storageGB = storageGB;
     }
 
@@ -61,11 +59,11 @@ public class Computer extends Product {
         return cpu;
     }
 
-    public int getMemoryMB() {
-        return memoryBG;
+    public int getMemoryGB() {
+        return memoryGB;
     }
 
-    public int getStorageMB() {
+    public int getStorageGB() {
         return storageGB;
     }
 
@@ -75,7 +73,7 @@ public class Computer extends Product {
     /* Getters */
 
     @Override
-    public void getInventory(File inputFile, int recordPosition) {
+    public void loadInventory(File inputFile, int recordPosition) {
         try {
             Scanner inputFileReader = new Scanner(inputFile);
 
@@ -94,8 +92,8 @@ public class Computer extends Product {
                 setModel(token.nextToken());
                 setPrice(Double.parseDouble(token.nextToken()));
                 setCPU(token.nextToken());
-                setMemoryMB(Integer.parseInt(token.nextToken()));
-                setStorageMB(Integer.parseInt(token.nextToken()));
+                setMemoryGB(Integer.parseInt(token.nextToken()));
+                setStorageGB(Integer.parseInt(token.nextToken()));
                 setStorageType(token.nextToken());
             }
             inputFileReader.close();
@@ -109,13 +107,24 @@ public class Computer extends Product {
     }
 
     @Override
-    public void writeToFile(PrintWriter outputFile) {
-        outputFile.printf("%s;%s;%.2f;%s;%d;%d;%s\n", getBrand(), getModel(), getPrice(), cpu, memoryBG, storageGB,
+    public String toRecord() {
+        return String.format("%s;%s;%.2f;%s;%d;%d;%s\n", getBrand(), getModel(), getPrice(), cpu, memoryGB, storageGB,
                 storageType);
     }
 
-    public String toString() {
-        return String.format("%s;%s;%.2f;%s;%d;%d;%s\n", getBrand(), getModel(), getPrice(), cpu, memoryBG, storageGB,
-                storageType);
+    @Override
+    public void writeToFile(PrintWriter outputFile) {
+        outputFile.printf(toRecord());
     }
+
+    @Override
+    public String toString() {
+        return "Brand:" + getBrand() +
+                "\nModel: " + getModel() +
+                "\nCPU:" + cpu +
+                "\nMemory (GB): " + memoryGB +
+                "\nStorage (GB): " + storageGB +
+                "\nPrice: RM" + getPrice();
+    }
+
 }

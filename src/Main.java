@@ -27,7 +27,7 @@ public class Main {
 
         // The crux of the program
         do {
-            intOption = mainMenu();
+            intOption = menu();
 
             // Checks intOption and determine what the user chose
             choseCustomer = (intOption == 0);
@@ -87,7 +87,85 @@ public class Main {
         }
     }
 
-    public static int mainMenu() {
+    public static String chooseInventoryToEdit() {
+        String[] options = { "Computers", "Keyboards" };
+        String chosenOption = (String) JOptionPane.showInputDialog(null, "Please choose an inventory to edit",
+                "Edit Inventory", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+        return chosenOption;
+    }
+
+    /*
+     * editInventory() is for admins only and it shows 2 options letting the admin
+     * choose either add item or remove item and calls its respective method
+     */
+    public static void editInventory(Product[] products) {
+        boolean choseExit = false, choseAddItem = false, choseRemoveItem = false;
+        Object[] options = { "Add Inventory", "Remove Inventory", "Back" };
+
+        do {
+            int chosenOption = JOptionPane.showOptionDialog(null, "Please choose your action", "Edit Inventory",
+                    JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+
+            choseExit = (chosenOption == -1 || chosenOption == 2);
+            choseAddItem = (chosenOption == 0);
+            choseRemoveItem = (chosenOption == 1);
+
+            if (choseAddItem) {
+                addItem(products);
+            } else if (choseRemoveItem) {
+                removeItem(products);
+            }
+        } while (!choseExit);
+    }
+
+    public static void addItem(Product[] products) {
+    }
+
+    public static void removeItem(Product[] products) {
+        Object[] obj = new Object[products.length];
+        for (int record = 0; record < products.length; record++) {
+            obj[record] = products[record].toRecord();
+        }
+        Object chosenOption = JOptionPane.showInputDialog(null, "Which item would you like to remove?", "Remove Item",
+                JOptionPane.QUESTION_MESSAGE, null, obj, obj[0]);
+
+        // Get the index of the chosen option
+        int intChosenOption = 0;
+        for (int i = 0; i < products.length; i++) {
+            if (obj[i].equals(chosenOption)) {
+                intChosenOption = i;
+                break; // Exit loop when match is found
+            }
+        }
+        System.out.println("intChosenOption =  " + intChosenOption); // Log
+    }
+
+    /*
+     * Method that returns the number of records in a file
+     */
+    public static int getInventorySize(File file) {
+        int recordSize = 0;
+        try (Scanner inputFile = new Scanner(file)) {
+            while (inputFile.hasNext()) {
+                inputFile.nextLine();
+                recordSize++;
+            }
+        } catch (FileNotFoundException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+        return recordSize;
+    }
+
+    /*
+     * menu() - Gives user options to login as customer, admin or exit from the
+     * program
+     */
+    public static int menu() {
         String str;
         Object[] options = { "Customer", "Admin", "Exit" };
         str = "Welcome to VoxTek Computer Store\n";
@@ -99,16 +177,8 @@ public class Main {
         return chosenOption;
     }
 
-    /* TODO: Make this polymorphic (using Product) */
-    public static void productList(String[][] inventory) {
-        for (int record = 0; record < inventory.length; record++) {
-            for (int field = 0; field < inventory[record].length; field++) {
-                System.out.printf("%-1d %s\n", record, inventory[record][field].toString()); // Log
-            }
-        }
+    public static void productList(Product[] products) {
     }
-
-    /* for admins only */
 
     /*
      * initializes the admin (loads admin from file to object)
@@ -232,79 +302,4 @@ public class Main {
 
         return true;
     }
-
-    /*
-     * editInventory() is for admins only and it shows 2 options letting the admin
-     * choose to edit either Computers or Keyboards
-     * will return one of the following possibilities:
-     * - Computers, Keyboards, and null
-     */
-    public static String chooseInventoryToEdit() {
-        String[] options = { "Computers", "Keyboards" };
-        String chosenOption = (String) JOptionPane.showInputDialog(null, "Please choose an inventory to edit",
-                "Edit Inventory", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-        return chosenOption;
-    }
-
-    public static void editInventory(Product[] products) {
-        boolean choseExit = false, choseAddItem = false, choseRemoveItem = false;
-        Object[] options = { "Add Inventory", "Remove Inventory", "Back" };
-
-        do {
-            int chosenOption = JOptionPane.showOptionDialog(null, "Please choose your action", "Edit Inventory",
-                    JOptionPane.DEFAULT_OPTION,
-                    JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
-
-            choseExit = (chosenOption == -1 || chosenOption == 2);
-            choseAddItem = (chosenOption == 0);
-            choseRemoveItem = (chosenOption == 1);
-
-            if (choseAddItem) {
-                addItem(products);
-            } else if (choseRemoveItem) {
-                removeItem(products);
-            }
-        } while (!choseExit);
-    }
-
-    public static void addItem(Product[] products) {
-    }
-
-    public static void removeItem(Product[] products) {
-        Object[] obj = new Object[products.length];
-        for (int record = 0; record < products.length; record++) {
-            obj[record] = products[record].toString();
-        }
-        Object chosenOption = JOptionPane.showInputDialog(null, "Which item would you like to remove?", "Remove Item",
-                JOptionPane.QUESTION_MESSAGE, null, obj, obj[0]);
-
-        // Get the index of the chosen option
-        int intChosenOption = 0;
-        for (int i = 0; i < products.length; i++) {
-            if (obj[i].equals(chosenOption)) {
-                intChosenOption = i;
-                break; // Exit loop when match is found
-            }
-        }
-        System.out.println("intChosenOption =  " + intChosenOption); // Log
-    }
-    /* for admins only */
-
-    public static int getInventorySize(File file) {
-        int recordSize = 0;
-        try (Scanner inputFile = new Scanner(file)) {
-            while (inputFile.hasNext()) {
-                inputFile.nextLine();
-                recordSize++;
-            }
-        } catch (FileNotFoundException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage());
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage());
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage());
-        }
-        return recordSize;
-    }
-
 }
