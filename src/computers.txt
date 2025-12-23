@@ -1,1 +1,1 @@
-Lenovo;Thinkpad T14 Gen 1;1500;Ryzen 5 Pro;32;512;SSD
+HP;EliteBook;1500.00;Intel i5;8;128;HDD

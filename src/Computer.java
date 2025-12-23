@@ -5,6 +5,8 @@ import java.io.*;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
+import javax.swing.JOptionPane;
+
 public class Computer extends Product {
     private String cpu;
     private int memoryBG;
@@ -77,13 +79,12 @@ public class Computer extends Product {
         try {
             Scanner inputFileReader = new Scanner(inputFile);
 
-            while (inputFileReader.hasNextLine()) {
+            // Skips to the record of the recordPosition specified
+            for (int field = 0; field < recordPosition; field++) {
+                inputFileReader.nextLine();
+            }
 
-                // Skips to the record of the recordPosition specified
-                for (int field = 0; field < recordPosition; field++) {
-                    inputFileReader.nextLine();
-                }
-
+            if (inputFileReader.hasNextLine()) {
                 // Read the recordPosition specified
                 String aRecord = inputFileReader.nextLine();
                 StringTokenizer token = new StringTokenizer(aRecord, ";");
@@ -105,17 +106,24 @@ public class Computer extends Product {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-
     }
 
     @Override
-    public void updateInventory(PrintWriter outputFile) {
-        outputFile.printf("%s;%s;%.2f;%s;%d;%d;%s", getBrand(), getModel(), getPrice(), cpu, memoryBG, storageGB,
-                storageType);
+    public void updateInventory(File file) {
+        try (PrintWriter outputFile = new PrintWriter(file)) {
+            outputFile.printf("%s;%s;%.2f;%s;%d;%d;%s\n", getBrand(), getModel(), getPrice(), cpu, memoryBG, storageGB,
+                    storageType);
+        } catch (FileNotFoundException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
     }
 
     public String toString() {
-        return String.format("%s;%s;%.2f;%s;%d;%d;%s", getBrand(), getModel(), getPrice(), cpu, memoryBG, storageGB,
+        return String.format("%s;%s;%.2f;%s;%d;%d;%s\n", getBrand(), getModel(), getPrice(), cpu, memoryBG, storageGB,
                 storageType);
     }
 }

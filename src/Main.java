@@ -14,17 +14,19 @@ public class Main {
         Admin admin = new Admin();
         File adminFile = new File("admin.txt");
 
+        /* Initialize Computers */
         File computerFile = new File("computers.txt");
-        int computerCount = getRecordSize(computerFile);
+        int computerCount = getInventorySize(computerFile);
         Computer[] computers = new Computer[computerCount];
         for (int i = 0; i < computerCount; i++) {
             computers[i] = new Computer();
             computers[i].getInventory(computerFile, i);
-            System.out.println(computers[i].toString());
         }
 
+        /* Initialize Keyboards */
         File keyboardFile = new File("keyboards.txt");
         // int keyboardCount = getRecordSize(keyboardFile);
+        // Keyboard[] keyboards = new Keyboard[keyboardCount];
 
         // The crux of the program
         do {
@@ -45,25 +47,27 @@ public class Main {
             }
 
             if (choseAdmin) {
-                isAdminConfigured = initializeAdmin(admin, adminFile);
-
-                if (!isAdminConfigured)
+                if (!initializeAdmin(admin, adminFile))
                     continue;
 
-                adminLoggedIn = adminLogin(admin);
-                if (!adminLoggedIn)
+                if (!adminLogin(admin))
                     continue;
 
                 strOption = chooseInventoryToEdit();
+
                 if (strOption == null) {
-                    continue; // Admin cancles edit inventory
+                    continue; // Admin cancels edit inventory
                 } else if (strOption.equalsIgnoreCase("Computers")) {
-                    // edit computer instances
+                    editInventory(computers);
                 } else if (strOption.equalsIgnoreCase("Keyboards")) {
-                    // edit computer instances
+                    // editInventory(keyboardFile);
                 }
             }
         } while (!choseExit);
+
+        for (Computer c : computers) {
+            c.updateInventory(computerFile);
+        }
 
         System.exit(0);
     }
@@ -81,10 +85,11 @@ public class Main {
         return chosenOption;
     }
 
+    /* TODO: Make this polymorphic (using Product) */
     public static void computerList(String[][] inventory) {
         for (int record = 0; record < inventory.length; record++) {
             for (int field = 0; field < inventory[record].length; field++) {
-                System.out.printf("%-1d %s\n", record, inventory[record][field]/* .toString */);
+                System.out.printf("%-1d %s\n", record, inventory[record][field].toString()); // Log
             }
         }
     }
@@ -219,17 +224,47 @@ public class Main {
      * - Computers, Keyboards, and null
      */
     public static String chooseInventoryToEdit() {
-        Object[] options = { "Computers", "Keyboards" };
+        String[] options = { "Computers", "Keyboards" };
         String chosenOption = (String) JOptionPane.showInputDialog(null, "Please choose an inventory to edit",
                 "Edit Inventory", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
         return chosenOption;
     }
 
-    public static void editInventory(File file) {
+    public static int editInventory(Product[] products) {
+        Object[] options = { "Add Inventory", "Remove Inventory", "Back" };
+
+        int chosenOption = JOptionPane.showOptionDialog(null, "Please choose your action", "Edit Inventory",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+
+        return chosenOption;
+        // if add item then call addItem() and so on
+    }
+
+    public static void addItem(Product[] products) {
+    }
+
+    public static void removeItem(Product[] products) {
+        Object[] obj = new Object[products.length];
+        for (int record = 0; record < products.length; record++) {
+            obj[record] = products[record].toString();
+        }
+        Object chosenOption = JOptionPane.showInputDialog(null, "Which item would you like to remove?", "Remove Item",
+                JOptionPane.QUESTION_MESSAGE, null, obj, obj[0]);
+
+        // Get the index of the chosen option
+        int intChosenOption = 0;
+        for (int i = 0; i < products.length; i++) {
+            if (obj[i].equals(chosenOption)) {
+                intChosenOption = i;
+                break; // Exit loop when match is found
+            }
+        }
+        System.out.println("intChosenOption =  " + intChosenOption); // Log
     }
     /* for admins only */
 
-    public static int getRecordSize(File file) {
+    public static int getInventorySize(File file) {
         int recordSize = 0;
         try (Scanner inputFile = new Scanner(file)) {
             while (inputFile.hasNext()) {
@@ -237,6 +272,10 @@ public class Main {
                 recordSize++;
             }
         } catch (FileNotFoundException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
         return recordSize;

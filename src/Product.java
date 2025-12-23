@@ -1,7 +1,7 @@
 // MIT License
 // Copyright (c) 2025 Shah
 
-import java.io.*;
+import java.io.File;
 
 public abstract class Product {
     /* Attributes */
@@ -68,5 +68,5 @@ public abstract class Product {
      */
     protected abstract void getInventory(File inputFile, int recordPosition);
 
-    protected abstract void updateInventory(PrintWriter outputFile);
+    protected abstract void updateInventory(File outputFile);
 }
