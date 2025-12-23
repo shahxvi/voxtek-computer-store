@@ -60,7 +60,7 @@ public abstract class Product {
     /* Getter */
 
     /*
-     * getInventory()
+     * loadInventory()
      * This method must be implemented by every subclass.
      * The inventory of the product would be stored in a file that the subclass must
      * read and store it into memory.
