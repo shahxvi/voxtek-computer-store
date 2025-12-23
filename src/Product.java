@@ -69,5 +69,5 @@ public abstract class Product {
      */
     protected abstract void getInventory(File inputFile, int recordPosition);
 
-    protected abstract void updateInventory(PrintWriter outputFile);
+    protected abstract void writeToFile(PrintWriter outputFile);
 }

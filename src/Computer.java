@@ -109,7 +109,7 @@ public class Computer extends Product {
     }
 
     @Override
-    public void updateInventory(PrintWriter outputFile) {
+    public void writeToFile(PrintWriter outputFile) {
         outputFile.printf("%s;%s;%.2f;%s;%d;%d;%s\n", getBrand(), getModel(), getPrice(), cpu, memoryBG, storageGB,
                 storageType);
     }

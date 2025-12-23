@@ -67,7 +67,7 @@ public class Main {
             output = new PrintWriter(computerFile);
             for (Computer c : computers) {
                 if (c != null) { // Skips items that have been removed (null)
-                    c.updateInventory(output);
+                    c.writeToFile(output);
                 }
             }
         } catch (FileNotFoundException e) {
