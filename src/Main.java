@@ -42,14 +42,11 @@ public class Main {
                 }
 
                 adminLogin(admin);
+
                 strOption = editInventory();
-
-                editComputers = (strOption.equalsIgnoreCase("Computers"));
-                editKeyboards = (strOption.equalsIgnoreCase("Keyboards"));
-
-                if (editComputers) {
+                if (strOption.equalsIgnoreCase("Computers")) {
                     // edit computer instances
-                } else if (editKeyboards) {
+                } else if (strOption.equalsIgnoreCase("Keyboards")) {
                     // edit computer instances
                 }
             }
