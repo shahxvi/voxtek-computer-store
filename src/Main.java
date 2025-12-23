@@ -35,19 +35,19 @@ public class Main {
             }
 
             if (choseAdmin) {
-                isAdminConfigured = loadAdmin(admin, adminFile);
+                isAdminConfigured = initializeAdmin(admin, adminFile);
 
-                if (!isAdminConfigured) {
-                    continue; // Skips the admin login and the looping will show the mainMenu()
-                }
+                if (isAdminConfigured) {
+                    adminLogin(admin);
 
-                adminLogin(admin);
-
-                strOption = chooseInventoryToEdit();
-                if (strOption.equalsIgnoreCase("Computers")) {
-                    // edit computer instances
-                } else if (strOption.equalsIgnoreCase("Keyboards")) {
-                    // edit computer instances
+                    strOption = chooseInventoryToEdit();
+                    if (strOption.equalsIgnoreCase("Computers")) {
+                        // edit computer instances
+                    } else if (strOption.equalsIgnoreCase("Keyboards")) {
+                        // edit computer instances
+                    } else {
+                        continue;
+                    }
                 }
             }
         } while (!choseExit);
@@ -79,71 +79,73 @@ public class Main {
     /* for admins only */
 
     /*
-     * This method initializes an admin class by retrieving its attribute from file
-     * it returns true after the admin class has been initialized
+     * initializes the admin (loads admin from file to object)
+     * if the file is missing or empty, it calls createAdminFile
      */
-    public static boolean loadAdmin(Admin admin, File file) {
-        boolean isInitialized = false, choseCreateAdminFile = false, choseExit = false, adminLoaded = false;
+    public static boolean initializeAdmin(Admin admin, File file) {
+        boolean isInitialized = false;
 
-        do {
+        while (!isInitialized) {
             try {
-                Scanner inputFile = new Scanner(file);
-
-                // Checks if empty or not
-                if (!inputFile.hasNextLine()) {
-                    inputFile.close();
-                    throw new FileNotFoundException(); // If the file is empty it is catched by FileNotFoundException
-                }
-
-                while (inputFile.hasNext()) {
-                    StringTokenizer token = new StringTokenizer(inputFile.nextLine(), ";");
-                    admin.setName(token.nextToken());
-                    admin.setPhoneNumber(Integer.parseInt(token.nextToken()));
-                    admin.setId(Integer.parseInt(token.nextToken()));
-                    admin.setPassword(token.nextToken());
-                }
-                inputFile.close();
-
-                adminLoaded = true;
+                loadAdmin(admin, file);
                 isInitialized = true;
-            } catch (FileNotFoundException e) { // or if the file is empty
-                // isInitialized is still false here
-                JOptionPane.showMessageDialog(null, "Admin file not found.");
-                int intOption = JOptionPane.showConfirmDialog(null, "Would you like to create the admin file?");
-
-                choseExit = (intOption == -1 || intOption == 1 || intOption == 2);
-                choseCreateAdminFile = (intOption == 0);
-
-                if (choseCreateAdminFile) {
-                    isInitialized = createAdminFile(file); // isInitialized is false if the user cancels halfway
-                    if (isInitialized) {
-                        JOptionPane.showMessageDialog(null, "Admin file created.");
-                    }
+            } catch (FileNotFoundException e) {
+                boolean isCreated = createAdminFile(admin, file);
+                if (!isCreated) {
+                    return false; // User chose to exit
                 }
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+                JOptionPane.showMessageDialog(null, e.getMessage());
             }
-        } while ((!isInitialized && !choseExit) || (isInitialized && !adminLoaded));
+        }
 
-        System.out.println("adminLoaded: " + adminLoaded);
         return isInitialized;
     }
 
     /*
-     * Creates the admin file
-     * returns false if the admin cancels halfway
+     * Loads admin from file to object (throws an exception)
      */
-    public static boolean createAdminFile(File file) {
-        try {
-            String strInput;
-            PrintWriter adminFile = new PrintWriter(file);
+    public static boolean loadAdmin(Admin admin, File file) throws FileNotFoundException {
+        try (Scanner inputFile = new Scanner(file)) {
+            // Checks if empty or not
+            if (!inputFile.hasNextLine()) {
+                inputFile.close();
+                throw new FileNotFoundException();
+            }
 
-            String[] messages = {
-                    "Enter admin's name",
-                    "Enter admin's phone number",
-                    "Enter admin's ID",
-                    "Enter admin's password"
-            };
+            while (inputFile.hasNext()) {
+                StringTokenizer token = new StringTokenizer(inputFile.nextLine(), ";");
+                admin.setName(token.nextToken());
+                admin.setPhoneNumber(Integer.parseInt(token.nextToken()));
+                admin.setId(Integer.parseInt(token.nextToken()));
+                admin.setPassword(token.nextToken());
+            }
+        }
+        return true;
+    }
+
+    /*
+     * Creates the admin fild if it isn't already
+     */
+    public static boolean createAdminFile(Admin admin, File file) {
+        String[] messages = {
+                "Enter admin's name",
+                "Enter admin's phone number",
+                "Enter admin's ID",
+                "Enter admin's password"
+        };
+        boolean choseExit = false;
+        String strInput = null;
+
+        try (PrintWriter adminFile = new PrintWriter(file)) {
+            JOptionPane.showMessageDialog(null, "Admin file not found.");
+            int intOption = JOptionPane.showConfirmDialog(null, "Would you like to create the admin file?");
+
+            choseExit = (intOption == -1 || intOption == 1 || intOption == 2);
+
+            if (choseExit) {
+                return false;
+            }
 
             for (int i = 0; i < messages.length; i++) {
                 strInput = JOptionPane.showInputDialog(messages[i]);
@@ -159,13 +161,10 @@ public class Main {
                     adminFile.print(strInput.trim());
                 }
             }
-            adminFile.close();
         } catch (FileNotFoundException e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
-            return false;
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
-            return false;
         }
 
         return true;
