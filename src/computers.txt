@@ -1,1 +1,3 @@
-HP;EliteBook;1500.00;Intel i5;8;128;HDD
+Lenovo;ThinkPad T14 Gen 1;1500.00;AMD Ryzen 5 Pro;32;512;SDD
+Apple;MacBook Air;5000.00;M1;8;128;SDD
+HP;EliteBook;1000.00;Intel i5;8;128;HDD

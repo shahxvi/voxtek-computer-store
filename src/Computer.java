@@ -109,17 +109,9 @@ public class Computer extends Product {
     }
 
     @Override
-    public void updateInventory(File file) {
-        try (PrintWriter outputFile = new PrintWriter(file)) {
-            outputFile.printf("%s;%s;%.2f;%s;%d;%d;%s\n", getBrand(), getModel(), getPrice(), cpu, memoryBG, storageGB,
-                    storageType);
-        } catch (FileNotFoundException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage());
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage());
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage());
-        }
+    public void updateInventory(PrintWriter outputFile) {
+        outputFile.printf("%s;%s;%.2f;%s;%d;%d;%s\n", getBrand(), getModel(), getPrice(), cpu, memoryBG, storageGB,
+                storageType);
     }
 
     public String toString() {

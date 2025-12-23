@@ -65,9 +65,18 @@ public class Main {
             }
         } while (!choseExit);
 
-        for (Computer c : computers) {
-            c.updateInventory(computerFile);
+        PrintWriter output = null;
+        try {
+            output = new PrintWriter(computerFile);
+            for (Computer c : computers) {
+                if (c != null) { // Skips items that have been removed (null)
+                    c.updateInventory(output);
+                }
+            }
+        } catch (FileNotFoundException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
         }
+        output.close();
 
         System.exit(0);
     }
@@ -155,7 +164,8 @@ public class Main {
         boolean choseExit = false;
         String strInput = null;
 
-        try (PrintWriter adminFile = new PrintWriter(file)) {
+        try {
+            PrintWriter adminFile = new PrintWriter(file);
             JOptionPane.showMessageDialog(null, "Admin file not found.");
             int intOption = JOptionPane.showConfirmDialog(null, "Would you like to create the admin file?");
 
@@ -179,6 +189,7 @@ public class Main {
                     adminFile.print(strInput.trim());
                 }
             }
+            adminFile.close();
         } catch (FileNotFoundException e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
         } catch (Exception e) {
@@ -230,15 +241,25 @@ public class Main {
         return chosenOption;
     }
 
-    public static int editInventory(Product[] products) {
+    public static void editInventory(Product[] products) {
+        boolean choseExit = false, choseAddItem = false, choseRemoveItem = false;
         Object[] options = { "Add Inventory", "Remove Inventory", "Back" };
 
-        int chosenOption = JOptionPane.showOptionDialog(null, "Please choose your action", "Edit Inventory",
-                JOptionPane.DEFAULT_OPTION,
-                JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+        do {
+            int chosenOption = JOptionPane.showOptionDialog(null, "Please choose your action", "Edit Inventory",
+                    JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
 
-        return chosenOption;
-        // if add item then call addItem() and so on
+            choseExit = (chosenOption == -1 || chosenOption == 2);
+            choseAddItem = (chosenOption == 0);
+            choseRemoveItem = (chosenOption == 1);
+
+            if (choseAddItem) {
+                addItem(products);
+            } else if (choseRemoveItem) {
+                removeItem(products);
+            }
+        } while (!choseExit);
     }
 
     public static void addItem(Product[] products) {
