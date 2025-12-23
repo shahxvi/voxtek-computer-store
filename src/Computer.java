@@ -7,32 +7,32 @@ import java.util.StringTokenizer;
 
 public class Computer extends Product {
     private String cpu;
-    private int memoryMB;
-    private int storageMB;
+    private int memoryBG;
+    private int storageGB;
     private String storageType;
 
     public Computer() {
         super();
         this.cpu = "";
-        this.memoryMB = 0;
-        this.storageMB = 0;
+        this.memoryBG = 0;
+        this.storageGB = 0;
         this.storageType = "";
     }
 
-    public Computer(String brand, String model, double price, String cpu, int memoryMB, int storageMB,
+    public Computer(String brand, String model, double price, String cpu, int memoryBG, int storageGB,
             String storageType) {
         super(brand, model, price);
         this.cpu = cpu;
-        this.memoryMB = memoryMB;
-        this.storageMB = storageMB;
+        this.memoryBG = memoryBG;
+        this.storageGB = storageGB;
         this.storageType = storageType;
     }
 
     public Computer(Computer other) {
         super(other);
         this.cpu = other.cpu;
-        this.memoryMB = other.memoryMB;
-        this.storageMB = other.storageMB;
+        this.memoryBG = other.memoryBG;
+        this.storageGB = other.storageGB;
         this.storageType = other.storageType;
     }
 
@@ -41,12 +41,12 @@ public class Computer extends Product {
         this.cpu = cpu;
     }
 
-    public void setMemoryMB(int memoryMB) {
-        this.memoryMB = memoryMB;
+    public void setMemoryMB(int memoryBG) {
+        this.memoryBG = memoryBG;
     }
 
-    public void setStorageMB(int storageMB) {
-        this.storageMB = storageMB;
+    public void setStorageMB(int storageGB) {
+        this.storageGB = storageGB;
     }
 
     public void setStorageType(String storageType) {
@@ -60,11 +60,11 @@ public class Computer extends Product {
     }
 
     public int getMemoryMB() {
-        return memoryMB;
+        return memoryBG;
     }
 
     public int getStorageMB() {
-        return storageMB;
+        return storageGB;
     }
 
     public String getStorageType() {
@@ -110,7 +110,12 @@ public class Computer extends Product {
 
     @Override
     public void updateInventory(PrintWriter outputFile) {
-        outputFile.printf("%s;%s;%.2f;%s;%d;%d;%s", getBrand(), getModel(), getPrice(), cpu, memoryMB, storageMB,
+        outputFile.printf("%s;%s;%.2f;%s;%d;%d;%s", getBrand(), getModel(), getPrice(), cpu, memoryBG, storageGB,
+                storageType);
+    }
+
+    public String toString() {
+        return String.format("%s;%s;%.2f;%s;%d;%d;%s", getBrand(), getModel(), getPrice(), cpu, memoryBG, storageGB,
                 storageType);
     }
 }

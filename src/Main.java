@@ -9,12 +9,22 @@ public class Main {
     public static void main(String[] args) {
         int intOption;
         String strOption;
-        boolean choseCustomer, choseAdmin, choseExit, isAdminConfigured;
+        boolean choseCustomer, choseExit, isAdminConfigured, choseAdmin, adminLoggedIn;
 
         Admin admin = new Admin();
         File adminFile = new File("admin.txt");
+
         File computerFile = new File("computers.txt");
+        int computerCount = getRecordSize(computerFile);
+        Computer[] computers = new Computer[computerCount];
+        for (int i = 0; i < computerCount; i++) {
+            computers[i] = new Computer();
+            computers[i].getInventory(computerFile, i);
+            System.out.println(computers[i].toString());
+        }
+
         File keyboardFile = new File("keyboards.txt");
+        // int keyboardCount = getRecordSize(keyboardFile);
 
         // The crux of the program
         do {
@@ -37,17 +47,20 @@ public class Main {
             if (choseAdmin) {
                 isAdminConfigured = initializeAdmin(admin, adminFile);
 
-                if (isAdminConfigured) {
-                    adminLogin(admin);
+                if (!isAdminConfigured)
+                    continue;
 
-                    strOption = chooseInventoryToEdit();
-                    if (strOption.equalsIgnoreCase("Computers")) {
-                        // edit computer instances
-                    } else if (strOption.equalsIgnoreCase("Keyboards")) {
-                        // edit computer instances
-                    } else {
-                        continue;
-                    }
+                adminLoggedIn = adminLogin(admin);
+                if (!adminLoggedIn)
+                    continue;
+
+                strOption = chooseInventoryToEdit();
+                if (strOption == null) {
+                    continue; // Admin cancles edit inventory
+                } else if (strOption.equalsIgnoreCase("Computers")) {
+                    // edit computer instances
+                } else if (strOption.equalsIgnoreCase("Keyboards")) {
+                    // edit computer instances
                 }
             }
         } while (!choseExit);
@@ -63,7 +76,7 @@ public class Main {
         str += "Please choose your option: ";
 
         int chosenOption = JOptionPane.showOptionDialog(null, str, "VoxTek", JOptionPane.DEFAULT_OPTION,
-                JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+                JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
 
         return chosenOption;
     }
@@ -170,7 +183,7 @@ public class Main {
         return true;
     }
 
-    public static void adminLogin(Admin admin) {
+    public static boolean adminLogin(Admin admin) {
         String strInput;
         int id;
         String password;
@@ -181,7 +194,7 @@ public class Main {
 
             // Exits if the user cancels
             if (strInput == null) {
-                return; // Go back to main
+                return false; // Go back to main
             }
 
             id = Integer.parseInt(strInput);
@@ -195,6 +208,8 @@ public class Main {
                 JOptionPane.showMessageDialog(null, "Incorrect ID or Password");
             }
         } while (!validID || !validPassword);
+
+        return true;
     }
 
     /*
@@ -214,7 +229,17 @@ public class Main {
     }
     /* for admins only */
 
-    /* Input Processors */
+    public static int getRecordSize(File file) {
+        int recordSize = 0;
+        try (Scanner inputFile = new Scanner(file)) {
+            while (inputFile.hasNext()) {
+                inputFile.nextLine();
+                recordSize++;
+            }
+        } catch (FileNotFoundException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+        return recordSize;
+    }
 
-    /* Input Processors */
 }

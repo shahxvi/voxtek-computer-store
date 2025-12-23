@@ -1,0 +1,1 @@
+Lenovo;Thinkpad T14 Gen 1;1500;Ryzen 5 Pro;32;512;SSD
