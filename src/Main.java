@@ -257,22 +257,28 @@ public class Main {
                     return false; // Admin cancels, file stays empty because we never closed it
                 }
 
-                // Makes sure that the user input of ID is int only
-                if (i == 2) {
-                    boolean invalid = false;
+                // Makes sure that the user input of ID AND phone number is int only
+                if (i == 1 || i == 2) {
+                    boolean valid = false;
 
                     do {
-                        if (invalid) {
+                        valid = integersOnly(strInput);
+
+                        if (valid) {
+                            break;
+                        }
+                        if (i == 1) {
+                            JOptionPane.showMessageDialog(null, "Phone number must be digits only.",
+                                    "Phone Number Error", JOptionPane.WARNING_MESSAGE);
+                            strInput = JOptionPane.showInputDialog(messages[1]);
+                        }
+                        if (i == 2) {
+                            JOptionPane.showMessageDialog(null, "ID must be digits only.", "ID Error",
+                                    JOptionPane.WARNING_MESSAGE);
                             strInput = JOptionPane.showInputDialog(messages[2]);
                         }
-                        for (int j = 0; j < strInput.length(); j++) {
-                            if (!Character.isDigit(strInput.charAt(j))) {
-                                invalid = true;
-                                JOptionPane.showMessageDialog(null, "ID must be digits only.", "ID Error",
-                                        JOptionPane.WARNING_MESSAGE);
-                            }
-                        }
-                    } while (invalid);
+
+                    } while (!valid);
                 }
 
                 // add delimeter after every input except the last one
@@ -319,5 +325,18 @@ public class Main {
         } while (!validID || !validPassword);
 
         return true;
+    }
+
+    public static boolean integersOnly(String strInput) {
+        boolean valid = false;
+        for (int j = 0; j < strInput.length(); j++) {
+            if (!Character.isDigit(strInput.charAt(j))) {
+                valid = false;
+                break;
+            } else {
+                valid = true;
+            }
+        }
+        return valid;
     }
 }
