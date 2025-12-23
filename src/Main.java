@@ -82,7 +82,7 @@ public class Main {
         if (products instanceof Computer[]) {
             for (int i = 0; i < products.length; i++) {
                 products[i] = new Computer();
-                products[i].getInventory(file, i);
+                products[i].loadInventory(file, i);
             }
         }
     }
@@ -252,9 +252,27 @@ public class Main {
 
             for (int i = 0; i < messages.length; i++) {
                 strInput = JOptionPane.showInputDialog(messages[i]);
+
                 if (strInput == null) {
-                    // Admin cancels, file stays empty because we never closed it
-                    return false;
+                    return false; // Admin cancels, file stays empty because we never closed it
+                }
+
+                // Makes sure that the user input of ID is int only
+                if (i == 2) {
+                    boolean invalid = false;
+
+                    do {
+                        if (invalid) {
+                            strInput = JOptionPane.showInputDialog(messages[2]);
+                        }
+                        for (int j = 0; j < strInput.length(); j++) {
+                            if (!Character.isDigit(strInput.charAt(j))) {
+                                invalid = true;
+                                JOptionPane.showMessageDialog(null, "ID must be digits only.", "ID Error",
+                                        JOptionPane.WARNING_MESSAGE);
+                            }
+                        }
+                    } while (invalid);
                 }
 
                 // add delimeter after every input except the last one
