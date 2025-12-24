@@ -5,28 +5,26 @@ import java.io.*;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
-import javax.swing.JOptionPane;
-
 public class Keyboard extends Product {
     private String switchType;
-    private boolean wireless;
+    private boolean isWireless;
 
     public Keyboard() {
         super();
         this.switchType = "";
-        this.wireless = false;
+        this.isWireless = false;
     }
 
-    public Keyboard(String model, String brand, String price, String switchType, boolean wireless) {
+    public Keyboard(String model, String brand, double price, String switchType, boolean isWireless) {
         super(model, brand, price);
         this.switchType = switchType;
-        this.wireless = wireless;
+        this.isWireless = isWireless;
     }
 
     public Keyboard(Keyboard other) {
         super(other);
         this.switchType = other.switchType;
-        this.wireless = other.wireless;
+        this.isWireless = other.isWireless;
     }
 
     public void setSwitchType(String switchType) {
@@ -34,7 +32,7 @@ public class Keyboard extends Product {
     }
 
     public void setWireless(boolean wireless) {
-        this.wireless = wireless;
+        this.isWireless = wireless;
     }
 
     public String getSwitchType() {
@@ -42,7 +40,7 @@ public class Keyboard extends Product {
     }
 
     public boolean getWireless() {
-        return wireless:
+        return isWireless;
     }
 
     @Override
@@ -76,7 +74,7 @@ public class Keyboard extends Product {
 
     @Override
     public String toRecord() {
-        return String.format("%s,%s,%.2f,%s,%b\n", getModel(), getBrand(), getPrice(), switchType, wireless);
+        return String.format("%s,%s,%.2f,%s,%b\n", getModel(), getBrand(), getPrice(), switchType, isWireless);
     }
 
     @Override
@@ -88,8 +86,8 @@ public class Keyboard extends Product {
     public String toString() {
         return "Brand:" + getBrand() +
                 "\nModel: " + getModel() +
-                "\nSwitch type: " + switchType() +
-                "\nWireless: " + wireless() +
+                "\nSwitch type: " + switchType +
+                "\nisWireless: " + isWireless +
                 "\nPrice: RM" + getPrice();
     }
 }
