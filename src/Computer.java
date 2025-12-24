@@ -108,13 +108,13 @@ public class Computer extends Product {
 
     @Override
     public String toRecord() {
-        return String.format("%s;%s;%.2f;%s;%d;%d;%s\n", getBrand(), getModel(), getPrice(), cpu, memoryGB, storageGB,
+        return String.format("%s;%s;%.2f;%s;%d;%d;%s", getBrand(), getModel(), getPrice(), cpu, memoryGB, storageGB,
                 storageType);
     }
 
     @Override
     public void writeToFile(PrintWriter outputFile) {
-        outputFile.printf(toRecord());
+        outputFile.println(toRecord());
     }
 
     @Override

@@ -74,12 +74,12 @@ public class Keyboard extends Product {
 
     @Override
     public String toRecord() {
-        return String.format("%s,%s,%.2f,%s,%b\n", getModel(), getBrand(), getPrice(), switchType, isWireless);
+        return String.format("%s,%s,%.2f,%s,%b", getModel(), getBrand(), getPrice(), switchType, isWireless);
     }
 
     @Override
     public void writeToFile(PrintWriter outputFile) {
-        outputFile.printf(toRecord());
+        outputFile.println(toRecord());
     }
 
     @Override
