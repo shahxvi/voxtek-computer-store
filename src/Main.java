@@ -12,14 +12,14 @@ public class Main {
         boolean choseCustomer, choseExit, choseAdmin;
 
         File adminFile = new File("admin.txt");
-        File computerFile = new File("computers.txt");
+        File laptopFile = new File("laptops.txt");
         // File keyboardFile = new File("keyboards.txt");
 
         Admin admin = new Admin();
 
         /* Initialize Computers */
-        Computer[] computers = new Computer[getInventorySize(computerFile)];
-        initializeInventory(computers, computerFile);
+        Laptop[] laptops = new Laptop[getInventorySize(laptopFile)];
+        initializeInventory(laptops, laptopFile);
 
         /* Initialize Keyboards */
         // Keyboard[] keyboards = new Keyboard[getInventorySize(keyboardFile)];
@@ -55,7 +55,7 @@ public class Main {
                 if (strOption == null) {
                     continue; // Admin cancels edit inventory
                 } else if (strOption.equalsIgnoreCase("Computers")) {
-                    editInventory(computers);
+                    editInventory(laptops);
                 } else if (strOption.equalsIgnoreCase("Keyboards")) {
                     // editInventory(keyboardFile);
                 }
@@ -64,10 +64,10 @@ public class Main {
 
         PrintWriter output = null;
         try {
-            output = new PrintWriter(computerFile);
-            for (Computer c : computers) {
-                if (c != null) { // Skips items that have been removed (null)
-                    c.writeToFile(output);
+            output = new PrintWriter(laptopFile);
+            for (Laptop l : laptops) {
+                if (l != null) { // Skips items that have been removed (null)
+                    l.writeToFile(output);
                 }
             }
         } catch (FileNotFoundException e) {
@@ -79,9 +79,9 @@ public class Main {
     }
 
     public static void initializeInventory(Product[] products, File file) {
-        if (products instanceof Computer[]) {
+        if (products instanceof Laptop[]) {
             for (int i = 0; i < products.length; i++) {
-                products[i] = new Computer();
+                products[i] = new Laptop();
                 products[i].loadInventory(file, i);
             }
         }

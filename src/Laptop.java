@@ -5,13 +5,13 @@ import java.io.*;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
-public class Computer extends Product {
+public class Laptop extends Product {
     private String cpu;
     private int memoryGB;
     private int storageGB;
     private String storageType;
 
-    public Computer() {
+    public Laptop() {
         super();
         this.cpu = "";
         this.memoryGB = 0;
@@ -19,7 +19,7 @@ public class Computer extends Product {
         this.storageType = "";
     }
 
-    public Computer(String brand, String model, double price, String cpu, int memoryGB, int storageGB,
+    public Laptop(String brand, String model, double price, String cpu, int memoryGB, int storageGB,
             String storageType) {
         super(brand, model, price);
         this.cpu = cpu;
@@ -28,7 +28,7 @@ public class Computer extends Product {
         this.storageType = storageType;
     }
 
-    public Computer(Computer other) {
+    public Laptop(Laptop other) {
         super(other);
         this.cpu = other.cpu;
         this.memoryGB = other.memoryGB;
