@@ -54,7 +54,7 @@ public class Main {
 
                 if (strOption == null) {
                     continue; // Admin cancels edit inventory
-                } else if (strOption.equalsIgnoreCase("Computers")) {
+                } else if (strOption.equalsIgnoreCase("Laptops")) {
                     editInventory(laptops);
                 } else if (strOption.equalsIgnoreCase("Keyboards")) {
                     // editInventory(keyboardFile);
@@ -88,7 +88,7 @@ public class Main {
     }
 
     public static String chooseInventoryToEdit() {
-        String[] options = { "Computers", "Keyboards" };
+        String[] options = { "Laptops", "Keyboards" };
         String chosenOption = (String) JOptionPane.showInputDialog(null, "Please choose an inventory to edit",
                 "Edit Inventory", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
         return chosenOption;
