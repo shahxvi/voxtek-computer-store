@@ -291,8 +291,10 @@ public class Main {
             adminFile.close();
         } catch (FileNotFoundException e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
+            return false;
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
+            return false;
         }
 
         return true;
