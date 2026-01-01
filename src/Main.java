@@ -84,6 +84,11 @@ public class Main {
                 products[i] = new Laptop();
                 products[i].loadInventory(file, i);
             }
+        } else if (products instanceof Keyboard[]) {
+            for (int i = 0; i < products.length; i++) {
+                products[i] = new Keyboard();
+                products[i].loadInventory(file,i);
+            }
         }
     }
 
@@ -178,8 +183,7 @@ public class Main {
     }
 
     public static void customerMenu() {
-        System.out.println("Browse");
-        System.out.println("Back");
+        Object[] options = {"Browse", "Back"};
         System.out.println("Please enter your option");
     }
 
