@@ -13,7 +13,7 @@ public class Main {
 
         File adminFile = new File("admin.txt");
         File laptopFile = new File("laptops.txt");
-        // File keyboardFile = new File("keyboards.txt");
+        File keyboardFile = new File("keyboards.txt");
 
         Admin admin = new Admin();
 
@@ -22,8 +22,8 @@ public class Main {
         initializeInventory(laptops, laptopFile);
 
         /* Initialize Keyboards */
-        // Keyboard[] keyboards = new Keyboard[getInventorySize(keyboardFile)];
-        // initializeInventory(keyboards, keybaordFile);
+        Keyboard[] keyboards = new Keyboard[getInventorySize(keyboardFile)];
+        initializeInventory(keyboards, keyboardFile);
 
         // The crux of the program
         do {
@@ -57,7 +57,7 @@ public class Main {
                 } else if (strOption.equalsIgnoreCase("Laptops")) {
                     editInventory(laptops);
                 } else if (strOption.equalsIgnoreCase("Keyboards")) {
-                    // editInventory(keyboardFile);
+                    editInventory(keyboards);
                 }
             }
         } while (!choseExit);
@@ -175,6 +175,12 @@ public class Main {
                 JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
 
         return chosenOption;
+    }
+
+    public static void customerMenu() {
+        System.out.println("Browse");
+        System.out.println("Back");
+        System.out.println("Please enter your option");
     }
 
     public static void productList(Product[] products) {
