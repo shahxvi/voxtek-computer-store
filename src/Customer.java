@@ -50,7 +50,8 @@ public class Customer extends User {
     /* Getters */
 
     public void registerMembership (String name, int number) {
-        super(name, number);
+        setName(name);
+        setPhoneNumber(number);
         isMember = true;
     }
 }
