@@ -19,6 +19,7 @@ public class Main {
         Admin admin = new Admin();
 
         /* Initialize Computers */
+        // TODO: USE ARRAY-LIST
         Laptop[] laptops = new Laptop[getInventorySize(laptopFile)];
         initializeInventory(laptops, laptopFile);
 
@@ -39,12 +40,12 @@ public class Main {
                 // initialize Inventory
                 intOption = customerMenu();
                 if (intOption == 0) {
-                    //browse menu
+                    // browse menu
                 } else if (intOption == 1) {
-                    //customer login menu
+                    // customer login menu
                     customerLogin();
                 } else if (intOption == 2) {
-                    //register member
+                    // register member
                 }
             }
 
@@ -59,26 +60,29 @@ public class Main {
 
                 if (strOption == null) {
                     continue; // Admin cancels edit inventory
-                } else if (strOption.equalsIgnoreCase("Laptops")) {
-                    editInventory(laptops);
+                }
+
+                if (strOption.equalsIgnoreCase("Laptops")) {
+                    do {
+                        intOption = chooseAddOrRemoveProduct(laptops);
+                        if (intOption == 0) {
+                            // laptops = addItem(laptops);
+                        } else if (intOption == 1) {
+                            laptops = (Laptop[]) removeItem(laptops);
+                        }
+                    } while (intOption != 2 && intOption != -1);
                 } else if (strOption.equalsIgnoreCase("Keyboards")) {
-                    editInventory(keyboards);
+                    do {
+                        intOption = chooseAddOrRemoveProduct(keyboards);
+                        if (intOption == 0) {
+                            // keyboards = addItem(keyboards);
+                        } else if (intOption == 1) {
+                            keyboards = (Keyboard[]) removeItem(keyboards);
+                        }
+                    } while (intOption != 2 && intOption != -1);
                 }
             }
         } while (!choseExit);
-
-        PrintWriter output = null;
-        try {
-            output = new PrintWriter(laptopFile);
-            for (Laptop l : laptops) {
-                if (l != null) { // Skips items that have been removed (null)
-                    l.writeToFile(output);
-                }
-            }
-        } catch (FileNotFoundException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage());
-        }
-        output.close();
 
         System.exit(0);
     }
@@ -92,7 +96,7 @@ public class Main {
         } else if (products instanceof Keyboard[]) {
             for (int i = 0; i < products.length; i++) {
                 products[i] = new Keyboard();
-                products[i].loadInventory(file,i);
+                products[i].loadInventory(file, i);
             }
         }
     }
@@ -108,31 +112,20 @@ public class Main {
      * editInventory() is for admins only and it shows 2 options letting the admin
      * choose either add item or remove item and calls its respective method
      */
-    public static void editInventory(Product[] products) {
+    public static int chooseAddOrRemoveProduct(Product[] products) {
         boolean choseExit = false, choseAddItem = false, choseRemoveItem = false;
         Object[] options = { "Add Inventory", "Remove Inventory", "Back" };
 
-        do {
-            int chosenOption = JOptionPane.showOptionDialog(null, "Please choose your action", "Edit Inventory",
-                    JOptionPane.DEFAULT_OPTION,
-                    JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
-
-            choseExit = (chosenOption == -1 || chosenOption == 2);
-            choseAddItem = (chosenOption == 0);
-            choseRemoveItem = (chosenOption == 1);
-
-            if (choseAddItem) {
-                addItem(products);
-            } else if (choseRemoveItem) {
-                removeItem(products);
-            }
-        } while (!choseExit);
+        int chosenOption = JOptionPane.showOptionDialog(null, "Please choose your action", "Edit Inventory",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+        return chosenOption;
     }
 
     public static void addItem(Product[] products) {
     }
 
-    public static void removeItem(Product[] products) {
+    public static Product[] removeItem(Product[] products) {
         Object[] obj = new Object[products.length];
         for (int record = 0; record < products.length; record++) {
             obj[record] = products[record].toRecord();
@@ -141,14 +134,36 @@ public class Main {
                 JOptionPane.QUESTION_MESSAGE, null, obj, obj[0]);
 
         // Get the index of the chosen option
-        int intChosenOption = 0;
+        int removedItem = 0;
         for (int i = 0; i < products.length; i++) {
             if (obj[i].equals(chosenOption)) {
-                intChosenOption = i;
+                removedItem = i;
                 break; // Exit loop when match is found
             }
         }
-        System.out.println("intChosenOption =  " + intChosenOption); // Log
+
+        products[removedItem] = null;
+
+        Product[] newProduct = null;
+        if (products instanceof Laptop[]) {
+            newProduct = new Laptop[products.length - 1];
+            int index = 0;
+            for (int i = 0; i < newProduct.length; i++) {
+                if (products[i] != null) {
+                    newProduct[index++] = products[i];
+                }
+            }
+        } else if (products instanceof Keyboard[]) {
+            newProduct = new Keyboard[products.length - 1];
+            int index = 0;
+            for (int i = 0; i < newProduct.length; i++) {
+                if (products[i] != null) {
+                    newProduct[index++] = products[i];
+                }
+            }
+        }
+
+        return newProduct;
     }
 
     /*
@@ -189,11 +204,11 @@ public class Main {
 
     public static int customerMenu() {
         String str;
-        Object[] options = {"Browse", "Login", "Register", "Back"};
+        Object[] options = { "Browse", "Login", "Register", "Back" };
         str = "Please enter your option";
 
-        int chosenOption = JOptionPane.showOptionDialog(null,str,"Customer Menu", JOptionPane.DEFAULT_OPTION,
-                JOptionPane.INFORMATION_MESSAGE,null, options, options[0]);
+        int chosenOption = JOptionPane.showOptionDialog(null, str, "Customer Menu", JOptionPane.DEFAULT_OPTION,
+                JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
 
         return chosenOption;
     }
@@ -350,10 +365,10 @@ public class Main {
         return true;
     }
 
-    public static void customerLogin () {
+    public static void customerLogin() {
         String name = JOptionPane.showInputDialog("Enter your name: ");
         String strPhone = JOptionPane.showInputDialog("Enter your phone number: ");
-        while (!integersOnly(strPhone)){
+        while (!integersOnly(strPhone)) {
             JOptionPane.showMessageDialog(null, "Please enter integer only.");
             strPhone = JOptionPane.showInputDialog("Enter your phone number: ");
         }
