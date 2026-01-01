@@ -42,6 +42,8 @@ public class Main {
                 } else if (intOption == 1) {
                     //customer login menu
                     customerLogin();
+                } else if (intOption == 2) {
+                    //register member
                 }
             }
 
@@ -186,7 +188,7 @@ public class Main {
 
     public static int customerMenu() {
         String str;
-        Object[] options = {"Browse", "Login", "Back"};
+        Object[] options = {"Browse", "Login", "Register", "Back"};
         str = "Please enter your option";
 
         int chosenOption = JOptionPane.showOptionDialog(null,str,"Customer Menu", JOptionPane.DEFAULT_OPTION,
@@ -348,10 +350,13 @@ public class Main {
     }
 
     public static void customerLogin () {
-        String strInput = JOptionPane.showInputDialog("Enter your name: ");
-        //if {
-            //String strInput =
+        String name = JOptionPane.showInputDialog("Enter your name: ");
+        String strPhone = JOptionPane.showInputDialog("Enter your phone number: ");
+        while (!integersOnly(strPhone)){
+            JOptionPane.showMessageDialog(null, "Please enter integer only.");
+            strPhone = JOptionPane.showInputDialog("Enter your phone number: ");
         }
+        int phoneNum = Integer.parseInt(strPhone);
     }
 
     public static boolean integersOnly(String strInput) {
