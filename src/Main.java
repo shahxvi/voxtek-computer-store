@@ -36,11 +36,13 @@ public class Main {
 
             if (choseCustomer) {
                 // initialize Inventory
-                // intOption = Menu.customer();
-                // boolean isMember = (intOption == 1);
-                // if (isMember) {
-                // Menu.customerLogin();
-                // }
+                intOption = customerMenu();
+                if (intOption == 0) {
+                    //browse menu
+                } else if (intOption == 1) {
+                    //customer login menu
+                    customerLogin();
+                }
             }
 
             if (choseAdmin) {
@@ -182,9 +184,15 @@ public class Main {
         return chosenOption;
     }
 
-    public static void customerMenu() {
-        Object[] options = {"Browse", "Back"};
-        System.out.println("Please enter your option");
+    public static int customerMenu() {
+        String str;
+        Object[] options = {"Browse", "Login", "Back"};
+        str = "Please enter your option";
+
+        int chosenOption = JOptionPane.showOptionDialog(null,str,"Customer Menu", JOptionPane.DEFAULT_OPTION,
+                JOptionPane.INFORMATION_MESSAGE,null, options, options[0]);
+
+        return chosenOption;
     }
 
     public static void productList(Product[] products) {
@@ -337,6 +345,13 @@ public class Main {
         } while (!validID || !validPassword);
 
         return true;
+    }
+
+    public static void customerLogin () {
+        String strInput = JOptionPane.showInputDialog("Enter your name: ");
+        //if {
+            //String strInput =
+        }
     }
 
     public static boolean integersOnly(String strInput) {
