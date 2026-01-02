@@ -12,9 +12,7 @@ public class Main {
         String strOption;
         boolean choseCustomer, choseExit, choseAdmin;
 
-        final int laptopIndex = 0;
-        final int keyboardIndex = 1;
-        final int adminIndex = 2;
+        final int laptopIndex = 0, keyboardIndex = 1, adminIndex = 2;
 
         Admin admin = new Admin();
 
@@ -24,9 +22,10 @@ public class Main {
                 new File("admin.txt")
         };
 
-        Product[][] product = new Product[2][];
-        product = new Laptop[laptopIndex][50];
-        product = new Keyboard[keyboardIndex][50];
+        Product[][] product = {
+                new Laptop[50],
+                new Keyboard[50]
+        };
         initializeInventory(product, file);
 
         // The crux of the program
@@ -70,7 +69,7 @@ public class Main {
                         if (intOption == 0) {
                             // laptops = addItem(laptops);
                         } else if (intOption == 1) {
-                            product[laptopIndex] = (Laptop[]) removeItem(product[laptopIndex]);
+                            product[laptopIndex] = removeItem(product[laptopIndex]);
                         }
                     } while (intOption != 2 && intOption != -1);
                 } else if (strOption.equalsIgnoreCase("Keyboards")) {
@@ -86,13 +85,33 @@ public class Main {
             }
         } while (!choseExit);
 
+        writeToFile(product[laptopIndex], file[laptopIndex]);
+        writeToFile(product[keyboardIndex], file[keyboardIndex]);
+
         System.exit(0);
     }
 
-    // TODO: COMPLETE THIS METHOD
+    public static void writeToFile(Product[] product, File file) {
+        try {
+            PrintWriter outputFile = new PrintWriter(file);
+            for (int i = 0; i < getUsableArraySize(product); i++) {
+                outputFile.println(product[i].toRecord());
+            }
+            outputFile.close();
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }
+
     public static void initializeInventory(Product[][] product, File[] file) {
         for (int i = 0; i < product.length; i++) {
-            for (int j = 0; j < getUsableArraySize(product[i]); j++) {
+            for (int j = 0; j < getInventorySize(file[i]); j++) {
+                if (product[i] instanceof Laptop[]) {
+                    product[i][j] = new Laptop();
+                } else if (product[i] instanceof Keyboard[]) {
+                    product[i][j] = new Keyboard();
+                }
+                product[i][j].loadInventory(file[i], j);
             }
         }
     }
@@ -133,7 +152,7 @@ public class Main {
                 JOptionPane.QUESTION_MESSAGE, null, obj, obj[0]);
 
         // Get the index of the chosen option
-        int removedItem = 0;
+        int removedItem = -1;
         for (int i = 0; i < usableSize; i++) {
             if (obj[i].equals(chosenOption)) {
                 removedItem = i;
@@ -141,24 +160,24 @@ public class Main {
             }
         }
 
+        // Returns original inventory if the user cancels
+        if (removedItem == -1) {
+            return product;
+        }
+
         product[removedItem] = null;
 
         Product[] newProduct = null;
         if (product instanceof Laptop[]) {
             newProduct = new Laptop[usableSize - 1];
-            int index = 0;
-            for (int i = 0; i < newProduct.length; i++) {
-                if (product[i] != null) {
-                    newProduct[index++] = product[i];
-                }
-            }
         } else if (product instanceof Keyboard[]) {
             newProduct = new Keyboard[usableSize - 1];
-            int index = 0;
-            for (int i = 0; i < newProduct.length; i++) {
-                if (product[i] != null) {
-                    newProduct[index++] = product[i];
-                }
+        }
+
+        int index = 0;
+        for (int i = 0; i < newProduct.length; i++) {
+            if (product[i] != null) {
+                newProduct[index++] = product[i];
             }
         }
 
