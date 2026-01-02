@@ -113,11 +113,6 @@ public class Laptop extends Product {
     }
 
     @Override
-    public void writeToFile(PrintWriter outputFile) {
-        outputFile.println(toRecord());
-    }
-
-    @Override
     public String toString() {
         return "Brand:" + getBrand() +
                 "\nModel: " + getModel() +

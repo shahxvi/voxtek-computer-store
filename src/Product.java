@@ -71,8 +71,6 @@ public abstract class Product {
 
     protected abstract String toRecord();
 
-    protected abstract void writeToFile(PrintWriter outputFile);
-
     public abstract String toString();
 
 }
