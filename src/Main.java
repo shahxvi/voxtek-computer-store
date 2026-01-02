@@ -22,11 +22,11 @@ public class Main {
                 new File("admin.txt")
         };
 
-        Product[][] product = {
+        Product[][] products = {
                 new Laptop[50],
                 new Keyboard[50]
         };
-        initializeInventory(product, file);
+        initializeInventory(products, file);
 
         // The crux of the program
         do {
@@ -38,8 +38,8 @@ public class Main {
             choseExit = (intOption == 2 || intOption == -1);
 
             if (choseCustomer) {
-                // initialize Inventory
                 intOption = customerMenu();
+
                 if (intOption == 0) {
                     // browse menu
                 } else if (intOption == 1) {
@@ -57,36 +57,33 @@ public class Main {
                 if (!adminLogin(admin))
                     continue;
 
-                strOption = chooseInventoryToEdit();
+                do {
+                    strOption = chooseInventoryToEdit();
 
-                if (strOption == null) {
-                    continue; // Admin cancels edit inventory
-                }
+                    if (strOption == null) {
+                        break;
+                    }
 
-                if (strOption.equalsIgnoreCase("Laptops")) {
-                    do {
-                        intOption = chooseAddOrRemoveProduct(product[laptopIndex]);
-                        if (intOption == 0) {
-                            // laptops = addItem(laptops);
-                        } else if (intOption == 1) {
-                            product[laptopIndex] = removeItem(product[laptopIndex]);
-                        }
-                    } while (intOption != 2 && intOption != -1);
-                } else if (strOption.equalsIgnoreCase("Keyboards")) {
-                    do {
-                        intOption = chooseAddOrRemoveProduct(product[keyboardIndex]);
-                        if (intOption == 0) {
-                            // keyboards = addItem(keyboards);
-                        } else if (intOption == 1) {
-                            product[keyboardIndex] = (Keyboard[]) removeItem(product[keyboardIndex]);
-                        }
-                    } while (intOption != 2 && intOption != -1);
-                }
+                    int chosenProduct = -1;
+                    if (strOption.equalsIgnoreCase("Laptops")) {
+                        chosenProduct = laptopIndex;
+                    } else if (strOption.equalsIgnoreCase("Keyboards")) {
+                        chosenProduct = keyboardIndex;
+                    }
+
+                    intOption = chooseAddOrRemoveProduct(products[chosenProduct]);
+
+                    if (intOption == 0) {
+                        // products[chosenProduct] = addItem(products[chosenProduct]);
+                    } else if (intOption == 1) {
+                        products[chosenProduct] = removeItem(products[chosenProduct]);
+                    }
+                } while (intOption != 2 && intOption != -1);
             }
         } while (!choseExit);
 
-        writeToFile(product[laptopIndex], file[laptopIndex]);
-        writeToFile(product[keyboardIndex], file[keyboardIndex]);
+        writeToFile(products[laptopIndex], file[laptopIndex]);
+        writeToFile(products[keyboardIndex], file[keyboardIndex]);
 
         System.exit(0);
     }
@@ -363,9 +360,12 @@ public class Main {
         do {
             strInput = JOptionPane.showInputDialog("Please enter your ID");
 
-            // Exits if the user cancels
-            if (strInput == null) {
-                return false; // Go back to main
+            // For when the user presses okay without any input
+            while (strInput == null || strInput.isBlank() || strInput.isEmpty()) {
+                // Exits if the user cancels
+                if (strInput == null)
+                    return false; // Go back to main
+                strInput = JOptionPane.showInputDialog("Please enter your ID");
             }
 
             id = Integer.parseInt(strInput);
