@@ -12,20 +12,22 @@ public class Main {
         String strOption;
         boolean choseCustomer, choseExit, choseAdmin;
 
-        File adminFile = new File("admin.txt");
-        File laptopFile = new File("laptops.txt");
-        File keyboardFile = new File("keyboards.txt");
+        final int laptopIndex = 0;
+        final int keyboardIndex = 1;
+        final int adminIndex = 2;
 
         Admin admin = new Admin();
 
-        /* Initialize Computers */
-        // TODO: USE ARRAY-LIST
-        Laptop[] laptops = new Laptop[getInventorySize(laptopFile)];
-        initializeInventory(laptops, laptopFile);
+        File[] file = {
+                new File("laptops.txt"),
+                new File("keyboards.txt"),
+                new File("admin.txt")
+        };
 
-        /* Initialize Keyboards */
-        Keyboard[] keyboards = new Keyboard[getInventorySize(keyboardFile)];
-        initializeInventory(keyboards, keyboardFile);
+        Product[][] product = new Product[2][];
+        product = new Laptop[laptopIndex][50];
+        product = new Keyboard[keyboardIndex][50];
+        initializeInventory(product, file);
 
         // The crux of the program
         do {
@@ -50,7 +52,7 @@ public class Main {
             }
 
             if (choseAdmin) {
-                if (!initializeAdmin(admin, adminFile))
+                if (!initializeAdmin(admin, file[adminIndex]))
                     continue;
 
                 if (!adminLogin(admin))
@@ -64,20 +66,20 @@ public class Main {
 
                 if (strOption.equalsIgnoreCase("Laptops")) {
                     do {
-                        intOption = chooseAddOrRemoveProduct(laptops);
+                        intOption = chooseAddOrRemoveProduct(product[laptopIndex]);
                         if (intOption == 0) {
                             // laptops = addItem(laptops);
                         } else if (intOption == 1) {
-                            laptops = (Laptop[]) removeItem(laptops);
+                            product[laptopIndex] = (Laptop[]) removeItem(product[laptopIndex]);
                         }
                     } while (intOption != 2 && intOption != -1);
                 } else if (strOption.equalsIgnoreCase("Keyboards")) {
                     do {
-                        intOption = chooseAddOrRemoveProduct(keyboards);
+                        intOption = chooseAddOrRemoveProduct(product[keyboardIndex]);
                         if (intOption == 0) {
                             // keyboards = addItem(keyboards);
                         } else if (intOption == 1) {
-                            keyboards = (Keyboard[]) removeItem(keyboards);
+                            product[keyboardIndex] = (Keyboard[]) removeItem(product[keyboardIndex]);
                         }
                     } while (intOption != 2 && intOption != -1);
                 }
@@ -87,16 +89,10 @@ public class Main {
         System.exit(0);
     }
 
-    public static void initializeInventory(Product[] products, File file) {
-        if (products instanceof Laptop[]) {
-            for (int i = 0; i < products.length; i++) {
-                products[i] = new Laptop();
-                products[i].loadInventory(file, i);
-            }
-        } else if (products instanceof Keyboard[]) {
-            for (int i = 0; i < products.length; i++) {
-                products[i] = new Keyboard();
-                products[i].loadInventory(file, i);
+    // TODO: COMPLETE THIS METHOD
+    public static void initializeInventory(Product[][] product, File[] file) {
+        for (int i = 0; i < product.length; i++) {
+            for (int j = 0; j < getUsableArraySize(product[i]); j++) {
             }
         }
     }
@@ -125,40 +121,43 @@ public class Main {
     public static void addItem(Product[] products) {
     }
 
-    public static Product[] removeItem(Product[] products) {
-        Object[] obj = new Object[products.length];
-        for (int record = 0; record < products.length; record++) {
-            obj[record] = products[record].toRecord();
+    public static Product[] removeItem(Product[] product) {
+        // Get Usable size
+        int usableSize = getUsableArraySize(product);
+
+        Object[] obj = new Object[usableSize];
+        for (int i = 0; i < usableSize; i++) {
+            obj[i] = product[i].toRecord();
         }
         Object chosenOption = JOptionPane.showInputDialog(null, "Which item would you like to remove?", "Remove Item",
                 JOptionPane.QUESTION_MESSAGE, null, obj, obj[0]);
 
         // Get the index of the chosen option
         int removedItem = 0;
-        for (int i = 0; i < products.length; i++) {
+        for (int i = 0; i < usableSize; i++) {
             if (obj[i].equals(chosenOption)) {
                 removedItem = i;
                 break; // Exit loop when match is found
             }
         }
 
-        products[removedItem] = null;
+        product[removedItem] = null;
 
         Product[] newProduct = null;
-        if (products instanceof Laptop[]) {
-            newProduct = new Laptop[products.length - 1];
+        if (product instanceof Laptop[]) {
+            newProduct = new Laptop[usableSize - 1];
             int index = 0;
             for (int i = 0; i < newProduct.length; i++) {
-                if (products[i] != null) {
-                    newProduct[index++] = products[i];
+                if (product[i] != null) {
+                    newProduct[index++] = product[i];
                 }
             }
-        } else if (products instanceof Keyboard[]) {
-            newProduct = new Keyboard[products.length - 1];
+        } else if (product instanceof Keyboard[]) {
+            newProduct = new Keyboard[usableSize - 1];
             int index = 0;
             for (int i = 0; i < newProduct.length; i++) {
-                if (products[i] != null) {
-                    newProduct[index++] = products[i];
+                if (product[i] != null) {
+                    newProduct[index++] = product[i];
                 }
             }
         }
@@ -386,5 +385,14 @@ public class Main {
             }
         }
         return valid;
+    }
+
+    public static int getUsableArraySize(Product[] product) {
+        int usableSize = 0;
+        for (int i = 0; i < product.length; i++) {
+            if (product[i] != null)
+                usableSize++;
+        }
+        return usableSize;
     }
 }
