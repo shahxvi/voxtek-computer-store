@@ -2,15 +2,16 @@
 // Copyright (c) 2025 Shah
 // Copyright (c) 2025 Marzell
 
-import java.util.*;
-import javax.swing.*;
 import java.io.*;
+import javax.swing.*;
+import java.util.Scanner;
+import java.util.StringTokenizer;
 
 public class Main {
     public static void main(String[] args) {
         int intOption;
         String strOption;
-        boolean choseCustomer, choseExit, choseAdmin;
+        boolean choseCustomer, choseExit, choseAdmin, browse, login, register;
 
         final int laptopIndex = 0, keyboardIndex = 1, adminIndex = 2;
 
@@ -38,16 +39,22 @@ public class Main {
             choseExit = (intOption == 2 || intOption == -1);
 
             if (choseCustomer) {
-                intOption = customerMenu();
+                do {
+                    intOption = customerMenu();
 
-                if (intOption == 0) {
-                    // browse menu
-                } else if (intOption == 1) {
-                    // customer login menu
-                    customerLogin();
-                } else if (intOption == 2) {
-                    // register member
-                }
+                    browse = (intOption == 0);
+                    login = (intOption == 1);
+                    register = (intOption == 2);
+                    choseExit = (intOption == 3 || intOption == -1);
+
+                    if (browse) {
+                        // browse menu
+                    } else if (login) {
+                        membershipLogin();
+                    } else if (register) {
+                        // register member
+                    }
+                } while (!choseExit);
             }
 
             if (choseAdmin) {
@@ -60,25 +67,23 @@ public class Main {
                 do {
                     strOption = chooseInventoryToEdit();
 
-                    if (strOption == null) {
+                    if (strOption == null)
                         break;
-                    }
 
                     int chosenProduct = -1;
-                    if (strOption.equalsIgnoreCase("Laptops")) {
+                    if (strOption.equalsIgnoreCase("Laptops"))
                         chosenProduct = laptopIndex;
-                    } else if (strOption.equalsIgnoreCase("Keyboards")) {
+                    else if (strOption.equalsIgnoreCase("Keyboards"))
                         chosenProduct = keyboardIndex;
-                    }
 
                     intOption = chooseAddOrRemoveProduct(products[chosenProduct]);
+                    choseExit = (intOption == 2 && intOption == -1);
 
-                    if (intOption == 0) {
-                        // products[chosenProduct] = addItem(products[chosenProduct]);
-                    } else if (intOption == 1) {
-                        products[chosenProduct] = removeItem(products[chosenProduct]);
-                    }
-                } while (intOption != 2 && intOption != -1);
+                    if (intOption == 0)
+                        products[chosenProduct] = addProduct(products[chosenProduct]);
+                    else if (intOption == 1)
+                        products[chosenProduct] = removeProduct(products[chosenProduct]);
+                } while (!choseExit);
             }
         } while (!choseExit);
 
@@ -113,6 +118,10 @@ public class Main {
         }
     }
 
+    /*
+     * chooseInventoryToEdit() is a menu for admins to choose what inventory they
+     * want to edit
+     */
     public static String chooseInventoryToEdit() {
         String[] options = { "Laptops", "Keyboards" };
         String chosenOption = (String) JOptionPane.showInputDialog(null, "Please choose an inventory to edit",
@@ -121,11 +130,10 @@ public class Main {
     }
 
     /*
-     * editInventory() is for admins only and it shows 2 options letting the admin
-     * choose either add item or remove item and calls its respective method
+     * chooseAddOrRemoveProduct() is for admins only and it shows 2 options letting
+     * the admin choose either add item or remove item and returns the option chosen
      */
     public static int chooseAddOrRemoveProduct(Product[] products) {
-        boolean choseExit = false, choseAddItem = false, choseRemoveItem = false;
         Object[] options = { "Add Inventory", "Remove Inventory", "Back" };
 
         int chosenOption = JOptionPane.showOptionDialog(null, "Please choose your action", "Edit Inventory",
@@ -134,10 +142,45 @@ public class Main {
         return chosenOption;
     }
 
-    public static void addItem(Product[] products) {
+    public static Product[] addProduct(Product[] products) {
+        String brand = JOptionPane.showInputDialog("Please enter brand");
+        String model = JOptionPane.showInputDialog("Please enter model");
+        String priceStr = JOptionPane.showInputDialog("Please enter price");
+
+        while (!integersOnly(priceStr)) {
+            JOptionPane.showMessageDialog(null, "Please enter digits only for price");
+            priceStr = JOptionPane.showInputDialog("Please enter price");
+        }
+        int price = Integer.parseInt(priceStr);
+
+        if (products instanceof Laptop[]) {
+            String cpu = JOptionPane.showInputDialog("Please enter cpu");
+            String memoryGBStr = JOptionPane.showInputDialog("Please enter memory size (GB)");
+
+            while (!integersOnly(memoryGBStr)) {
+                JOptionPane.showMessageDialog(null, "Please enter digits only for memory size");
+                memoryGBStr = JOptionPane.showInputDialog("Please enter memory size (GB)");
+            }
+            int memoryGB = Integer.parseInt(memoryGBStr);
+
+            String storageGBStr = JOptionPane.showInputDialog("Please enter storage size (GB)");
+
+            while (!integersOnly(storageGBStr)) {
+                JOptionPane.showMessageDialog(null, "Please enter digits only for storage size");
+                storageGBStr = JOptionPane.showInputDialog("Please enter storage size (GB)");
+            }
+            int storageGB = Integer.parseInt(storageGBStr);
+
+            String storageType = JOptionPane.showInputDialog("Please enter storage type");
+            products[getUsableArraySize(products)] = new Laptop(brand, model, price, cpu, memoryGB, storageGB,
+                    storageType);
+        } else if (products instanceof Keyboard[]) {
+        }
+
+        return products;
     }
 
-    public static Product[] removeItem(Product[] product) {
+    public static Product[] removeProduct(Product[] product) {
         // Get Usable size
         int usableSize = getUsableArraySize(product);
 
@@ -164,21 +207,30 @@ public class Main {
 
         product[removedItem] = null;
 
-        Product[] newProduct = null;
-        if (product instanceof Laptop[]) {
-            newProduct = new Laptop[usableSize - 1];
-        } else if (product instanceof Keyboard[]) {
-            newProduct = new Keyboard[usableSize - 1];
+        return reorganizeInventory(product);
+    }
+
+    /*
+     * This method reorganizes an array so that there's no null array in between
+     * populated index
+     */
+    public static Product[] reorganizeInventory(Product[] products) {
+        int usableSize = getUsableArraySize(products);
+        Product[] reorganizedProducts = null;
+        if (products instanceof Laptop[]) {
+            reorganizedProducts = new Laptop[usableSize - 1];
+        } else if (products instanceof Keyboard[]) {
+            reorganizedProducts = new Keyboard[usableSize - 1];
         }
 
         int index = 0;
-        for (int i = 0; i < newProduct.length; i++) {
-            if (product[i] != null) {
-                newProduct[index++] = product[i];
+        for (int i = 0; i < reorganizedProducts.length; i++) {
+            if (products[i] != null) {
+                reorganizedProducts[index++] = products[i];
             }
         }
 
-        return newProduct;
+        return reorganizedProducts;
     }
 
     /*
@@ -383,7 +435,7 @@ public class Main {
         return true;
     }
 
-    public static void customerLogin() {
+    public static void membershipLogin() {
         String name = JOptionPane.showInputDialog("Enter your name: ");
         String strPhone = JOptionPane.showInputDialog("Enter your phone number: ");
         while (!integersOnly(strPhone)) {
