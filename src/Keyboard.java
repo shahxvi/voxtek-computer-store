@@ -74,7 +74,7 @@ public class Keyboard extends Product {
 
     @Override
     public String toRecord() {
-        return String.format("%s,%s,%.2f,%s,%b", getModel(), getBrand(), getPrice(), switchType, isWireless);
+        return String.format("%s;%s;%.2f;%s;%b", getModel(), getBrand(), getPrice(), switchType, isWireless);
     }
 
     @Override
