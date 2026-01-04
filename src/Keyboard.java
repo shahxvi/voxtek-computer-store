@@ -79,10 +79,10 @@ public class Keyboard extends Product {
 
     @Override
     public String toString() {
-        return "Brand:" + getBrand() +
+        return "Brand: " + getBrand() +
                 "\nModel: " + getModel() +
                 "\nSwitch type: " + switchType +
-                "\nisWireless: " + isWireless +
+                "\nWireless: " + isWireless +
                 "\nPrice: RM" + getPrice();
     }
 }

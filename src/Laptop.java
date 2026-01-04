@@ -114,11 +114,11 @@ public class Laptop extends Product {
 
     @Override
     public String toString() {
-        return "Brand:" + getBrand() +
+        return "Brand: " + getBrand() +
                 "\nModel: " + getModel() +
                 "\nCPU:" + cpu +
-                "\nMemory (GB): " + memoryGB +
-                "\nStorage (GB): " + storageGB +
+                "\nMemory: " + memoryGB + "GB" +
+                "\nStorage: " + storageGB + "GB" +
                 "\nPrice: RM" + getPrice();
     }
 

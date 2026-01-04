@@ -9,25 +9,35 @@ import java.util.StringTokenizer;
 
 public class Main {
     public static void main(String[] args) {
-        int intOption;
-        String strOption;
-        boolean choseCustomer, choseExit, choseAdmin, browse, login, register;
+        final int laptopIndex = 0, keyboardIndex = 1;
+        final int adminIndex = 0, membersIndex = 1, customerIndex = 2;
 
-        final int laptopIndex = 0, keyboardIndex = 1, adminIndex = 2;
-
-        Admin admin = new Admin();
-
-        File[] file = {
+        File[] inventoryFiles = {
                 new File("laptops.txt"),
                 new File("keyboards.txt"),
-                new File("admin.txt")
         };
 
         Product[][] products = {
                 new Laptop[50],
                 new Keyboard[50]
         };
-        initializeInventory(products, file);
+        initializeInventory(products, inventoryFiles);
+
+        File[] userFiles = {
+                new File("admin.txt"),
+                new File("members.txt")
+        };
+
+        User[][] users = {
+                new Admin[1],
+                new Member[getInventorySize(userFiles[membersIndex])],
+                new Customer[1]
+        };
+        users[adminIndex][0] = new Admin();
+
+        int intOption;
+        String strOption;
+        boolean choseCustomer, choseExit, choseAdmin, browse, login, register;
 
         // The crux of the program
         do {
@@ -48,7 +58,10 @@ public class Main {
                     choseExit = (intOption == 3 || intOption == -1);
 
                     if (browse) {
-                        // browse menu
+                        strOption = chooseInventory();
+                        if (strOption.equals("Laptops")) {
+                            browseInventory(products[laptopIndex]);
+                        }
                     } else if (login) {
                         membershipLogin();
                     } else if (register) {
@@ -58,14 +71,14 @@ public class Main {
             }
 
             if (choseAdmin) {
-                if (!initializeAdmin(admin, file[adminIndex]))
+                if (!initializeAdmin((Admin) users[adminIndex][0], userFiles[adminIndex]))
                     continue;
 
-                if (!adminLogin(admin))
+                if (!adminLogin((Admin) users[adminIndex][0]))
                     continue;
 
                 do {
-                    strOption = chooseInventoryToEdit();
+                    strOption = chooseInventory();
 
                     if (strOption == null)
                         break;
@@ -87,47 +100,39 @@ public class Main {
             }
         } while (!choseExit);
 
-        writeToFile(products[laptopIndex], file[laptopIndex]);
-        writeToFile(products[keyboardIndex], file[keyboardIndex]);
+        writeToFile(products[laptopIndex], inventoryFiles[laptopIndex]);
+        writeToFile(products[keyboardIndex], inventoryFiles[keyboardIndex]);
 
         System.exit(0);
     }
 
-    public static void writeToFile(Product[] product, File file) {
-        try {
-            PrintWriter outputFile = new PrintWriter(file);
-            for (int i = 0; i < getUsableArraySize(product); i++) {
-                outputFile.println(product[i].toRecord());
-            }
-            outputFile.close();
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage());
-        }
-    }
+    /*
+     * menu() - Gives user options to login as customer, admin or exit from the
+     * program
+     */
+    public static int menu() {
+        String str;
+        Object[] options = { "Customer", "Admin", "Exit" };
+        str = "Welcome to VoxTek Computer Store\n";
+        str += "Please choose your option: ";
 
-    public static void initializeInventory(Product[][] product, File[] file) {
-        for (int i = 0; i < product.length; i++) {
-            for (int j = 0; j < getInventorySize(file[i]); j++) {
-                if (product[i] instanceof Laptop[]) {
-                    product[i][j] = new Laptop();
-                } else if (product[i] instanceof Keyboard[]) {
-                    product[i][j] = new Keyboard();
-                }
-                product[i][j].loadInventory(file[i], j);
-            }
-        }
+        int chosenOption = JOptionPane.showOptionDialog(null, str, "VoxTek", JOptionPane.DEFAULT_OPTION,
+                JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+
+        return chosenOption;
     }
 
     /*
-     * chooseInventoryToEdit() is a menu for admins to choose what inventory they
-     * want to edit
+     * chooseInventory() is a menu to choose what inventory they want to edit
      */
-    public static String chooseInventoryToEdit() {
+    public static String chooseInventory() {
         String[] options = { "Laptops", "Keyboards" };
-        String chosenOption = (String) JOptionPane.showInputDialog(null, "Please choose an inventory to edit",
-                "Edit Inventory", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+        String chosenOption = (String) JOptionPane.showInputDialog(null, "Please choose an inventory",
+                "Choose Inventory", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
         return chosenOption;
     }
+
+    /********** Admin **********/
 
     /*
      * chooseAddOrRemoveProduct() is for admins only and it shows 2 options letting
@@ -142,6 +147,7 @@ public class Main {
         return chosenOption;
     }
 
+    // TODO: Handle when the user cancels or presses OK withhout input
     public static Product[] addProduct(Product[] products) {
         String brand = JOptionPane.showInputDialog("Please enter brand");
         String model = JOptionPane.showInputDialog("Please enter model");
@@ -180,107 +186,32 @@ public class Main {
         return products;
     }
 
-    public static Product[] removeProduct(Product[] product) {
+    public static Product[] removeProduct(Product[] products) {
         // Get Usable size
-        int usableSize = getUsableArraySize(product);
+        int usableSize = getUsableArraySize(products);
 
         Object[] obj = new Object[usableSize];
         for (int i = 0; i < usableSize; i++) {
-            obj[i] = product[i].toRecord();
+            obj[i] = products[i].toRecord();
         }
-        Object chosenOption = JOptionPane.showInputDialog(null, "Which item would you like to remove?", "Remove Item",
-                JOptionPane.QUESTION_MESSAGE, null, obj, obj[0]);
+        String chosenProduct = (String) JOptionPane.showInputDialog(null, "Which item would you like to remove?",
+                "Remove Item", JOptionPane.QUESTION_MESSAGE, null, obj, obj[0]);
+
+        if (chosenProduct == null)
+            return products;
 
         // Get the index of the chosen option
         int removedItem = -1;
         for (int i = 0; i < usableSize; i++) {
-            if (obj[i].equals(chosenOption)) {
+            if (chosenProduct.equalsIgnoreCase(products[i].toRecord())) {
                 removedItem = i;
                 break; // Exit loop when match is found
             }
         }
 
-        // Returns original inventory if the user cancels
-        if (removedItem == -1) {
-            return product;
-        }
+        products[removedItem] = null;
 
-        product[removedItem] = null;
-
-        return reorganizeInventory(product);
-    }
-
-    /*
-     * This method reorganizes an array so that there's no null array in between
-     * populated index
-     */
-    public static Product[] reorganizeInventory(Product[] products) {
-        int usableSize = getUsableArraySize(products);
-        Product[] reorganizedProducts = null;
-        if (products instanceof Laptop[]) {
-            reorganizedProducts = new Laptop[usableSize - 1];
-        } else if (products instanceof Keyboard[]) {
-            reorganizedProducts = new Keyboard[usableSize - 1];
-        }
-
-        int index = 0;
-        for (int i = 0; i < reorganizedProducts.length; i++) {
-            if (products[i] != null) {
-                reorganizedProducts[index++] = products[i];
-            }
-        }
-
-        return reorganizedProducts;
-    }
-
-    /*
-     * Method that returns the number of records in a file
-     */
-    public static int getInventorySize(File file) {
-        int recordSize = 0;
-        try (Scanner inputFile = new Scanner(file)) {
-            while (inputFile.hasNext()) {
-                inputFile.nextLine();
-                recordSize++;
-            }
-        } catch (FileNotFoundException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage());
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage());
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage());
-        }
-        return recordSize;
-    }
-
-    /*
-     * menu() - Gives user options to login as customer, admin or exit from the
-     * program
-     */
-    public static int menu() {
-        String str;
-        Object[] options = { "Customer", "Admin", "Exit" };
-        str = "Welcome to VoxTek Computer Store\n";
-        str += "Please choose your option: ";
-
-        int chosenOption = JOptionPane.showOptionDialog(null, str, "VoxTek", JOptionPane.DEFAULT_OPTION,
-                JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
-
-        return chosenOption;
-    }
-
-    public static int customerMenu() {
-        String str;
-        Object[] options = { "Browse", "Login", "Register", "Back" };
-        str = "Please enter your option";
-
-        int chosenOption = JOptionPane.showOptionDialog(null, str, "Customer Menu", JOptionPane.DEFAULT_OPTION,
-                JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
-
-        return chosenOption;
-    }
-
-    public static void productList(Product[] products) {
+        return reorganizeInventory(products);
     }
 
     /*
@@ -435,6 +366,20 @@ public class Main {
         return true;
     }
 
+    /********** Admin **********/
+
+    /********** Customer **********/
+
+    public static int customerMenu() {
+        String str = "Please enter your option";
+        Object[] options = { "Browse", "Login", "Register", "Back" };
+
+        int chosenOption = JOptionPane.showOptionDialog(null, str, "Customer Menu", JOptionPane.DEFAULT_OPTION,
+                JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+
+        return chosenOption;
+    }
+
     public static void membershipLogin() {
         String name = JOptionPane.showInputDialog("Enter your name: ");
         String strPhone = JOptionPane.showInputDialog("Enter your phone number: ");
@@ -443,6 +388,60 @@ public class Main {
             strPhone = JOptionPane.showInputDialog("Enter your phone number: ");
         }
         int phoneNum = Integer.parseInt(strPhone);
+    }
+
+    public static Product browseInventory(Product[] products) {
+        Object[] options = { "Previous", "Add to Cart", "Next" };
+        int chosenOption = 0;
+        int usableSize = getUsableArraySize(products);
+
+        int i = 0;
+        while (chosenOption != -1 && chosenOption != 1) {
+            chosenOption = JOptionPane.showOptionDialog(null, products[i].toString(), "Browse Products",
+                    JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[2]);
+            if (chosenOption == 2) {
+                i++;
+            } else if (chosenOption == 0) {
+                i--;
+            }
+
+            if (i < 0) {
+                i = usableSize - 1;
+            } else if (i >= usableSize) {
+                i = 0;
+            }
+        }
+        if (chosenOption == -1)
+            return null;
+        return products[i];
+    }
+
+    /********** Customer **********/
+
+    /********** Helper Methods **********/
+    public static void initializeInventory(Product[][] product, File[] file) {
+        for (int i = 0; i < product.length; i++) {
+            for (int j = 0; j < getInventorySize(file[i]); j++) {
+                if (product[i] instanceof Laptop[]) {
+                    product[i][j] = new Laptop();
+                } else if (product[i] instanceof Keyboard[]) {
+                    product[i][j] = new Keyboard();
+                }
+                product[i][j].loadInventory(file[i], j);
+            }
+        }
+    }
+
+    public static void writeToFile(Product[] product, File file) {
+        try {
+            PrintWriter outputFile = new PrintWriter(file);
+            for (int i = 0; i < getUsableArraySize(product); i++) {
+                outputFile.println(product[i].toRecord());
+            }
+            outputFile.close();
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
     }
 
     public static boolean integersOnly(String strInput) {
@@ -466,4 +465,48 @@ public class Main {
         }
         return usableSize;
     }
+
+    /*
+     * This method reorganizes an array so that there's no null array in between
+     * populated index
+     */
+    public static Product[] reorganizeInventory(Product[] products) {
+        int usableSize = getUsableArraySize(products);
+        Product[] reorganizedProducts = null;
+        if (products instanceof Laptop[]) {
+            reorganizedProducts = new Laptop[products.length];
+        } else if (products instanceof Keyboard[]) {
+            reorganizedProducts = new Keyboard[products.length];
+        }
+
+        int index = 0;
+        for (int i = 0; i < products.length; i++) {
+            if (products[i] != null) {
+                reorganizedProducts[index++] = products[i];
+            }
+        }
+
+        return reorganizedProducts;
+    }
+
+    /*
+     * Method that returns the number of records in a file
+     */
+    public static int getInventorySize(File file) {
+        int recordSize = 0;
+        try (Scanner inputFile = new Scanner(file)) {
+            while (inputFile.hasNext()) {
+                inputFile.nextLine();
+                recordSize++;
+            }
+        } catch (FileNotFoundException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+        return recordSize;
+    }
+    /********** Helper Methods **********/
 }
