@@ -34,6 +34,12 @@ public class Main {
                 new Customer[1]
         };
         users[adminIndex][0] = new Admin();
+        users[customerIndex][0] = new Customer();
+
+        int totalProducts = getInventorySize(inventoryFiles[laptopIndex])
+                + getInventorySize(inventoryFiles[laptopIndex]);
+        Product[] customersCart = new Product[totalProducts];
+        int cartCounter = 0;
 
         int intOption;
         String strOption;
@@ -60,7 +66,13 @@ public class Main {
                     if (browse) {
                         strOption = chooseInventory();
                         if (strOption.equals("Laptops")) {
-                            browseInventory(products[laptopIndex]);
+                            Product product = browseInventory(products[laptopIndex]);
+                            if (product != null) {
+                                customersCart[cartCounter] = product;
+                                cartCounter++;
+                            }
+                            ((Customer) users[customerIndex][0]).addProduct(customersCart);
+                            System.out.println(product.toString());
                         }
                     } else if (login) {
                         membershipLogin();
@@ -411,8 +423,9 @@ public class Main {
                 i = 0;
             }
         }
-        if (chosenOption == -1)
+        if (chosenOption == -1) {
             return null;
+        }
         return products[i];
     }
 

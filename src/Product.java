@@ -2,7 +2,6 @@
 // Copyright (c) 2025 Shah
 
 import java.io.File;
-import java.io.PrintWriter;
 
 public abstract class Product {
     /* Attributes */
