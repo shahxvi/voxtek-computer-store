@@ -1,9 +1,15 @@
 // MIT License
 // Copyright (c) 2025 Shah
 
+package user.customer;
+
+import user.User;
+import product.*;
+import input.Processor;
+
 import javax.swing.*;
 
-public class Customer extends User implements InputProcessor {
+public class Customer extends User implements Processor {
     protected ShoppingCart shoppingCart;
 
     /* Constructors */
@@ -47,7 +53,7 @@ public class Customer extends User implements InputProcessor {
     public static Product browseInventory(Product[] products) {
         Object[] options = { "Previous", "Add to Cart", "Next" };
         int chosenOption = 0;
-        int usableSize = InputProcessor.getUsableArraySize(products);
+        int usableSize = Processor.getUsableArraySize(products);
 
         int i = 0;
         while (chosenOption != -1 && chosenOption != 1) {

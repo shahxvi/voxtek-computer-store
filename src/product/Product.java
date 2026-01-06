@@ -3,9 +3,11 @@
 
 package product;
 
+import input.Processor;
+
 import java.io.File;
 
-public abstract class Product {
+public abstract class Product implements Processor {
     /* Attributes */
     private String brand;
     private String model;
@@ -70,8 +72,20 @@ public abstract class Product {
      */
     protected abstract void loadInventory(File inputFile, int recordPosition);
 
-    protected abstract String toRecord();
+    public abstract String toRecord();
 
     public abstract String toString();
 
+    public static void initializeInventory(Product[][] product, File[] file) {
+        for (int i = 0; i < product.length; i++) {
+            for (int j = 0; j < Processor.getInventorySize(file[i]); j++) {
+                if (product[i] instanceof Laptop[]) {
+                    product[i][j] = new Laptop();
+                } else if (product[i] instanceof Keyboard[]) {
+                    product[i][j] = new Keyboard();
+                }
+                product[i][j].loadInventory(file[i], j);
+            }
+        }
+    }
 }

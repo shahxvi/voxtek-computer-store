@@ -4,13 +4,14 @@
 package user.admin;
 
 import product.*;
+import input.Processor;
 
 import java.io.*;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 import javax.swing.JOptionPane;
 
-class AdminFileHandler {
+class AdminFileHandler implements Processor {
 
     /*
      * initializes the admin (loads admin from file to object)
@@ -93,44 +94,16 @@ class AdminFileHandler {
         return products;
     }
 
-    public static Product[] addKeyboard(Product[] products) {
-        int emptyPointer = 0;
-        for (int i = 0; i < products.length; i++) {
-            if (products[i] == null)
-                emptyPointer = i;
-        }
-        Laptop laptop = AdminUI.createKeyboard();
-
-        products[emptyPointer] = laptop;
-
-        return products;
-    }
-
-    public static Product[] removeProduct(Product[] products) {
-        // Get Usable size
-        int usableSize = InputProcessor.getUsableArraySize(products);
-
-        Object[] obj = new Object[usableSize];
-        for (int i = 0; i < usableSize; i++) {
-            obj[i] = products[i].toRecord();
-        }
-        String chosenProduct = (String) JOptionPane.showInputDialog(null, "Which item would you like to remove?",
-                "Remove Item", JOptionPane.QUESTION_MESSAGE, null, obj, obj[0]);
-
-        if (chosenProduct == null)
-            return products;
-
-        // Get the index of the chosen option
-        int removedItem = -1;
-        for (int i = 0; i < usableSize; i++) {
-            if (chosenProduct.equalsIgnoreCase(products[i].toRecord())) {
-                removedItem = i;
-                break; // Exit loop when match is found
-            }
-        }
-
-        products[removedItem] = null;
-
-        return InputProcessor.reorganizeInventory(products);
-    }
+    //public static Product[] addKeyboard(Product[] products) {
+    //    int emptyPointer = 0;
+    //    for (int i = 0; i < products.length; i++) {
+    //        if (products[i] == null)
+    //            emptyPointer = i;
+    //    }
+    //    Keyboard keyboard = AdminUI.createKeyboard();
+    //
+    //    products[emptyPointer] = keyboard;
+    //
+    //    return products;
+    //}
 }

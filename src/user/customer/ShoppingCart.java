@@ -1,6 +1,8 @@
 // MIT License
 // Copyright (c) 2025 Shah
 
+package customer;
+
 import java.util.ArrayList;
 
 public class ShoppingCart {

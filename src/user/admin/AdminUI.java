@@ -13,7 +13,7 @@ class AdminUI implements Processor {
      * chooseAddOrRemoveProduct() is for admins only and it shows 2 options letting
      * the admin choose either add item or remove item and returns the option chosen
      */
-    public static int chooseAddOrRemoveProduct(Product[] products) {
+    public static int chooseAddOrRemoveProduct() {
         Object[] options = { "Add Inventory", "Remove Inventory", "Back" };
 
         int chosenOption = JOptionPane.showOptionDialog(null, "Please choose your action", "Edit Inventory",
@@ -28,20 +28,21 @@ class AdminUI implements Processor {
         int id = 0;
 
         do {
-            while (strInput == null || strInput.isBlank() || strInput.isEmpty()) {
-                if (strInput == null)
-                    return false;
-                strInput = JOptionPane.showInputDialog("Please enter your ID");
-                if (!Processor.isInteger(strInput)) {
-                    JOptionPane.showMessageDialog(null, "ID must be integers only");
-                }
+            strInput = JOptionPane.showInputDialog("Please enter your ID");
+            if (strInput == null) {
+                return false;
             }
+
+            if (!Processor.isInteger(strInput)) {
+                JOptionPane.showMessageDialog(null, "ID must be integers only");
+                continue;
+            }
+
             id = Integer.parseInt(strInput);
 
-            while (password == null || password.isBlank() || password.isEmpty()) {
-                if (password == null)
-                    return false;
-                password = JOptionPane.showInputDialog("Please enter your password");
+            password = JOptionPane.showInputDialog("Please enter your password");
+            if (password == null) {
+                return false;
             }
 
             if (!admin.verifyCredentials(id, password)) {
@@ -70,42 +71,39 @@ class AdminUI implements Processor {
             return null;
         }
 
-        String name = "", password = "";
+        String name = null, password = "";
         int phoneNumber = -1, id = -1;
 
-        String strInput = "";
-        for (int i = 0; i < prompts.length; i++) {
-            strInput = JOptionPane.showInputDialog(prompts[i]);
+        String strInput = null; 
 
+        name = JOptionPane.showInputDialog("Please enter admin's name ");
+        if (name == null) {
+            return null;
+        }
+
+        strInput = JOptionPane.showInputDialog("Please enter admin's phone number");
+        while (!Processor.isInteger(strInput)) {
             if (strInput == null) {
-                return null; // Admin cancels, file stays empty because we never closed it
+                return null;
             }
+            JOptionPane.showMessageDialog(null, "Phone number must be integers only!");
+            strInput = JOptionPane.showInputDialog("Please enter admin's phone number");
+        }
+        phoneNumber = Integer.parseInt(strInput);
 
-            if (i == 0) {
-                name = strInput;
+        strInput = JOptionPane.showInputDialog("Please enter admin's ID");
+        while (!Processor.isInteger(strInput)) {
+            if (strInput == null) {
+                return null;
             }
+            JOptionPane.showMessageDialog(null, "ID must be integers only!");
+            strInput = JOptionPane.showInputDialog("Please enter admin's ID");
+        }
+        id = Integer.parseInt(strInput);
 
-            // Makes sure that the user input of ID AND phone number is int only
-            if (i == 1 || i == 2) {
-                do {
-                    if (i == 1) {
-                        JOptionPane.showMessageDialog(null, "Phone number must be digits only.", "Phone Number Error", JOptionPane.WARNING_MESSAGE);
-                        strInput = JOptionPane.showInputDialog(prompts[1]);
-                    }
-                    else if (i == 2) {
-                        JOptionPane.showMessageDialog(null, "ID must be digits only.", "ID Error", JOptionPane.WARNING_MESSAGE);
-                        strInput = JOptionPane.showInputDialog(prompts[2]);
-                    }
-                } while (!Processor.isInteger(strInput));
-                if (i == 1)
-                    phoneNumber = Integer.parseInt(strInput);
-                else if (i == 2)
-                    id = Integer.parseInt(strInput);
-            }
-
-            if (i == 3) {
-                password = strInput;
-            }
+        password = JOptionPane.showInputDialog("Please enter admin's name ");
+        if (password == null) {
+            return null;
         }
 
         return new Admin(name, phoneNumber, id, password);
@@ -144,7 +142,39 @@ class AdminUI implements Processor {
         return new Laptop(brand, model, price, cpu, memoryGB, storageGB, storageType);
     }
 
-    static Keyboard createKeyboard() {
-        return new Keyboard(String model, String brand, double price, String switchType, boolean isWireless);
+    //static Keyboard createKeyboard() {
+    //    String brand = JOptionPane.showInputDialog("Please enter brand");
+    //    String model = JOptionPane.showInputDialog("Please enter model");
+    //    String priceStr = JOptionPane.showInputDialog("Please enter price");
+    //
+    //    return new Keyboard(String model, String brand, double price, String switchType, boolean isWireless);
+    //}
+
+    static Product[] removeProduct(Product[] products) {
+        // Get Usable size
+        int usableSize = Processor.getUsableArraySize(products);
+
+        Object[] obj = new Object[usableSize];
+        for (int i = 0; i < usableSize; i++) {
+            obj[i] = products[i].toRecord();
+        }
+        String chosenProduct = (String) JOptionPane.showInputDialog(null, "Which item would you like to remove?",
+                "Remove Item", JOptionPane.QUESTION_MESSAGE, null, obj, obj[0]);
+
+        if (chosenProduct == null)
+            return products;
+
+        // Get the index of the chosen option
+        int removedItem = -1;
+        for (int i = 0; i < usableSize; i++) {
+            if (chosenProduct.equalsIgnoreCase(products[i].toRecord())) {
+                removedItem = i;
+                break; // Exit loop when match is found
+            }
+        }
+
+        products[removedItem] = null;
+
+        return Processor.reorganizeInventory(products);
     }
 }

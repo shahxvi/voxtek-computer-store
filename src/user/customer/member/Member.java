@@ -1,9 +1,13 @@
 // MIT License
 // Copyright (c) 2025 Shah
 
+package user.customer.member;
+
+import input.Processor;
+
 import javax.swing.JOptionPane;
 
-public class Member extends Customer {
+public class Member extends Customer implements Processor {
     private final double discount = 0.25;
 
     public Member() {
@@ -26,7 +30,7 @@ public class Member extends Customer {
     public static void login() {
         String name = JOptionPane.showInputDialog("Enter your name: ");
         String strPhone = JOptionPane.showInputDialog("Enter your phone number: ");
-        while (!InputProcessor.isInteger(strPhone)) {
+        while (!Processor.isInteger(strPhone)) {
             JOptionPane.showMessageDialog(null, "Please enter integer only.");
             strPhone = JOptionPane.showInputDialog("Enter your phone number: ");
         }

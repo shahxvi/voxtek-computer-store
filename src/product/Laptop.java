@@ -100,8 +100,6 @@ public class Laptop extends Product {
             inputFileReader.close();
         } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
