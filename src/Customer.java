@@ -1,31 +1,32 @@
 // MIT License
 // Copyright (c) 2025 Shah
-// Copyright (c) 2025 Raden
 
 import javax.swing.*;
 
 public class Customer extends User implements InputProcessor {
-    protected Product[] products;
+    protected ShoppingCart shoppingCart;
 
     /* Constructors */
     public Customer() {
         super();
-        products = null;
+        shoppingCart = null;
     }
 
     public Customer(String name, int phoneNumber, Product[] products) {
         super(name, phoneNumber);
-        this.products = products;
+        for (int i = 0; i < products.length; i++) {
+            shoppingCart.addProduct(products[i]);
+        }
     }
 
     public Customer(Customer other) {
         super(other);
-        this.products = other.products;
+        this.shoppingCart = other.shoppingCart;
     }
     /* Constructors */
 
-    public void addProduct(Product[] products) {
-        this.products = products;
+    public ShoppingCart getShoppingCart() {
+        return shoppingCart;
     }
 
     // TODO: Prompt the user to enter their name and phoneNumber
