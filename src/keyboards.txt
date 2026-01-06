@@ -1,0 +1,10 @@
+G Pro X;Logitech;650.00;GX Blue;false
+K6;Keychron;450.00;Gateron Brown;true
+BlackWidow V3;Razer;700.00;Razer Green;false
+K70 RGB MK.2;Corsair;750.00;Cherry MX Red;false
+Apex 7;SteelSeries;680.00;Red Switch;false
+One 2 Mini;Ducky;520.00;Cherry MX Brown;false
+RK61;Royal Kludge;250.00;Brown Switch;true
+3068B;Akko;400.00;Akko Jelly Pink;true
+K552;Redragon;180.00;Outemu Blue;false
+Alloy Origins;HyperX;620.00;HyperX Red;false

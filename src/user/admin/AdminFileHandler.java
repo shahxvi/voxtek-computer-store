@@ -106,4 +106,24 @@ class AdminFileHandler implements Processor {
     //
     //    return products;
     //}
+    //
+    static Product[] removeProduct(Product[] products) {
+        String chosenProduct = AdminUI.chooseProductToRemoveProduct(products);
+
+        if (chosenProduct == null)
+            return products;
+
+        // Get the index of the chosen option
+        int removedItem = -1;
+        for (int i = 0; i < products.length; i++) {
+            if (chosenProduct.equalsIgnoreCase(products[i].toRecord())) {
+                removedItem = i;
+                break; // Exit loop when match is found
+            }
+        }
+
+        products[removedItem] = null;
+
+        return Processor.reorganizeInventory(products);
+    }
 }

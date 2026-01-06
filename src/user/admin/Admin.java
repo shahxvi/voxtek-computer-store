@@ -90,7 +90,7 @@ public class Admin extends User {
                 products[chosenProduct] = AdminFileHandler.addLaptop(products[chosenProduct]);
             }
             else if (intOption == 1) {
-                products[chosenProduct] = AdminUI.removeProduct(products[chosenProduct]);
+                products[chosenProduct] = AdminFileHandler.removeProduct(products[chosenProduct]);
             }
         } while (!choseExit);
 

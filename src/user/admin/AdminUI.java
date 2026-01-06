@@ -150,7 +150,7 @@ class AdminUI implements Processor {
     //    return new Keyboard(String model, String brand, double price, String switchType, boolean isWireless);
     //}
 
-    static Product[] removeProduct(Product[] products) {
+    static String chooseProductToRemoveProduct(Product[] products) {
         // Get Usable size
         int usableSize = Processor.getUsableArraySize(products);
 
@@ -160,21 +160,6 @@ class AdminUI implements Processor {
         }
         String chosenProduct = (String) JOptionPane.showInputDialog(null, "Which item would you like to remove?",
                 "Remove Item", JOptionPane.QUESTION_MESSAGE, null, obj, obj[0]);
-
-        if (chosenProduct == null)
-            return products;
-
-        // Get the index of the chosen option
-        int removedItem = -1;
-        for (int i = 0; i < usableSize; i++) {
-            if (chosenProduct.equalsIgnoreCase(products[i].toRecord())) {
-                removedItem = i;
-                break; // Exit loop when match is found
-            }
-        }
-
-        products[removedItem] = null;
-
-        return Processor.reorganizeInventory(products);
+        return chosenProduct;
     }
 }
