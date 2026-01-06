@@ -1,6 +1,8 @@
 // MIT License
 // Copyright (c) 2025 Marzell
 
+package product;
+
 import java.io.*;
 import java.util.Scanner;
 import java.util.StringTokenizer;

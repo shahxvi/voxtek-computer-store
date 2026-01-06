@@ -1,0 +1,136 @@
+// MIT License
+// Copyright (c) 2025 Shah
+
+package user.admin;
+
+import product.*;
+
+import java.io.*;
+import java.util.Scanner;
+import java.util.StringTokenizer;
+import javax.swing.JOptionPane;
+
+class AdminFileHandler {
+
+    /*
+     * initializes the admin (loads admin from file to object)
+     * if the file is missing or empty, it calls createAdminFile
+     */
+    public static boolean initializeAdmin(Admin admin, File file) {
+        boolean isInitialized = false;
+
+        while (!isInitialized) {
+            try {
+                loadAdmin(admin, file);
+                isInitialized = true;
+            } catch (FileNotFoundException e) {
+                admin = AdminUI.createAdmin();
+                boolean isCreated = createAdminFile(admin, file);
+                if (!isCreated) {
+                    return false; // User chose to exit
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, e.getMessage());
+            }
+        }
+
+        return isInitialized;
+    }
+
+    /*
+     * Loads admin from file to object (throws an exception)
+     */
+    public static boolean loadAdmin(Admin admin, File file) throws FileNotFoundException {
+        try (Scanner inputFile = new Scanner(file)) {
+            // Checks if empty or not
+            if (!inputFile.hasNextLine()) {
+                inputFile.close();
+                throw new FileNotFoundException();
+            }
+
+            while (inputFile.hasNext()) {
+                StringTokenizer token = new StringTokenizer(inputFile.nextLine(), ";");
+                admin.setName(token.nextToken());
+                admin.setPhoneNumber(Integer.parseInt(token.nextToken()));
+                admin.setId(Integer.parseInt(token.nextToken()));
+                admin.setPassword(token.nextToken());
+            }
+        }
+        return true;
+    }
+
+    /*
+     * Creates the admin file if it isn't already
+     */
+     static boolean createAdminFile(Admin admin, File file) {
+        if (admin == null) {
+            return false;
+        }
+
+        try (PrintWriter adminFile = new PrintWriter(file)) {
+            adminFile.println(admin.toRecord());
+        } catch (FileNotFoundException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+            return false;
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+            return false;
+        }
+
+        return true;
+    }
+
+    public static Product[] addLaptop(Product[] products) {
+        int emptyPointer = 0;
+        for (int i = 0; i < products.length; i++) {
+            if (products[i] == null)
+                emptyPointer = i;
+        }
+        Laptop laptop = AdminUI.createLaptop();
+
+        products[emptyPointer] = laptop;
+
+        return products;
+    }
+
+    public static Product[] addKeyboard(Product[] products) {
+        int emptyPointer = 0;
+        for (int i = 0; i < products.length; i++) {
+            if (products[i] == null)
+                emptyPointer = i;
+        }
+        Laptop laptop = AdminUI.createKeyboard();
+
+        products[emptyPointer] = laptop;
+
+        return products;
+    }
+
+    public static Product[] removeProduct(Product[] products) {
+        // Get Usable size
+        int usableSize = InputProcessor.getUsableArraySize(products);
+
+        Object[] obj = new Object[usableSize];
+        for (int i = 0; i < usableSize; i++) {
+            obj[i] = products[i].toRecord();
+        }
+        String chosenProduct = (String) JOptionPane.showInputDialog(null, "Which item would you like to remove?",
+                "Remove Item", JOptionPane.QUESTION_MESSAGE, null, obj, obj[0]);
+
+        if (chosenProduct == null)
+            return products;
+
+        // Get the index of the chosen option
+        int removedItem = -1;
+        for (int i = 0; i < usableSize; i++) {
+            if (chosenProduct.equalsIgnoreCase(products[i].toRecord())) {
+                removedItem = i;
+                break; // Exit loop when match is found
+            }
+        }
+
+        products[removedItem] = null;
+
+        return InputProcessor.reorganizeInventory(products);
+    }
+}

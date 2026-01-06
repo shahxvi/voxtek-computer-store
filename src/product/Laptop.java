@@ -1,6 +1,8 @@
 // MIT License
 // Copyright (c) 2025 Shah
 
+package product;
+
 import java.io.*;
 import java.util.Scanner;
 import java.util.StringTokenizer;
@@ -19,8 +21,7 @@ public class Laptop extends Product {
         this.storageType = "";
     }
 
-    public Laptop(String brand, String model, double price, String cpu, int memoryGB, int storageGB,
-            String storageType) {
+    public Laptop(String brand, String model, double price, String cpu, int memoryGB, int storageGB, String storageType) {
         super(brand, model, price);
         this.cpu = cpu;
         this.memoryGB = memoryGB;

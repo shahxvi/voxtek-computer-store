@@ -1,6 +1,8 @@
 // MIT License
 // Copyright (c) 2025 Shah
 
+package product;
+
 import java.io.File;
 
 public abstract class Product {

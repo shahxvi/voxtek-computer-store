@@ -1,11 +1,13 @@
 // MIT License
 // Copyright (c) 2025 Shah
 
+package input;
+
 import java.io.*;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
 
-public interface InputProcessor {
+public interface Processor {
     public static boolean isInteger(String strInput) {
         if (strInput == null || strInput.isEmpty()) {
             return false;

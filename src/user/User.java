@@ -2,6 +2,8 @@
 // Copyright (c) 2025 Shah
 // Copyright (c) 2025 Raden
 
+package user;
+
 public abstract class User {
     private String name;
     private int phoneNumber;
@@ -24,11 +26,11 @@ public abstract class User {
     /* Constructors */
 
     /* Setters */
-    protected void setName(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
-    protected void setPhoneNumber(int phoneNumber) {
+    public void setPhoneNumber(int phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
     /* Setters */
