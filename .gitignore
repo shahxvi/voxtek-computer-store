@@ -1,6 +1,9 @@
 # User specific admin file
 admin.txt
 
+# Swap files
+*.swp
+
 # Compiled class file
 *.class
 
