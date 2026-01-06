@@ -2,7 +2,9 @@
 // Copyright (c) 2025 Shah
 // Copyright (c) 2025 Raden
 
-public class Customer extends User {
+import javax.swing.*;
+
+public class Customer extends User implements InputProcessor {
     protected Product[] products;
 
     /* Constructors */
@@ -29,5 +31,42 @@ public class Customer extends User {
     // TODO: Prompt the user to enter their name and phoneNumber
     public boolean registerMembership() {
         return true;
+    }
+
+    public static int menu() {
+        String str = "Please enter your option";
+        Object[] options = { "Browse", "Login", "Register", "Back" };
+
+        int chosenOption = JOptionPane.showOptionDialog(null, str, "Customer Menu", JOptionPane.DEFAULT_OPTION,
+                JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+
+        return chosenOption;
+    }
+
+    public static Product browseInventory(Product[] products) {
+        Object[] options = { "Previous", "Add to Cart", "Next" };
+        int chosenOption = 0;
+        int usableSize = InputProcessor.getUsableArraySize(products);
+
+        int i = 0;
+        while (chosenOption != -1 && chosenOption != 1) {
+            chosenOption = JOptionPane.showOptionDialog(null, products[i].toString(), "Browse Products",
+                    JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[2]);
+            if (chosenOption == 2) {
+                i++;
+            } else if (chosenOption == 0) {
+                i--;
+            }
+
+            if (i < 0) {
+                i = usableSize - 1;
+            } else if (i >= usableSize) {
+                i = 0;
+            }
+        }
+        if (chosenOption == -1) {
+            return null;
+        }
+        return products[i];
     }
 }

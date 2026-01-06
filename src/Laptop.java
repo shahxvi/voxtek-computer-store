@@ -119,6 +119,7 @@ public class Laptop extends Product {
                 "\nCPU:" + cpu +
                 "\nMemory: " + memoryGB + "GB" +
                 "\nStorage: " + storageGB + "GB" +
+                "\nStorage Type: " + storageType +
                 "\nPrice: RM" + getPrice();
     }
 
