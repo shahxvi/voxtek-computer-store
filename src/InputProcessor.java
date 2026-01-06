@@ -61,8 +61,6 @@ public interface InputProcessor {
             }
         } catch (FileNotFoundException e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage());
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
