@@ -3,7 +3,7 @@
 
 package user.admin;
 
-import user.User;
+import user.*;
 import product.Product;
 
 import java.io.File;
@@ -71,7 +71,7 @@ public class Admin extends User {
             return;
 
         do {
-            strOption = User.chooseInventory();
+            strOption = UserUI.chooseInventory();
 
             if (strOption == null)
                 break;
