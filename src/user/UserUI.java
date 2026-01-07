@@ -1,3 +1,10 @@
+// MIT License
+// Copyright (c) 2025 Shah
+
+package user;
+
+import javax.swing.JOptionPane;
+
 public class UserUI {
     /*
      * menu() - Gives user options to login as customer, admin or exit from the
