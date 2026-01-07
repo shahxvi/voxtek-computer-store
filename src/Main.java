@@ -42,7 +42,7 @@ public class Main implements Processor {
 
         // The crux of the program
         do {
-            intOption = User.menu();
+            intOption = UserUI.menu();
 
             // Checks intOption and determine what the user chose
             choseCustomer = (intOption == 0);
