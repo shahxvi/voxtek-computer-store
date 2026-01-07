@@ -46,30 +46,4 @@ public abstract class User {
         return phoneNumber;
     }
     /* Getters */
-
-    /*
-     * menu() - Gives user options to login as customer, admin or exit from the
-     * program
-     */
-    public static int menu() {
-        String str;
-        Object[] options = { "Customer", "Admin", "Exit" };
-        str = "Welcome to VoxTek Computer Store\n";
-        str += "Please choose your option: ";
-
-        int chosenOption = JOptionPane.showOptionDialog(null, str, "VoxTek", JOptionPane.DEFAULT_OPTION,
-                JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
-
-        return chosenOption;
-    }
-
-    /*
-     * chooseInventory() is a menu to choose what inventory they want to edit
-     */
-    public static String chooseInventory() {
-        String[] options = { "Laptops", "Keyboards" };
-        String chosenOption = (String) JOptionPane.showInputDialog(null, "Please choose an inventory",
-                "Choose Inventory", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-        return chosenOption;
-    }
 }
