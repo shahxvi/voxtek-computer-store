@@ -11,6 +11,16 @@ import java.util.Scanner;
 import java.util.StringTokenizer;
 import javax.swing.JOptionPane;
 
+/**
+ * AdminFileHandler - Handles all file I/O operations for admin functionality.
+ * 
+ * This class is part of the admin subsystem architecture:
+ * - Called by Admin.flow() to handle background file operations
+ * - Manages loading/saving admin credentials
+ * - Manages adding/removing products from inventory
+ * 
+ * Main should not call this directly - all calls go through Admin.flow()
+ */
 class AdminFileHandler implements Processor {
 
     /*

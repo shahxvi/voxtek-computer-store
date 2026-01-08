@@ -67,8 +67,8 @@ public class Main implements Processor {
 
                 CustomerUI.checkout((Customer) user);
             } else if (choseAdmin) {
-                //user = new Admin();
-                //Admin.flow(products, user, adminFile);
+                user = new Admin();
+                Admin.flow(products, (Admin) user, adminFile);
             }
         } while (!choseExit);
 

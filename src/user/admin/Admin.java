@@ -59,6 +59,22 @@ public class Admin extends User {
         return String.format("%s;%d;%d;%s", getName(), getPhoneNumber(), id, password);
     }
 
+    /**
+     * Main admin workflow controller.
+     * 
+     * Architecture Pattern:
+     * - Main.java calls Admin.flow() - the single entry point for admin functionality
+     * - Admin.flow() orchestrates the workflow using:
+     *   - AdminFileHandler: for file operations (loading/saving data)
+     *   - AdminUI: for user interface operations (login, dialogs)
+     * 
+     * This design allows Main to only interact with Admin class, while Admin
+     * handles all background operations (login, file handling) internally.
+     * 
+     * @param products 2D array of products [laptops, keyboards]
+     * @param admin Admin object to use for this session
+     * @param file Admin credentials file
+     */
     public static void flow(Product[][] products, Admin admin, File file) {
         String strOption;
         int intOption;
