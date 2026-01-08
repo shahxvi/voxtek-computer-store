@@ -70,7 +70,7 @@ public abstract class Product implements Processor {
      *
      * The subclass would hold only a record hence you must pass a recordPosition.
      */
-    protected abstract void loadInventory(File inputFile, int recordPosition);
+    protected abstract void load(File inputFile, int recordPosition);
 
     public abstract String toRecord();
 
@@ -84,7 +84,8 @@ public abstract class Product implements Processor {
                 } else if (product[i] instanceof Keyboard[]) {
                     product[i][j] = new Keyboard();
                 }
-                product[i][j].loadInventory(file[i], j);
+
+                product[i][j].load(file[i], j);
             }
         }
     }

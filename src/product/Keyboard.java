@@ -46,7 +46,7 @@ public class Keyboard extends Product {
     }
 
     @Override
-    public void loadInventory(File inputFile, int recordPosition) {
+    public void load(File inputFile, int recordPosition) {
         try {
             Scanner inputFileReader = new Scanner(inputFile);
 

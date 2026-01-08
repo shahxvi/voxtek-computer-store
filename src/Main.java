@@ -5,6 +5,7 @@
 import input.Processor;
 import user.*;
 import user.admin.*;
+import user.customer.*;
 import product.*;
 
 import java.io.*;
@@ -29,12 +30,7 @@ public class Main implements Processor {
         File adminFile = new File("admin.txt");
         File membersFile = new File("members.txt");
 
-        Admin admin = new Admin();
-
-        // Get the inventory size of all products and make a cart array
-        int totalProducts = Processor.getInventorySize(inventoryFiles[laptopIndex]) + Processor.getInventorySize(inventoryFiles[laptopIndex]);
-        Product[] customersCart = new Product[totalProducts];
-        int cartCounter = 0;
+        User user;
 
         int intOption;
         String strOption;
@@ -50,47 +46,25 @@ public class Main implements Processor {
             choseExit = (intOption == 2 || intOption == -1);
 
             if (choseCustomer) {
-                //do {
-                //    intOption = Customer.menu();
+                user = CustomerUI.createCustomer();
+                if (user == null)
+                    continue;
 
-                //    browse = (intOption == 0);
-                //    login = (intOption == 1);
-                //    register = (intOption == 2);
-                //    choseExit = (intOption == 3 || intOption == -1);
+                strOption = UserUI.chooseInventory();
+                if (strOption.equals("Laptops")) {
+                    intOption = laptopIndex;
+                } else if (strOption.equals("Keyboards")) {
+                    intOption = keyboardIndex;
+                }
 
-                //    if (browse) {
-                //        strOption = chooseInventory();
+                Product product = CustomerUI.selectProduct(products[intOption]);
+                if (product == null)
+                    continue;
 
-                //        boolean exit = (strOption == null);
-                //        boolean laptops = (strOption.equals("Laptops"));
-                //        boolean keyboards = (strOption.equals("Keyboards"));
-
-                //        if (exit)
-                //            break;
-                //        else if (laptops) {
-                //            intOption = laptopIndex;
-                //        } else if (keyboards) {
-                //            intOption = keyboardIndex;
-                //        }
-
-                //        Product product = Customer.browseInventory(products[intOption]);
-                //        if (product != null) {
-                //            customersCart[cartCounter] = product;
-                //            cartCounter++;
-                //        }
-
-                //        // ((Customer) users[customerIndex][0]).addProduct(customersCart);
-                //    } else if (login) {
-                //        Member.login();
-                //    } else if (register) {
-                //        // register member
-                //    }
-                //} while (!choseExit);
-                //choseExit = false;
-            }
-
-            if (choseAdmin) {
-                Admin.flow(products, admin, adminFile);
+                ((Customer) user).setProduct(product);
+            } else if (choseAdmin) {
+                //user = new Admin();
+                //Admin.flow(products, user, adminFile);
             }
         } while (!choseExit);
 

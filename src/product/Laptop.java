@@ -74,7 +74,7 @@ public class Laptop extends Product {
     /* Getters */
 
     @Override
-    public void loadInventory(File inputFile, int recordPosition) {
+    public void load(File inputFile, int recordPosition) {
         try {
             Scanner inputFileReader = new Scanner(inputFile);
 
