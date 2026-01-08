@@ -13,7 +13,7 @@ public class UserUI {
     public static int menu() {
         String str;
         Object[] options = { "Customer", "Admin", "Exit" };
-        str = "Welcome to VoxTek Computer Store\n";
+        str = "Welcome to VoxTek Technology Store\n";
         str += "Please choose your option: ";
 
         int chosenOption = JOptionPane.showOptionDialog(null, str, "VoxTek", JOptionPane.DEFAULT_OPTION,

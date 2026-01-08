@@ -107,19 +107,22 @@ public class Laptop extends Product {
 
     @Override
     public String toRecord() {
-        return String.format("%s;%s;%.2f;%s;%d;%d;%s", getBrand(), getModel(), getPrice(), cpu, memoryGB, storageGB,
-                storageType);
+        return String.format("%s;%s;%.2f;%s;%d;%d;%s", brand, model, price, cpu, memoryGB, storageGB, storageType);
     }
 
     @Override
     public String toString() {
-        return "Brand: " + getBrand() +
-                "\nModel: " + getModel() +
-                "\nCPU:" + cpu +
-                "\nMemory: " + memoryGB + "GB" +
-                "\nStorage: " + storageGB + "GB" +
-                "\nStorage Type: " + storageType +
-                "\nPrice: RM" + getPrice();
+        return "Brand: " + brand +
+               "\nModel: " + model +
+               "\nCPU:" + cpu +
+               "\nMemory: " + memoryGB + "GB" +
+               "\nStorage: " + storageGB + "GB" +
+               "\nStorage Type: " + storageType +
+               "\nPrice: RM" + price;
     }
 
+    @Override
+    public String toShortString() {
+        return brand + " " + model + " (RM" + price + ")";
+    }
 }

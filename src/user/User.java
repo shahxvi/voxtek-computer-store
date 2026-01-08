@@ -7,8 +7,8 @@ package user;
 import javax.swing.JOptionPane;
 
 public abstract class User {
-    private String name;
-    private int phoneNumber;
+    protected String name;
+    protected int phoneNumber;
 
     /* Constructors */
     public User() {

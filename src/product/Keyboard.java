@@ -17,8 +17,8 @@ public class Keyboard extends Product {
         this.isWireless = false;
     }
 
-    public Keyboard(String model, String brand, double price, String switchType, boolean isWireless) {
-        super(model, brand, price);
+    public Keyboard(String brand, String model, double price, String switchType, boolean isWireless) {
+        super(brand, model, price);
         this.switchType = switchType;
         this.isWireless = isWireless;
     }
@@ -58,8 +58,8 @@ public class Keyboard extends Product {
                 String aRecord = inputFileReader.nextLine();
                 StringTokenizer token = new StringTokenizer(aRecord, ";");
 
-                setModel(token.nextToken());
                 setBrand(token.nextToken());
+                setModel(token.nextToken());
                 setPrice(Double.parseDouble(token.nextToken()));
                 setSwitchType(token.nextToken());
                 setWireless(Boolean.parseBoolean(token.nextToken()));
@@ -74,15 +74,20 @@ public class Keyboard extends Product {
 
     @Override
     public String toRecord() {
-        return String.format("%s;%s;%.2f;%s;%b", getModel(), getBrand(), getPrice(), switchType, isWireless);
+        return String.format("%s;%s;%.2f;%s;%b", brand, model, price, switchType, isWireless);
     }
 
     @Override
     public String toString() {
-        return "Brand: " + getBrand() +
-                "\nModel: " + getModel() +
-                "\nSwitch type: " + switchType +
-                "\nWireless: " + isWireless +
-                "\nPrice: RM" + getPrice();
+        return "Brand: " + brand +
+               "\nModel: " + model +
+               "\nSwitch type: " + switchType +
+               "\nWireless: " + isWireless +
+               "\nPrice: RM" + price;
+    }
+
+    @Override
+    public String toShortString() {
+        return brand + " " + model + "\t\tRM" + price;
     }
 }

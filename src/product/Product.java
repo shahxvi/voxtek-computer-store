@@ -9,9 +9,9 @@ import java.io.File;
 
 public abstract class Product implements Processor {
     /* Attributes */
-    private String brand;
-    private String model;
-    private double price;
+    protected String brand;
+    protected String model;
+    protected double price;
     /* Attributes */
 
     /* Contructors */
@@ -75,6 +75,8 @@ public abstract class Product implements Processor {
     public abstract String toRecord();
 
     public abstract String toString();
+
+    public abstract String toShortString();
 
     public static void initializeInventory(Product[][] product, File[] file) {
         for (int i = 0; i < product.length; i++) {

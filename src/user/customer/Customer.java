@@ -41,4 +41,14 @@ public class Customer extends User implements Processor {
     public Product getProduct() {
         return product;
     }
+
+    public String toString() {
+        if (product == null) {
+            return "\nName: " + name +
+                   "\nPhone Number: " + phoneNumber;
+        }
+        return "\nName: " + name +
+               "\nPhone Number: " + phoneNumber +
+               "\n" + product.toShortString();
+    }
 }

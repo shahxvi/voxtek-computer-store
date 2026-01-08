@@ -9,6 +9,7 @@ import product.Product;
 import javax.swing.JOptionPane;
 
 public class CustomerUI implements Processor {
+
     public static int menu() {
         String str = "Please enter your option";
         Object[] options = { "Browse", "Checkout", "Back" };
@@ -67,8 +68,7 @@ public class CustomerUI implements Processor {
         return products[i];
     }
 
-    //public static void checkout(User user) {
-    //    String message = user.toString();
-    //    int intOption = JOptionPane.showOptionDialog(null, products[i].toString(), "Browse Products", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[2]);
-    //}
+    public static void checkout(Customer customer) {
+        JOptionPane.showMessageDialog(null, customer.toString());
+    }
 }

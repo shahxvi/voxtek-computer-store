@@ -55,6 +55,8 @@ public class Main implements Processor {
                     intOption = laptopIndex;
                 } else if (strOption.equals("Keyboards")) {
                     intOption = keyboardIndex;
+                } else {
+                    continue;
                 }
 
                 Product product = CustomerUI.selectProduct(products[intOption]);
@@ -62,6 +64,8 @@ public class Main implements Processor {
                     continue;
 
                 ((Customer) user).setProduct(product);
+
+                CustomerUI.checkout((Customer) user);
             } else if (choseAdmin) {
                 //user = new Admin();
                 //Admin.flow(products, user, adminFile);
