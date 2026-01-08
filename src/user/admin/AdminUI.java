@@ -8,6 +8,17 @@ import product.*;
 
 import javax.swing.JOptionPane;
 
+/**
+ * AdminUI - Handles all user interface operations for admin functionality.
+ * 
+ * This class is part of the admin subsystem architecture:
+ * - Called by Admin.flow() to handle UI operations (dialogs, login)
+ * - Manages user authentication (login)
+ * - Manages admin creation dialog
+ * - Manages product creation/selection dialogs
+ * 
+ * Main should not call this directly - all calls go through Admin.flow()
+ */
 class AdminUI implements Processor {
     /*
      * chooseAddOrRemoveProduct() is for admins only and it shows 2 options letting
