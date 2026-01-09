@@ -30,11 +30,12 @@ public class Main implements Processor {
         File adminFile = new File("admin.txt");
         File membersFile = new File("members.txt");
 
-        User user;
+        Customer customer = null;
+        Admin admin;
 
         int intOption;
         String strOption;
-        boolean choseCustomer, choseExit, choseAdmin, browse, login, register;
+        boolean choseCustomer, choseExit, choseAdmin;
 
         // The crux of the program
         do {
@@ -46,26 +47,7 @@ public class Main implements Processor {
             choseExit = (intOption == 2 || intOption == -1);
 
             if (choseCustomer) {
-                user = CustomerUI.createCustomer();
-                if (user == null)
-                    continue;
-
-                strOption = UserUI.chooseInventory();
-                if (strOption.equals("Laptops")) {
-                    intOption = laptopIndex;
-                } else if (strOption.equals("Keyboards")) {
-                    intOption = keyboardIndex;
-                } else {
-                    continue;
-                }
-
-                Product product = CustomerUI.selectProduct(products[intOption]);
-                if (product == null)
-                    continue;
-
-                ((Customer) user).setProduct(product);
-
-                CustomerUI.checkout((Customer) user);
+                CustomerUI.run(products);
             } else if (choseAdmin) {
                 //user = new Admin();
                 //Admin.flow(products, user, adminFile);
@@ -79,12 +61,10 @@ public class Main implements Processor {
     }
 
     public static void writeToFile(Product[] product, File file) {
-        try {
-            PrintWriter outputFile = new PrintWriter(file);
+        try (PrintWriter outputFile = new PrintWriter(file)){
             for (int i = 0; i < Processor.getUsableArraySize(product); i++) {
                 outputFile.println(product[i].toRecord());
             }
-            outputFile.close();
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
