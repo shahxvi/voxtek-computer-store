@@ -4,7 +4,7 @@
 package users.customers;
 
 import users.User;
-import products.Product;
+import products.*;
 import processors.Processor;
 
 public class Customer extends User implements Processor {
@@ -63,12 +63,14 @@ public class Customer extends User implements Processor {
     }
 
     public Product removeProduct(int removeIndex) {
-        Product removedProduct;
+        Product removedProduct = null;
+
         if (productsCart[removeIndex] instanceof Laptop) {
-            removedProduct = new Laptop(productsCart[removeIndex]);
+            removedProduct = new Laptop((Laptop) productsCart[removeIndex]);
         } else if (productsCart[removeIndex] instanceof Keyboard) {
-            removedProduct = new Keyboard(productsCart[removeIndex]);
+            removedProduct = new Keyboard((Keyboard) productsCart[removeIndex]);
         }
+
         productsCart[removeIndex] = null;
         cartPointer--;
 
