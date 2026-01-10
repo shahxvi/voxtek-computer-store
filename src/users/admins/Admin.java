@@ -58,41 +58,4 @@ public class Admin extends User {
     public String toRecord() {
         return String.format("%s;%d;%d;%s", getName(), getPhoneNumber(), id, password);
     }
-
-    public static void flow(Product[][] products, Admin admin, File file) {
-        String strOption;
-        int intOption;
-        boolean choseExit = false;
-
-        if (!AdminFileHandler.initializeAdmin(admin, file))
-            return;
-
-        if (!AdminUI.login(admin))
-            return;
-
-        do {
-            strOption = UserUI.chooseInventory();
-
-            if (strOption == null)
-                break;
-
-            intOption = AdminUI.chooseAddOrRemoveProduct();
-
-            choseExit = (intOption == 2 && intOption == -1);
-
-            int chosenProduct = -1;
-            if (strOption.equalsIgnoreCase("Laptops"))
-                chosenProduct = 0;
-            else if (strOption.equalsIgnoreCase("Keyboards"))
-                chosenProduct = 1;
-
-            if (intOption == 0) {
-                products[chosenProduct] = AdminFileHandler.addLaptop(products[chosenProduct]);
-            } else if (intOption == 1) {
-                products[chosenProduct] = AdminFileHandler.removeProduct(products[chosenProduct]);
-            }
-        } while (!choseExit);
-
-        return;
-    }
 }

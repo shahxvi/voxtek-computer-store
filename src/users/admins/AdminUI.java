@@ -5,15 +5,54 @@ package users.admins;
 
 import processors.Processor;
 import products.*;
+import users.UserUI;
 
+import java.io.*;
 import javax.swing.JOptionPane;
 
-class AdminUI implements Processor {
+public class AdminUI implements Processor {
+
+    public static void run(Product[][] products, Admin admin, File file) {
+        String strOption;
+        int intOption;
+        boolean choseExit = false;
+
+        if (!AdminFileHandler.initializeAdmin(admin, file))
+            return;
+
+        if (!login(admin))
+            return;
+
+        do {
+            strOption = UserUI.chooseInventory();
+
+            if (strOption == null)
+                break;
+
+            intOption = chooseAddOrRemoveProduct();
+
+            choseExit = (intOption == 2 && intOption == -1);
+
+            int chosenProduct = -1;
+            if (strOption.equalsIgnoreCase("Laptops"))
+                chosenProduct = 0;
+            else if (strOption.equalsIgnoreCase("Keyboards"))
+                chosenProduct = 1;
+
+            if (intOption == 0) {
+                products[chosenProduct] = AdminFileHandler.addLaptop(products[chosenProduct]);
+            } else if (intOption == 1) {
+                products[chosenProduct] = AdminFileHandler.removeProduct(products[chosenProduct]);
+            }
+        } while (!choseExit);
+    }
+
+
     /*
      * chooseAddOrRemoveProduct() is for admins only and it shows 2 options letting
      * the admin choose either add item or remove item and returns the option chosen
      */
-    public static int chooseAddOrRemoveProduct() {
+    static int chooseAddOrRemoveProduct() {
         Object[] options = { "Add Inventory", "Remove Inventory", "Back" };
 
         int chosenOption = JOptionPane.showOptionDialog(null, "Please choose your action", "Edit Inventory",
@@ -22,7 +61,7 @@ class AdminUI implements Processor {
         return chosenOption;
     }
 
-    public static boolean login(Admin admin) {
+    static boolean login(Admin admin) {
         String strInput = "";
         String password = "";
         int id = 0;
@@ -53,7 +92,7 @@ class AdminUI implements Processor {
         return true;
     }
 
-    public static Admin createAdmin() {
+    static Admin createAdmin() {
         boolean choseExit = false;
 
         JOptionPane.showMessageDialog(null, "Admin file not found.");
@@ -103,55 +142,102 @@ class AdminUI implements Processor {
         return new Admin(name, phoneNumber, id, password);
     }
 
-    // TODO: Handle when the user cancels or presses OK withhout input
     static Laptop createLaptop() {
         String brand = JOptionPane.showInputDialog("Please enter brand");
+        if (brand == null) {
+            return null;
+        }
+
         String model = JOptionPane.showInputDialog("Please enter model");
+        if (model == null) {
+            return null;
+        }
+
         String priceStr = JOptionPane.showInputDialog("Please enter price");
+        if (priceStr == null) {
+            return null;
+        }
 
         while (!Processor.isInteger(priceStr)) {
             JOptionPane.showMessageDialog(null, "Please enter digits only for price");
             priceStr = JOptionPane.showInputDialog("Please enter price");
+            if (priceStr == null) {
+                return null;
+            }
         }
         int price = Integer.parseInt(priceStr);
 
         String cpu = JOptionPane.showInputDialog("Please enter cpu");
+        if (cpu == null) {
+            return null;
+        }
         String memoryGBStr = JOptionPane.showInputDialog("Please enter memory size (GB)");
+        if (memoryGBStr == null) {
+            return null;
+        }
 
         while (!Processor.isInteger(memoryGBStr)) {
             JOptionPane.showMessageDialog(null, "Please enter digits only for memory size");
             memoryGBStr = JOptionPane.showInputDialog("Please enter memory size (GB)");
+            if (memoryGBStr == null) {
+                return null;
+            }
         }
         int memoryGB = Integer.parseInt(memoryGBStr);
 
         String storageGBStr = JOptionPane.showInputDialog("Please enter storage size (GB)");
+        if (storageGBStr == null) {
+            return null;
+        }
 
         while (!Processor.isInteger(storageGBStr)) {
             JOptionPane.showMessageDialog(null, "Please enter digits only for storage size");
             storageGBStr = JOptionPane.showInputDialog("Please enter storage size (GB)");
+            if (storageGBStr == null) {
+                return null;
+            }
         }
         int storageGB = Integer.parseInt(storageGBStr);
 
         String storageType = JOptionPane.showInputDialog("Please enter storage type");
+        if (storageType == null) {
+            return null;
+        }
         return new Laptop(brand, model, price, cpu, memoryGB, storageGB, storageType);
     }
 
     static Keyboard createKeyboard() {
         String brand = JOptionPane.showInputDialog("Please enter brand");
+        if (brand == null) {
+            return null;
+        }
         String model = JOptionPane.showInputDialog("Please enter model");
+        if (model == null) {
+            return null;
+        }
         String priceStr = JOptionPane.showInputDialog("Please enter price");
+        if (priceStr == null) {
+            return null;
+        }
 
         while (!Processor.isInteger(priceStr)) {
-            JOptionPane.showMessageDialog(null, "Please enter digitls onyl for price");
+            JOptionPane.showMessageDialog(null, "Please enter digitls only for price");
             priceStr = JOptionPane.showInputDialog("Please enter price");
+            if (priceStr == null) {
+                return null;
+            }
         }
         int price = Integer.parseInt(priceStr);
 
         String switchType = JOptionPane.showInputDialog("Please enter switch type");
+        if (switchType == null) {
+            return null;
+        }
+
         boolean isWireless = JOptionPane.showConfirmDialog(null, "Is the keyboard wireless?",
                 "Yes/No", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
 
-        return new Keyboard(model, brand, price, switchType, isWireless);
+        return new Keyboard(brand, model, price, switchType, isWireless);
     }
 
     static String chooseProductToRemoveProduct(Product[] products) {
