@@ -4,7 +4,7 @@
 package users.customers;
 
 import processors.Processor;
-import products.Product;
+import products.*;
 import users.UserUI;
 
 import javax.swing.JOptionPane;
@@ -13,9 +13,21 @@ public class CustomerUI implements Processor {
     private static Customer customer = null;
     private static boolean browse = false;
     private static boolean cart = false;
+    private static boolean logout = false;
     private static boolean exit = false;
 
     public static void run(Product[][] products) {
+        Product[][] backupProducts = new Product[50][50];
+        for (int i = 0; i < products.length; i++) {
+            for (int j = 0; j < Processor.getUsableArraySize(products[i]); j++) {
+                if (products[i][j] instanceof Laptop) {
+                    backupProducts[i][j] = new Laptop((Laptop) products[i][j]);
+                } else if (products[i][j] instanceof Keyboard) {
+                    backupProducts[i][j] = new Keyboard((Keyboard) products[i][j]);
+                }
+            }
+        }
+
         do {
             menu();
 
@@ -54,6 +66,14 @@ public class CustomerUI implements Processor {
                 cart();
             }
         } while (!exit);
+
+        if (logout) {
+            for (int i = 0; i < backupProducts.length; i++) {
+                for (int j = 0; j < Processor.getUsableArraySize(backupProducts[i]); j++) {
+                        products[i][j] = backupProducts[i][j];
+                }
+            }
+        }
     }
 
     public static void createCustomer() {
@@ -88,16 +108,20 @@ public class CustomerUI implements Processor {
             browse = true;
             cart = false;
             exit = false;
+            logout = false;
         } else if (chosenOption == 1) {
             cart = true;
             browse = false;
             exit = false;
+            logout = false;
         } else {
             cart = false;
             browse = false;
             exit = true;
-
-            customer = null;
+            if (customer != null) {
+                customer = null;
+                logout = true;
+            }
         }
     }
 
@@ -137,7 +161,7 @@ public class CustomerUI implements Processor {
         }
 
         // Get cart information
-        String message = "Cart:\n";
+        String message = "Shopping Cart:\n";
 
         String[] cart = new String[customer.getCartSize()];
         for (int i = 0; i < cart.length; i++) {
