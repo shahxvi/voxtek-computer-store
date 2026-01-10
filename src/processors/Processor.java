@@ -1,9 +1,9 @@
 // MIT License
 // Copyright (c) 2025 Shah
 
-package com.voxtek.processors;
+package processors;
 
-import product.*;
+import products.*;
 
 import java.io.*;
 import java.util.Scanner;

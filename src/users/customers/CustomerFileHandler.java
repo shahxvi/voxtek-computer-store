@@ -1,4 +1,4 @@
-package user.customer;
+package users.customers;
 
 class CustomerFileHandler {
 

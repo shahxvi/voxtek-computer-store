@@ -2,8 +2,6 @@
 // Copyright (c) 2025 Shah
 // Copyright (c) 2025 Marzell
 
-package com.voxtek;
-
 import processors.Processor;
 import users.*;
 import users.admins.*;

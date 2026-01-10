@@ -1,9 +1,9 @@
 // MIT License
 // Copyright (c) 2025 Shah
 
-package com.voxtek.products;
+package cproducts;
 
-import com.voxtek.processors.Processor;
+import processors.Processor;
 
 import java.io.File;
 

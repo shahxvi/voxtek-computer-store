@@ -1,11 +1,11 @@
 // MIT License
 // Copyright (c) 2025 Shah
 
-package user.customer;
+package users.customers;
 
-import user.User;
-import product.Product;
-import input.Processor;
+import users.User;
+import products.Product;
+import processors.Processor;
 
 import javax.swing.*;
 

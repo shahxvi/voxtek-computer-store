@@ -1,10 +1,10 @@
 // MIT License
 // Copyright (c) 2025 Shah
 
-package user.admin;
+package users.admins;
 
-import user.*;
-import product.Product;
+import users.*;
+import products.Product;
 
 import java.io.File;
 

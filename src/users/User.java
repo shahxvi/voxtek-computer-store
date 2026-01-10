@@ -2,9 +2,7 @@
 // Copyright (c) 2025 Shah
 // Copyright (c) 2025 Raden
 
-package user;
-
-import javax.swing.JOptionPane;
+package users;
 
 public abstract class User {
     protected String name;

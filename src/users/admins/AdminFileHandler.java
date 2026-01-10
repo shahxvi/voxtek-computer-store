@@ -1,10 +1,10 @@
 // MIT License
 // Copyright (c) 2025 Shah
 
-package user.admin;
+package users.admins;
 
-import product.*;
-import input.Processor;
+import products.*;
+import processors.Processor;
 
 import java.io.*;
 import java.util.Scanner;

@@ -1,11 +1,11 @@
 // MIT License
 // Copyright (c) 2025 Shah
 
-package user.customer;
+package users.customers;
 
-import input.Processor;
-import product.Product;
-import user.UserUI;
+import processors.Processor;
+import products.*;
+import users.UserUI;
 
 import javax.swing.JOptionPane;
 

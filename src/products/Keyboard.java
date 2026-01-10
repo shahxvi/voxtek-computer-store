@@ -1,7 +1,7 @@
 // MIT License
 // Copyright (c) 2025 Marzell
 
-package com.voxtek.products;
+package products;
 
 import java.io.*;
 import java.util.Scanner;

@@ -1,10 +1,10 @@
 // MIT License
 // Copyright (c) 2025 Shah
 
-package user.admin;
+package users.admins;
 
-import input.Processor;
-import product.*;
+import processors.Processor;
+import products.*;
 
 import javax.swing.JOptionPane;
 
