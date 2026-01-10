@@ -7,8 +7,6 @@ import users.User;
 import products.Product;
 import processors.Processor;
 
-import javax.swing.*;
-
 public class Customer extends User implements Processor {
     private Product[] productsCart;
     private int cartSize;

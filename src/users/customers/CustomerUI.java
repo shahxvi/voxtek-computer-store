@@ -4,7 +4,7 @@
 package users.customers;
 
 import processors.Processor;
-import products.*;
+import products.Product;
 import users.UserUI;
 
 import javax.swing.JOptionPane;
@@ -25,7 +25,7 @@ public class CustomerUI implements Processor {
                 }
 
                 if (customer == null) {
-                    break;
+                    continue;
                 }
 
                 String strOption = UserUI.chooseInventory();
@@ -77,19 +77,27 @@ public class CustomerUI implements Processor {
 
     public static void menu() {
         String str = "Please enter your option";
-        Object[] options = { "Browse", "Cart", "Cancel" };
 
+        Object[] options = { "Browse", "Cart", "Cancel" };
+        if (customer != null) {
+            options[2] = "Logout";
+        }
         int chosenOption = JOptionPane.showOptionDialog(null, str, "Customer Menu", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+
         if (chosenOption == 0) {
             browse = true;
             cart = false;
+            exit = false;
         } else if (chosenOption == 1) {
             cart = true;
             browse = false;
+            exit = false;
         } else {
             cart = false;
             browse = false;
             exit = true;
+
+            customer = null;
         }
     }
 

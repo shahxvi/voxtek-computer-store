@@ -1,7 +1,7 @@
 // MIT License
 // Copyright (c) 2025 Shah
 
-package user;
+package users;
 
 import javax.swing.JOptionPane;
 

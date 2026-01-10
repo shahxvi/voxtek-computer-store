@@ -54,12 +54,6 @@ class AdminUI implements Processor {
     }
 
     public static Admin createAdmin() {
-        String[] prompts = {
-                "Enter admin's name",
-                "Enter admin's phone number",
-                "Enter admin's ID",
-                "Enter admin's password"
-        };
         boolean choseExit = false;
 
         JOptionPane.showMessageDialog(null, "Admin file not found.");

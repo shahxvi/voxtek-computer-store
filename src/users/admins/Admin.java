@@ -88,8 +88,7 @@ public class Admin extends User {
 
             if (intOption == 0) {
                 products[chosenProduct] = AdminFileHandler.addLaptop(products[chosenProduct]);
-            }
-            else if (intOption == 1) {
+            } else if (intOption == 1) {
                 products[chosenProduct] = AdminFileHandler.removeProduct(products[chosenProduct]);
             }
         } while (!choseExit);
