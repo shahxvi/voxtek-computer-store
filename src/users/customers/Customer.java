@@ -62,12 +62,18 @@ public class Customer extends User implements Processor {
         return Processor.reorganizeInventory(original);
     }
 
-    public Product removeProduct(int index) {
-        productsCart[index] = null;
+    public Product removeProduct(int removeIndex) {
+        Product removedProduct;
+        if (productsCart[removeIndex] instanceof Laptop) {
+            removedProduct = new Laptop(productsCart[removeIndex]);
+        } else if (productsCart[removeIndex] instanceof Keyboard) {
+            removedProduct = new Keyboard(productsCart[removeIndex]);
+        }
+        productsCart[removeIndex] = null;
         cartPointer--;
 
         productsCart = Processor.reorganizeInventory(productsCart);
-        return null;
+        return removedProduct;
     }
 
     public Product[] getProductsCart() {

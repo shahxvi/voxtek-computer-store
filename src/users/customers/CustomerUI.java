@@ -63,7 +63,15 @@ public class CustomerUI implements Processor {
                     products[1] = selectedInventory;
                 }
             } else if (cart) {
-                cart();
+                int intOption = shoppingCart();
+
+                if (intOption == 0) {
+                    //TODO: put removedProduct back into the original product
+                    Product removedProduct = removeProduct();
+                } else if (intOption == 1) {
+                    checkout();
+                    return;
+                }
             }
         } while (!exit);
 
@@ -154,10 +162,10 @@ public class CustomerUI implements Processor {
         return products[i];
     }
 
-    public static void cart() {
+    public static int shoppingCart() {
         if (customer == null || customer.getCartSize() <= 0) {
             JOptionPane.showMessageDialog(null, "Your cart is empty.");
-            return;
+            return -1;
         }
 
         // Get cart information
@@ -169,23 +177,26 @@ public class CustomerUI implements Processor {
         }
 
         Object[] options = { "Remove Product" , "Checkout", "Back" };
-        int intOption = JOptionPane.showOptionDialog(null, message, "Browse Products", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[1]);
-        if (intOption == 0) {
-            // removeProduct
-        } else if (intOption == 1) {
-            checkout();
-        } else {
-            return;
-        }
+        return JOptionPane.showOptionDialog(null, message, "Browse Products", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[1]);
     }
 
-    public static void removeProduct() {
+    public static Product removeProduct() {
         String[] cart = new String[customer.getCartSize()];
 
         for (int i = 0; i < cart.length; i++) {
             cart[i] = customer.getProduct(i).toShortString();
         }
         String chosenOption = (String) JOptionPane.showInputDialog(null, "Please choose an inventory", "Choose Inventory", JOptionPane.QUESTION_MESSAGE, null, cart, cart[0]);
+
+        int removedIndex = -1;
+        for (int i = 0; i < cart.length; i++) {
+            if (cart[i].equals(chosenOption)) {
+                removedIndex = i;
+                break;
+            }
+        }
+
+        return customer.removeProduct(removedIndex);
     }
 
     public static void checkout() {
