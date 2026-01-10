@@ -30,7 +30,7 @@ public class Main implements Processor {
         Product.initializeInventory(products, inventoryFiles);
 
         Customer customer;
-        Admin admin;
+        Admin admin = new Admin();
 
         int intOption;
         String strOption;
@@ -48,8 +48,7 @@ public class Main implements Processor {
             if (choseCustomer) {
                 CustomerUI.run(products);
             } else if (choseAdmin) {
-                // user = new Admin();
-                // Admin.flow(products, user, adminFile);
+                AdminUI.run(products, admin, adminFile);
             }
         } while (!choseExit);
 
