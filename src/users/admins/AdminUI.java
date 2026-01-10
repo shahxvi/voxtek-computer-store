@@ -136,13 +136,23 @@ class AdminUI implements Processor {
         return new Laptop(brand, model, price, cpu, memoryGB, storageGB, storageType);
     }
 
-    //static Keyboard createKeyboard() {
-    //    String brand = JOptionPane.showInputDialog("Please enter brand");
-    //    String model = JOptionPane.showInputDialog("Please enter model");
-    //    String priceStr = JOptionPane.showInputDialog("Please enter price");
-    //
-    //    return new Keyboard(String model, String brand, double price, String switchType, boolean isWireless);
-    //}
+    static Keyboard createKeyboard() {
+        String brand = JOptionPane.showInputDialog("Please enter brand");
+        String model = JOptionPane.showInputDialog("Please enter model");
+        String priceStr = JOptionPane.showInputDialog("Please enter price");
+
+        while (!Processor.isInteger(priceStr)) {
+            JOptionPane.showMessageDialog(null, "Please enter digitls onyl for price");
+            priceStr = JOptionPane.showInputDialog("Please enter price");
+        }
+        int price = Integer.parseInt(priceStr);
+
+        String switchType = JOptionPane.showInputDialog("Please enter switch type");
+        boolean isWireless = JOptionPane.showConfirmDialog(null, "Is the keyboard wireless?",
+                "Yes/No", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
+
+        return new Keyboard(model, brand, price, switchType, isWireless);
+    }
 
     static String chooseProductToRemoveProduct(Product[] products) {
         // Get Usable size
