@@ -1,4 +1,3 @@
-Logitech;G Pro X;650.00;GX Blue;false
 Keychron;K6;450.00;Gateron Brown;true
 Razer;BlackWidow V3;700.00;Razer Green;false
 Corsair;K70 RGB MK.2;750.00;Cherry MX Red;false

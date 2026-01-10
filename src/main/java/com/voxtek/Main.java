@@ -2,11 +2,13 @@
 // Copyright (c) 2025 Shah
 // Copyright (c) 2025 Marzell
 
-import input.Processor;
-import user.*;
-import user.admin.*;
-import user.customer.*;
-import product.*;
+package com.voxtek;
+
+import processors.Processor;
+import users.*;
+import users.admins.*;
+import users.customers.*;
+import products.*;
 
 import java.io.*;
 import javax.swing.*;
@@ -15,6 +17,8 @@ public class Main implements Processor {
     public static void main(String[] args) {
         final int laptopIndex = 0, keyboardIndex = 1;
         final int adminIndex = 0, membersIndex = 1, customerIndex = 2;
+
+        File adminFile = new File("admin.txt");
 
         File[] inventoryFiles = {
                 new File("laptops.txt"),
@@ -27,10 +31,7 @@ public class Main implements Processor {
         };
         Product.initializeInventory(products, inventoryFiles);
 
-        File adminFile = new File("admin.txt");
-        File membersFile = new File("members.txt");
-
-        Customer customer = null;
+        Customer customer;
         Admin admin;
 
         int intOption;
@@ -49,8 +50,8 @@ public class Main implements Processor {
             if (choseCustomer) {
                 CustomerUI.run(products);
             } else if (choseAdmin) {
-                //user = new Admin();
-                //Admin.flow(products, user, adminFile);
+                // user = new Admin();
+                // Admin.flow(products, user, adminFile);
             }
         } while (!choseExit);
 
@@ -61,7 +62,7 @@ public class Main implements Processor {
     }
 
     public static void writeToFile(Product[] product, File file) {
-        try (PrintWriter outputFile = new PrintWriter(file)){
+        try (PrintWriter outputFile = new PrintWriter(file)) {
             for (int i = 0; i < Processor.getUsableArraySize(product); i++) {
                 outputFile.println(product[i].toRecord());
             }

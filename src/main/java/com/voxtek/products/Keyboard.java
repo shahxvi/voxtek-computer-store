@@ -1,7 +1,7 @@
 // MIT License
 // Copyright (c) 2025 Marzell
 
-package product;
+package com.voxtek.products;
 
 import java.io.*;
 import java.util.Scanner;
@@ -88,6 +88,6 @@ public class Keyboard extends Product {
 
     @Override
     public String toShortString() {
-        return brand + " " + model + "\t\tRM" + price;
+        return brand + " " + model + " (RM" + price + ")";
     }
 }

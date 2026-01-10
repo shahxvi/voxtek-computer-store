@@ -20,7 +20,14 @@ public class CustomerUI implements Processor {
             menu();
 
             if (browse) {
-                createCustomer();
+                if (customer == null) {
+                    createCustomer();
+                }
+
+                if (customer == null) {
+                    break;
+                }
+
                 String strOption = UserUI.chooseInventory();
 
                 Product[] selectedInventory = null;
@@ -122,13 +129,15 @@ public class CustomerUI implements Processor {
         }
 
         // Get cart information
+        String message = "Cart:\n";
+
         String[] cart = new String[customer.getCartSize()];
         for (int i = 0; i < cart.length; i++) {
-            cart[i] = customer.getProduct(i).toShortString();
+            message += (i+1) + ". " + customer.getProduct(i).toShortString() + "\n";
         }
 
-        Object[] options = { "Remove" , "Checkout", "Back" };
-        int intOption = JOptionPane.showOptionDialog(null, cart, "Browse Products", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[1]);
+        Object[] options = { "Remove Product" , "Checkout", "Back" };
+        int intOption = JOptionPane.showOptionDialog(null, message, "Browse Products", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[1]);
         if (intOption == 0) {
             // removeProduct
         } else if (intOption == 1) {
