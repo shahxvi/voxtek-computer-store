@@ -59,6 +59,8 @@ public class Main implements Processor {
     }
 
     public static void writeToFile(Product[] product, File file) {
+        product = Processor.reorganizeInventory(product);
+
         try (PrintWriter outputFile = new PrintWriter(file)) {
             for (int i = 0; i < Processor.getUsableArraySize(product); i++) {
                 outputFile.println(product[i].toRecord());

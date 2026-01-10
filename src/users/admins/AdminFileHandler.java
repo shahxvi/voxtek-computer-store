@@ -81,32 +81,25 @@ class AdminFileHandler implements Processor {
         return true;
     }
 
-    public static Product[] addLaptop(Product[] products) {
+    public static Product[] addProduct(Product[] products) {
         int emptyPointer = 0;
         for (int i = 0; i < products.length; i++) {
             if (products[i] == null)
                 emptyPointer = i;
         }
-        Laptop laptop = AdminUI.createLaptop();
 
-        products[emptyPointer] = laptop;
+        Product addedProduct = null;
+        if (products instanceof Laptop[]) {
+            addedProduct = AdminUI.createLaptop();
+        } else if (products instanceof Keyboard[]) {
+            addedProduct = AdminUI.createKeyboard();
+        }
+
+        products[emptyPointer] = addedProduct;
 
         return products;
     }
 
-    //public static Product[] addKeyboard(Product[] products) {
-    //    int emptyPointer = 0;
-    //    for (int i = 0; i < products.length; i++) {
-    //        if (products[i] == null)
-    //            emptyPointer = i;
-    //    }
-    //    Keyboard keyboard = AdminUI.createKeyboard();
-    //
-    //    products[emptyPointer] = keyboard;
-    //
-    //    return products;
-    //}
-    //
     static Product[] removeProduct(Product[] products) {
         String chosenProduct = AdminUI.chooseProductToRemoveProduct(products);
 
@@ -123,6 +116,8 @@ class AdminFileHandler implements Processor {
         }
 
         products[removedItem] = null;
+
+        JOptionPane.showMessageDialog(null, "Product removed");
 
         return Processor.reorganizeInventory(products);
     }
