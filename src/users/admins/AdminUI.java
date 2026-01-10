@@ -24,14 +24,14 @@ public class AdminUI implements Processor {
             return;
 
         do {
-            strOption = UserUI.chooseInventory();
-
-            if (strOption == null)
-                break;
-
             intOption = chooseAddOrRemoveProduct();
+            if (intOption == -1 || intOption == 2) {
+                break;
+            }
 
-            choseExit = (intOption == 2 && intOption == -1);
+            strOption = UserUI.chooseInventory();
+            if (strOption == null)
+                continue;
 
             int chosenProduct = -1;
             if (strOption.equalsIgnoreCase("Laptops"))
@@ -40,7 +40,7 @@ public class AdminUI implements Processor {
                 chosenProduct = 1;
 
             if (intOption == 0) {
-                products[chosenProduct] = AdminFileHandler.addLaptop(products[chosenProduct]);
+                products[chosenProduct] = AdminFileHandler.addProduct(products[chosenProduct]);
             } else if (intOption == 1) {
                 products[chosenProduct] = AdminFileHandler.removeProduct(products[chosenProduct]);
             }
@@ -234,8 +234,7 @@ public class AdminUI implements Processor {
             return null;
         }
 
-        boolean isWireless = JOptionPane.showConfirmDialog(null, "Is the keyboard wireless?",
-                "Yes/No", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
+        boolean isWireless = JOptionPane.showConfirmDialog(null, "Is the keyboard wireless?", "Yes/No", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
 
         return new Keyboard(brand, model, price, switchType, isWireless);
     }
