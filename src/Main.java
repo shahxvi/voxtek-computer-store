@@ -19,8 +19,8 @@ public class Main implements Processor {
         File adminFile = new File("admin.txt");
 
         File[] inventoryFiles = {
-                new File("src/laptops.txt"),
-                new File("src/keyboards.txt"),
+                new File("laptops.txt"),
+                new File("keyboards.txt"),
         };
 
         Product[][] products = {
