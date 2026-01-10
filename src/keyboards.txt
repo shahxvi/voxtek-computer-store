@@ -7,4 +7,3 @@ Ducky;One 2 Mini;520.00;Cherry MX Brown;false
 Royal Kludge;RK61;250.00;Brown Switch;true
 Akko;3068B;400.00;Akko Jelly Pink;true
 Redragon;K552;180.00;Outemu Blue;false
-HyperX;Alloy Origins;620.00;HyperX Red;false

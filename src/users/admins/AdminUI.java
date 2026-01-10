@@ -134,7 +134,7 @@ public class AdminUI implements Processor {
         }
         id = Integer.parseInt(strInput);
 
-        password = JOptionPane.showInputDialog("Please enter admin's name ");
+        password = JOptionPane.showInputDialog("Please enter admin's password");
         if (password == null) {
             return null;
         }
