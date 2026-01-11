@@ -41,6 +41,9 @@ public interface Processor {
             reorganizedProducts = new Laptop[products.length];
         } else if (products instanceof Keyboard[]) {
             reorganizedProducts = new Keyboard[products.length];
+        } else {
+            // Handle generic Product[] arrays (e.g., from Customer.productsCart)
+            reorganizedProducts = new Product[products.length];
         }
 
         int index = 0;
