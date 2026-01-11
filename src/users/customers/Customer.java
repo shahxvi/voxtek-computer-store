@@ -74,8 +74,6 @@ public class Customer extends User implements Processor {
         productsCart[removeIndex] = null;
         cartPointer--;
 
-        System.out.println(productsCart);
-
         productsCart = Processor.reorganizeInventory(productsCart);
         return removedProduct;
     }
