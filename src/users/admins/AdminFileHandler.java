@@ -78,6 +78,8 @@ class AdminFileHandler implements Processor {
             return false;
         }
 
+        JOptionPane.showMessageDialog(null, "Admin File Created!");
+
         return true;
     }
 

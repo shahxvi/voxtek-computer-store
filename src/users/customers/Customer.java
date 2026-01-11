@@ -74,6 +74,8 @@ public class Customer extends User implements Processor {
         productsCart[removeIndex] = null;
         cartPointer--;
 
+        System.out.println(productsCart);
+
         productsCart = Processor.reorganizeInventory(productsCart);
         return removedProduct;
     }
@@ -96,19 +98,28 @@ public class Customer extends User implements Processor {
         return productsCart[index];
     }
 
+    public double getTotalPrice() {
+        double totalPrice = 0.00;
+        for (int i = 0; i < cartPointer; i++) {
+            totalPrice += productsCart[i].getPrice();
+        }
+        return totalPrice;
+    }
+
     public String toString() {
         if (productsCart == null) {
             return "\nName: " + name +
                    "\nPhone Number: " + phoneNumber;
         }
 
-        String str = "";
+        String products = "";
         for (int i = 0; i < cartPointer; i++) {
-            str += ("\n" + productsCart[i].toShortString());
+            products += ("\n" + productsCart[i].toShortString());
         }
 
         return "\nName: " + name +
                "\nPhone Number: " + phoneNumber +
-               "\n" + str;
+               "\n" + products +
+               "\nTotal Price: RM" + getTotalPrice();
     }
 }

@@ -14,7 +14,7 @@ public class UserUI {
         String str;
         Object[] options = { "Customer", "Admin", "Exit" };
         str = "Welcome to VoxTek Technology Store\n";
-        str += "Please choose your option: ";
+        str += "Please choose your option";
 
         int chosenOption = JOptionPane.showOptionDialog(null, str, "VoxTek", JOptionPane.DEFAULT_OPTION,
                 JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
