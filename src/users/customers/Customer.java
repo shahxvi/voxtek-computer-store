@@ -43,7 +43,7 @@ public class Customer extends User implements Processor {
      * This method will add the product and removes the original one
      */
     public Product[] addProduct(Product product, Product[] original) {
-        if (productsCart == null) {
+        if (productsCart == null || original == null || product == null) {
             return original;
         }
         productsCart[cartPointer] = product;
@@ -56,6 +56,7 @@ public class Customer extends User implements Processor {
             }
         }
         cartPointer++;
+
         if (deleteIndex != -1) {
             original[deleteIndex] = null;
         }
@@ -63,21 +64,22 @@ public class Customer extends User implements Processor {
     }
 
     public Product removeProduct(int removeIndex) {
-        Product removedProduct = null;
-
-        if (productsCart[removeIndex] instanceof Laptop) {
-            removedProduct = new Laptop((Laptop) productsCart[removeIndex]);
-        } else if (productsCart[removeIndex] instanceof Keyboard) {
-            removedProduct = new Keyboard((Keyboard) productsCart[removeIndex]);
+        if (removeIndex < 0 || removeIndex >= cartPointer) {
+            return null;
         }
 
-        productsCart[removeIndex] = null;
-        cartPointer--;
+        Product removedProduct = this.productsCart[removeIndex];
 
-        System.out.println(productsCart);
+        this.productsCart[removeIndex] = null;
+        this.cartPointer--;
 
-        productsCart = Processor.reorganizeInventory(productsCart);
+        reorganize();
+
         return removedProduct;
+    }
+
+    public void setProductsCart(Product[] products) {
+        this.productsCart = products;
     }
 
     public Product[] getProductsCart() {
@@ -121,5 +123,18 @@ public class Customer extends User implements Processor {
                "\nPhone Number: " + phoneNumber +
                "\n" + products +
                "\nTotal Price: RM" + getTotalPrice();
+    }
+
+    public void reorganize() {
+        Product[] reorganizedProducts = new Product[50];
+
+        int index = 0;
+        for (int i = 0; i < reorganizedProducts.length; i++) {
+            if (productsCart[i] == null) {
+                continue;
+            }
+            reorganizedProducts[index++] = productsCart[i];
+        }
+        this.productsCart = reorganizedProducts;
     }
 }

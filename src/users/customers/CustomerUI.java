@@ -17,14 +17,13 @@ public class CustomerUI implements Processor {
     private static boolean exit = false;
 
     public static void run(Product[][] inventory) {
-
         // Create a backup product if the user cancels to restore the original product
         Product[][] backupProducts = new Product[50][50];
         for (int i = 0; i < inventory.length; i++) {
-            for (int j = 0; j < Processor.getUsableArraySize(inventory[i]); j++) {
-                if (inventory[i][j] instanceof Laptop) {
+            for (int j = 0; j < inventory[i].length; j++) {
+                if (inventory[i][j] != null && inventory[i][j] instanceof Laptop) {
                     backupProducts[i][j] = new Laptop((Laptop) inventory[i][j]);
-                } else if (inventory[i][j] instanceof Keyboard) {
+                } else if (inventory[i][j] != null && inventory[i][j] instanceof Keyboard) {
                     backupProducts[i][j] = new Keyboard((Keyboard) inventory[i][j]);
                 }
             }
@@ -65,6 +64,7 @@ public class CustomerUI implements Processor {
                     inventory[1] = selectedInventory;
                 }
             } else if (cart) {
+
                 int intOption = shoppingCart();
 
                 if (intOption == 0) {
@@ -79,7 +79,8 @@ public class CustomerUI implements Processor {
                     } else if (removedProduct instanceof Keyboard) {
                         index = 1;
                     }
-                    for (int j = 0; j < Processor.getUsableArraySize(inventory[index]); j++) { 
+
+                    for (int j = 0; j < inventory[index].length; j++) { 
                         if (inventory[index][j] == null) {
                             inventory[index][j] = removedProduct;
                             break;
@@ -87,6 +88,7 @@ public class CustomerUI implements Processor {
                     }
                 } else if (intOption == 1) {
                     checkout();
+                    customer = null;
                     return;
                 }
             }
@@ -94,8 +96,10 @@ public class CustomerUI implements Processor {
 
         if (logout) {
             for (int i = 0; i < backupProducts.length; i++) {
-                for (int j = 0; j < Processor.getUsableArraySize(backupProducts[i]); j++) {
+                for (int j = 0; j < backupProducts[i].length; j++) {
+                    if (backupProducts[i][j] != null) {
                         inventory[i][j] = backupProducts[i][j];
+                    }
                 }
             }
         }
@@ -191,6 +195,7 @@ public class CustomerUI implements Processor {
         String message = "Shopping Cart:\n";
 
         String[] cart = new String[customer.getCartSize()];
+
         for (int i = 0; i < cart.length; i++) {
             message += (i+1) + ". " + customer.getProduct(i).toShortString() + "\n";
         }

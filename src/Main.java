@@ -52,6 +52,14 @@ public class Main implements Processor {
             }
         } while (!choseExit);
 
+        for (Product p : products[laptopIndex]) {
+            if (p == null) {
+                System.out.println("null");
+            } else {
+                System.out.println(p.toShortString());
+            }
+        }
+
         writeToFile(products[laptopIndex], inventoryFiles[laptopIndex]);
         writeToFile(products[keyboardIndex], inventoryFiles[keyboardIndex]);
 
@@ -62,8 +70,10 @@ public class Main implements Processor {
         product = Processor.reorganizeInventory(product);
 
         try (PrintWriter outputFile = new PrintWriter(file)) {
-            for (int i = 0; i < Processor.getUsableArraySize(product); i++) {
-                outputFile.println(product[i].toRecord());
+            for (int i = 0; i < product.length; i++) {
+                if (product[i] != null) {
+                    outputFile.println(product[i].toRecord());
+                }
             }
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
