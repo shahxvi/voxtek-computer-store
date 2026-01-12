@@ -2,32 +2,18 @@
 // Copyright (c) 2025 Shah
 // Copyright (c) 2025 Marzell
 
-import processors.Processor;
 import users.*;
 import users.admins.*;
 import users.customers.*;
-import products.*;
+import products.Inventory;
 
 import java.io.*;
-import javax.swing.*;
 
-public class Main implements Processor {
+public class Main {
     public static void main(String[] args) {
-        final int laptopIndex = 0, keyboardIndex = 1;
-        final int adminIndex = 0, membersIndex = 1, customerIndex = 2;
-
         File adminFile = new File("admin.txt");
 
-        File[] inventoryFiles = {
-                new File("laptops.txt"),
-                new File("keyboards.txt"),
-        };
-
-        Product[][] products = {
-                new Laptop[50],
-                new Keyboard[50]
-        };
-        Product.initializeInventory(products, inventoryFiles);
+        Inventory inventory = new Inventory(50, 50, new File("laptops.txt"), new File("keyboards.txt"));
 
         Customer customer;
         Admin admin = new Admin();
@@ -46,37 +32,14 @@ public class Main implements Processor {
             choseExit = (intOption == 2 || intOption == -1);
 
             if (choseCustomer) {
-                CustomerUI.run(products);
+                CustomerUI.run(inventory);
             } else if (choseAdmin) {
-                AdminUI.run(products, admin, adminFile);
+                // AdminUI.run(inventory, admin, adminFile);
             }
         } while (!choseExit);
 
-        for (Product p : products[laptopIndex]) {
-            if (p == null) {
-                System.out.println("null");
-            } else {
-                System.out.println(p.toShortString());
-            }
-        }
-
-        writeToFile(products[laptopIndex], inventoryFiles[laptopIndex]);
-        writeToFile(products[keyboardIndex], inventoryFiles[keyboardIndex]);
+        inventory.writeToFile();
 
         System.exit(0);
-    }
-
-    public static void writeToFile(Product[] product, File file) {
-        product = Processor.reorganizeInventory(product);
-
-        try (PrintWriter outputFile = new PrintWriter(file)) {
-            for (int i = 0; i < product.length; i++) {
-                if (product[i] != null) {
-                    outputFile.println(product[i].toRecord());
-                }
-            }
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage());
-        }
     }
 }

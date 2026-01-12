@@ -39,33 +39,17 @@ public class Customer extends User implements Processor {
     }
     /* Constructors */
 
-    /*
-     * This method will add the product and removes the original one
-     */
-    public Product[] addProduct(Product product, Product[] original) {
-        if (productsCart == null || original == null || product == null) {
-            return original;
+    public void addProduct(Product product, Inventory inventory) {
+        if (productsCart == null || inventory == null || product == null) {
+            return;
         }
-        productsCart[cartPointer] = product;
 
-        int deleteIndex = -1;
-        for (int i = 0; i < original.length; i++) {
-            if (original[i].equals(productsCart[cartPointer])) {
-                deleteIndex = i;
-                break;
-            }
-        }
-        cartPointer++;
-
-        if (deleteIndex != -1) {
-            original[deleteIndex] = null;
-        }
-        return Processor.reorganizeInventory(original);
+        productsCart[cartPointer++] = inventory.getProduct(product);
     }
 
-    public Product removeProduct(int removeIndex) {
+    public void removeProduct(int removeIndex, Inventory inventory) {
         if (removeIndex < 0 || removeIndex >= cartPointer) {
-            return null;
+            return;
         }
 
         Product removedProduct = this.productsCart[removeIndex];
@@ -75,7 +59,7 @@ public class Customer extends User implements Processor {
 
         reorganize();
 
-        return removedProduct;
+        inventory.addProduct(removedProduct);
     }
 
     public void setProductsCart(Product[] products) {

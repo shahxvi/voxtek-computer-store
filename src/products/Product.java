@@ -62,20 +62,6 @@ public abstract class Product implements Processor {
     }
     /* Getter */
 
-    public static void initializeInventory(Product[][] inventory, File[] file) {
-        for (int i = 0; i < inventory.length; i++) {
-            for (int j = 0; j < Processor.getInventorySize(file[i]); j++) {
-                if (inventory[i] instanceof Laptop[]) {
-                    inventory[i][j] = new Laptop();
-                } else if (inventory[i] instanceof Keyboard[]) {
-                    inventory[i][j] = new Keyboard();
-                }
-
-                inventory[i][j].load(file[i], j);
-            }
-        }
-    }
-
     /*
      * loadInventory()
      * This method must be implemented by every subclass.

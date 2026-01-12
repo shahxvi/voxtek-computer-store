@@ -16,18 +16,9 @@ public class CustomerUI implements Processor {
     private static boolean logout = false;
     private static boolean exit = false;
 
-    public static void run(Product[][] inventory) {
-        // Create a backup product if the user cancels to restore the original product
-        Product[][] backupProducts = new Product[50][50];
-        for (int i = 0; i < inventory.length; i++) {
-            for (int j = 0; j < inventory[i].length; j++) {
-                if (inventory[i][j] != null && inventory[i][j] instanceof Laptop) {
-                    backupProducts[i][j] = new Laptop((Laptop) inventory[i][j]);
-                } else if (inventory[i][j] != null && inventory[i][j] instanceof Keyboard) {
-                    backupProducts[i][j] = new Keyboard((Keyboard) inventory[i][j]);
-                }
-            }
-        }
+    public static void run(Inventory inventory) {
+        // Create a backup inventory if the user cancels to restore the original product
+        Inventory backupInventory = new Inventory(inventory);
 
         do {
             menu();
@@ -43,49 +34,30 @@ public class CustomerUI implements Processor {
 
                 String strOption = UserUI.chooseInventory();
 
-                Product[] selectedInventory = null;
+                int selectedInventory = -1;
                 if (strOption == null) {
                     continue;
                 } else if (strOption.equals("Laptops")) {
-                    selectedInventory = inventory[0];
+                    selectedInventory = 0;
                 } else if (strOption.equals("Keyboards")) {
-                    selectedInventory = inventory[1];
+                    selectedInventory = 1;
                 }
 
-                Product chosenProduct = browse(selectedInventory);
+                Product chosenProduct = browse(inventory.getInventory(selectedInventory));
                 if (chosenProduct == null)
                     continue;
 
-                selectedInventory = customer.addProduct(chosenProduct, selectedInventory);
-
-                if (strOption.equals("Laptops")) {
-                    inventory[0] = selectedInventory;
-                } else if (strOption.equals("Keyboards")) {
-                    inventory[1] = selectedInventory;
-                }
+                customer.addProduct(chosenProduct, inventory);
             } else if (cart) {
 
                 int intOption = shoppingCart();
 
                 if (intOption == 0) {
-                    Product removedProduct = removeProduct();
-                    if (removedProduct == null) {
+                    int removedProduct = removeProduct();
+                    if (removedProduct == -1) {
                         continue;
                     }
-
-                    int index = -1;
-                    if (removedProduct instanceof Laptop) {
-                        index = 0;
-                    } else if (removedProduct instanceof Keyboard) {
-                        index = 1;
-                    }
-
-                    for (int j = 0; j < inventory[index].length; j++) { 
-                        if (inventory[index][j] == null) {
-                            inventory[index][j] = removedProduct;
-                            break;
-                        }
-                    }
+                    customer.removeProduct(removedProduct, inventory);
                 } else if (intOption == 1) {
                     checkout();
                     customer = null;
@@ -95,13 +67,7 @@ public class CustomerUI implements Processor {
         } while (!exit);
 
         if (logout) {
-            for (int i = 0; i < backupProducts.length; i++) {
-                for (int j = 0; j < backupProducts[i].length; j++) {
-                    if (backupProducts[i][j] != null) {
-                        inventory[i][j] = backupProducts[i][j];
-                    }
-                }
-            }
+            inventory = backupInventory;
         }
     }
 
@@ -205,7 +171,7 @@ public class CustomerUI implements Processor {
         return JOptionPane.showOptionDialog(null, message, "Browse Products", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[1]);
     }
 
-    public static Product removeProduct() {
+    public static int removeProduct() {
         String[] cart = new String[customer.getCartSize()];
 
         for (int i = 0; i < cart.length; i++) {
@@ -221,11 +187,7 @@ public class CustomerUI implements Processor {
             }
         }
 
-        if (removedIndex == -1) {
-            return null;
-        }
-
-        return customer.removeProduct(removedIndex);
+        return removedIndex;
     }
 
     public static void checkout() {
