@@ -12,21 +12,23 @@ import java.util.StringTokenizer;
 import javax.swing.JOptionPane;
 
 class AdminFileHandler implements Processor {
+    private static File file = new File("admin.txt");
 
     /*
      * initializes the admin (loads admin from file to object)
      * if the file is missing or empty, it calls createAdminFile
      */
-    public static boolean initializeAdmin(Admin admin, File file) {
+    static boolean initializeAdmin(Admin admin) {
         boolean isInitialized = false;
 
         while (!isInitialized) {
             try {
-                loadAdmin(admin, file);
+                loadAdmin(admin);
                 isInitialized = true;
             } catch (FileNotFoundException e) {
                 admin = AdminUI.createAdmin();
-                boolean isCreated = createAdminFile(admin, file);
+                boolean isCreated = createAdminFile(admin);
+
                 if (!isCreated) {
                     return false; // User chose to exit
                 }
@@ -41,7 +43,7 @@ class AdminFileHandler implements Processor {
     /*
      * Loads admin from file to object (throws an exception)
      */
-    public static boolean loadAdmin(Admin admin, File file) throws FileNotFoundException {
+    static boolean loadAdmin(Admin admin) throws FileNotFoundException {
         try (Scanner inputFile = new Scanner(file)) {
             // Checks if empty or not
             if (!inputFile.hasNextLine()) {
@@ -63,7 +65,7 @@ class AdminFileHandler implements Processor {
     /*
      * Creates the admin file if it isn't already
      */
-     static boolean createAdminFile(Admin admin, File file) {
+     static boolean createAdminFile(Admin admin) {
         if (admin == null) {
             return false;
         }
@@ -81,46 +83,5 @@ class AdminFileHandler implements Processor {
         JOptionPane.showMessageDialog(null, "Admin File Created!");
 
         return true;
-    }
-
-    public static Product[] addProduct(Product[] products) {
-        int emptyPointer = 0;
-        for (int i = 0; i < products.length; i++) {
-            if (products[i] == null)
-                emptyPointer = i;
-        }
-
-        Product addedProduct = null;
-        if (products instanceof Laptop[]) {
-            addedProduct = AdminUI.createLaptop();
-        } else if (products instanceof Keyboard[]) {
-            addedProduct = AdminUI.createKeyboard();
-        }
-
-        products[emptyPointer] = addedProduct;
-
-        return products;
-    }
-
-    static Product[] removeProduct(Product[] products) {
-        String chosenProduct = AdminUI.chooseProductToRemoveProduct(products);
-
-        if (chosenProduct == null)
-            return products;
-
-        // Get the index of the chosen option
-        int removedItem = -1;
-        for (int i = 0; i < products.length; i++) {
-            if (chosenProduct.equalsIgnoreCase(products[i].toRecord())) {
-                removedItem = i;
-                break; // Exit loop when match is found
-            }
-        }
-
-        products[removedItem] = null;
-
-        JOptionPane.showMessageDialog(null, "Product removed");
-
-        return Processor.reorganizeInventory(products);
     }
 }

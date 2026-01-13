@@ -10,14 +10,15 @@ import users.UserUI;
 import java.io.*;
 import javax.swing.JOptionPane;
 
-public class AdminUI implements Processor {
+public class AdminUI extends UserUI implements Processor {
+    private static Admin admin = new Admin();
 
-    public static void run(Product[][] products, Admin admin, File file) {
+    public static void run(Inventory inventory) {
         String strOption;
         int intOption;
         boolean choseExit = false;
 
-        if (!AdminFileHandler.initializeAdmin(admin, file))
+        if (!AdminFileHandler.initializeAdmin(admin))
             return;
 
         if (!login(admin))
@@ -29,20 +30,10 @@ public class AdminUI implements Processor {
                 break;
             }
 
-            strOption = UserUI.chooseInventory();
-            if (strOption == null)
-                continue;
-
-            int chosenProduct = -1;
-            if (strOption.equalsIgnoreCase("Laptops"))
-                chosenProduct = 0;
-            else if (strOption.equalsIgnoreCase("Keyboards"))
-                chosenProduct = 1;
-
             if (intOption == 0) {
-                products[chosenProduct] = AdminFileHandler.addProduct(products[chosenProduct]);
+                addProduct(inventory);
             } else if (intOption == 1) {
-                products[chosenProduct] = AdminFileHandler.removeProduct(products[chosenProduct]);
+                removeProduct(inventory);
             }
         } while (!choseExit);
     }
@@ -142,6 +133,22 @@ public class AdminUI implements Processor {
         return new Admin(name, phoneNumber, id, password);
     }
 
+    static void addProduct(Inventory inventory) {
+        String strOption = chooseInventory();
+        if (strOption == null) {
+            return;
+        }
+
+        Product addedProduct = null;
+        if (strOption.equals("Laptops")) {
+            addedProduct = createLaptop();
+        } else if (strOption.equals("Keyboards")) {
+            addedProduct = createKeyboard();
+        }
+
+        inventory.addProduct(addedProduct);
+    }
+
     static Laptop createLaptop() {
         String brand = JOptionPane.showInputDialog("Please enter brand");
         if (brand == null) {
@@ -239,7 +246,29 @@ public class AdminUI implements Processor {
         return new Keyboard(brand, model, price, switchType, isWireless);
     }
 
-    static String chooseProductToRemoveProduct(Product[] products) {
+    static void removeProduct(Inventory inventory) {
+        String strOption = chooseInventory();
+        if (strOption == null) {
+            return;
+        }
+
+        boolean choseLaptop = false, choseKeyboard = false;
+        String chosenProduct = null;
+
+        if (strOption.equals("Laptops")) {
+            chosenProduct = chooseProductToRemove(inventory.getLaptopInventory());
+        } else if (strOption.equals("Keyboards")) {
+            chosenProduct = chooseProductToRemove(inventory.getKeyboardInventory());
+        }
+        if (chosenProduct == null) {
+            return;
+        }
+
+        inventory.removeProduct(chosenProduct);
+        JOptionPane.showMessageDialog(null, "Product removed");
+    }
+
+    static String chooseProductToRemove(Product[] products) {
         // Get Usable size
         int usableSize = Processor.getUsableArraySize(products);
 
@@ -249,6 +278,7 @@ public class AdminUI implements Processor {
         }
         String chosenProduct = (String) JOptionPane.showInputDialog(null, "Which item would you like to remove?",
                 "Remove Item", JOptionPane.QUESTION_MESSAGE, null, obj, obj[0]);
+
         return chosenProduct;
     }
 }

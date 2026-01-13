@@ -13,14 +13,14 @@ public class Inventory {
     private Product[][] inventory; // First array corresponds to type, the second is their datas
     private File[] file;
 
-    public Inventory(int laptopSize, int keyboardSize, File laptopFile, File keyboardFile) {
+    public Inventory(int laptopSize, int keyboardSize, String laptopFile, String keyboardFile) {
         this.inventory = new Product[numberOfProducts][];
         this.inventory[laptopIndex] = new Laptop[laptopSize];
         this.inventory[keyboardIndex] = new Keyboard[keyboardSize];
 
         this.file = new File[numberOfProducts];
-        this.file[laptopIndex] = laptopFile;
-        this.file[keyboardIndex] = keyboardFile;
+        this.file[laptopIndex] = new File(laptopFile);
+        this.file[keyboardIndex] = new File(keyboardFile);
 
         for (int i = 0; i < inventory.length; i++) {
             for (int j = 0; j < getRecordSize(file[i]); j++) {
@@ -37,25 +37,25 @@ public class Inventory {
 
     public Inventory(Inventory other) {
         this.inventory = new Product[other.inventory.length][];
-
         for (int i = 0; i < other.inventory.length; i++) {
-            // Allocate memory for the current product type
             this.inventory[i] = new Product[other.inventory[i].length];
             for (int j = 0; j < other.inventory[i].length; j++) {
                 if (other.inventory[i][j] != null) {
                     if (other.inventory[i][j] instanceof Laptop) {
-                        this.inventory[i][j] = new Laptop((Laptop) other.inventory[i][j]); // Deep copy Laptop
+                        this.inventory[i][j] = new Laptop((Laptop) other.inventory[i][j]); // Deep copy
                     } else if (other.inventory[i][j] instanceof Keyboard) {
-                        this.inventory[i][j] = new Keyboard((Keyboard) other.inventory[i][j]); // Deep copy Keyboard
+                        this.inventory[i][j] = new Keyboard((Keyboard) other.inventory[i][j]); // Deep copy
                     }
                 }
             }
         }
 
-        // Step 2: Copy files array (shallow copy, as `File` is immutable in Java)
+        // Recreate the files array (optional)
         this.file = new File[other.file.length];
         for (int i = 0; i < other.file.length; i++) {
-            this.file[i] = other.file[i];
+            if (other.file[i] != null) {
+                this.file[i] = new File(other.file[i].getPath()); // Reinitialize files
+            }
         }
     }
 
@@ -79,7 +79,7 @@ public class Inventory {
             chosenInventory = keyboardIndex;
         }
 
-        inventory[chosenInventory] = null;
+        inventory[chosenInventory][index] = null;
         reorganize(inventory[chosenInventory]);
     }
 
@@ -101,8 +101,33 @@ public class Inventory {
             }
         }
 
-        inventory[indexToRemove] = null;
+        if (productTypeIndex == -1 || indexToRemove == -1) {
+            return;
+        }
+
+        inventory[productTypeIndex][indexToRemove] = null;
         reorganize(inventory[productTypeIndex]);
+    }
+
+    public void removeProduct(String productRecord) {
+        int productType = -1, productIndex = -1;
+
+        for (int i = 0; i < inventory.length; i++) {
+            for (int j = 0; j < inventory[i].length; j++) {
+                if (inventory[i][j] != null && inventory[i][j].toRecord().equals(productRecord)) {
+                    productType = i;
+                    productIndex = j;
+                    break;
+                }
+            }
+        }
+
+        if (productType == -1 || productIndex == -1) {
+            return;
+        }
+
+        inventory[productType][productIndex] = null;
+        reorganize(inventory[productType]);
     }
 
     public Product getProduct(Product getProduct) {
@@ -150,11 +175,12 @@ public class Inventory {
         return this.inventory;
     }
 
-    public Product[] getInventory(int chosenIndex) {
-        if (chosenIndex < 0 || chosenIndex > 1) {
-            return null;
-        }
-        return this.inventory[chosenIndex];
+    public Product[] getLaptopInventory() {
+        return this.inventory[laptopIndex];
+    }
+
+    public Product[] getKeyboardInventory() {
+        return this.inventory[keyboardIndex];
     }
 
     public void writeToFile() {
