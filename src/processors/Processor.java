@@ -5,10 +5,6 @@ package processors;
 
 import products.*;
 
-import java.io.*;
-import java.util.Scanner;
-import javax.swing.JOptionPane;
-
 public interface Processor {
     public static boolean isInteger(String strInput) {
         if (strInput == null || strInput.isEmpty()) {
@@ -29,23 +25,5 @@ public interface Processor {
                 usableSize++;
         }
         return usableSize;
-    }
-
-    /*
-     * Method that returns the number of records in a file
-     */
-    public static int getInventorySize(File file) {
-        int recordSize = 0;
-        try (Scanner inputFile = new Scanner(file)) {
-            while (inputFile.hasNext()) {
-                inputFile.nextLine();
-                recordSize++;
-            }
-        } catch (FileNotFoundException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage());
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage());
-        }
-        return recordSize;
     }
 }

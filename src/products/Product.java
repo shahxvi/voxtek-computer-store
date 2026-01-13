@@ -3,11 +3,9 @@
 
 package products;
 
-import processors.Processor;
-
 import java.io.File;
 
-public abstract class Product implements Processor {
+public abstract class Product {
     /* Attributes */
     protected String brand;
     protected String model;

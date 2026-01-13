@@ -70,7 +70,7 @@ public class CustomerUI extends UserUI implements Processor {
         }
     }
 
-    public static void createCustomer() {
+    static void createCustomer() {
         String name = JOptionPane.showInputDialog("Please enter name ");
         if (name == null) {
             return;
@@ -89,7 +89,7 @@ public class CustomerUI extends UserUI implements Processor {
         customer = new Customer(name, phoneNumber, 50);
     }
 
-    public static void menu() {
+    static void menu() {
         String str = "Please enter your option";
         Object[] options = { "Browse", "Cart", "Cancel" };
 
@@ -124,7 +124,7 @@ public class CustomerUI extends UserUI implements Processor {
     /*
      * returns the selected product object
      */
-    public static Product browse(Product[] products) {
+    static Product browse(Product[] products) {
         Object[] options = { "Previous", "Add to Cart", "Next" };
         int chosenOption = 0;
         int usableSize = Processor.getUsableArraySize(products);
@@ -150,7 +150,7 @@ public class CustomerUI extends UserUI implements Processor {
         return products[i];
     }
 
-    public static int shoppingCart() {
+    static int shoppingCart() {
         if (customer == null || customer.getCartSize() <= 0) {
             JOptionPane.showMessageDialog(null, "Your cart is empty.");
             return -1;
@@ -170,7 +170,7 @@ public class CustomerUI extends UserUI implements Processor {
         return JOptionPane.showOptionDialog(null, message, "Browse Products", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[1]);
     }
 
-    public static int removeProduct() {
+    static int removeProduct() {
         String[] cart = new String[customer.getCartSize()];
 
         for (int i = 0; i < cart.length; i++) {
@@ -189,7 +189,7 @@ public class CustomerUI extends UserUI implements Processor {
         return removedIndex;
     }
 
-    public static void checkout() {
+    static void checkout() {
         JOptionPane.showMessageDialog(null, customer.toString());
     }
 }
