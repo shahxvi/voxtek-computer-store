@@ -95,7 +95,7 @@ public class Inventory {
 
         for (int i = 0; i < inventory[productTypeIndex].length; i++) {
             if (inventory[productTypeIndex][i] != null) {
-                if (inventory[productTypeIndex].equals(productToRemove)) {
+                if (inventory[productTypeIndex][i].equals(productToRemove)) {
                     indexToRemove = i;
                 }
             }

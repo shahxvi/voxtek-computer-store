@@ -74,7 +74,7 @@ public class Customer extends User implements Processor {
         if (productsCart == null) {
             return 0;
         }
-        return Processor.getUsableArraySize(productsCart);
+        return cartSize;
     }
 
     public Product getProduct(int index) {

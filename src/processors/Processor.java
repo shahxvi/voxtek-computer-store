@@ -32,28 +32,6 @@ public interface Processor {
     }
 
     /*
-     * This method reorganizes an array so that there's no null array in between
-     * populated index
-     */
-    public static Product[] reorganizeInventory(Product[] products) {
-        Product[] reorganizedProducts = null;
-        if (products instanceof Laptop[]) {
-            reorganizedProducts = new Laptop[products.length];
-        } else if (products instanceof Keyboard[]) {
-            reorganizedProducts = new Keyboard[products.length];
-        }
-
-        int index = 0;
-        for (int i = 0; i < products.length; i++) {
-            if (products[i] != null) {
-                reorganizedProducts[index++] = products[i];
-            }
-        }
-
-        return reorganizedProducts;
-    }
-
-    /*
      * Method that returns the number of records in a file
      */
     public static int getInventorySize(File file) {

@@ -3,7 +3,6 @@
 
 package users.admins;
 
-import products.*;
 import processors.Processor;
 
 import java.io.*;
