@@ -10,7 +10,7 @@ public class UserUI {
      * menu() - Gives user options to login as customer, admin or exit from the
      * program
      */
-    public static int menu() {
+    public static int mainMenu() {
         String str;
         Object[] options = { "Customer", "Admin", "Exit" };
         str = "Welcome to VoxTek Technology Store\n";

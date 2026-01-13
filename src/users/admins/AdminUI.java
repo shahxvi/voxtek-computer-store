@@ -7,14 +7,12 @@ import processors.Processor;
 import products.*;
 import users.UserUI;
 
-import java.io.*;
 import javax.swing.JOptionPane;
 
 public class AdminUI extends UserUI implements Processor {
     private static Admin admin = new Admin();
 
     public static void run(Inventory inventory) {
-        String strOption;
         int intOption;
         boolean choseExit = false;
 
@@ -252,9 +250,7 @@ public class AdminUI extends UserUI implements Processor {
             return;
         }
 
-        boolean choseLaptop = false, choseKeyboard = false;
         String chosenProduct = null;
-
         if (strOption.equals("Laptops")) {
             chosenProduct = chooseProductToRemove(inventory.getLaptopInventory());
         } else if (strOption.equals("Keyboards")) {

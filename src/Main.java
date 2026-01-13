@@ -16,7 +16,7 @@ public class Main {
 
         // The crux of the program
         do {
-            intOption = UserUI.menu();
+            intOption = UserUI.mainMenu();
 
             // Checks intOption and determine what the user chose
             choseCustomer = (intOption == 0);

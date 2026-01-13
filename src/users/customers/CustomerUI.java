@@ -9,7 +9,7 @@ import users.UserUI;
 
 import javax.swing.JOptionPane;
 
-public class CustomerUI implements Processor {
+public class CustomerUI extends UserUI implements Processor {
     private static Customer customer = null;
     private static boolean browse = false;
     private static boolean cart = false;
@@ -32,18 +32,17 @@ public class CustomerUI implements Processor {
                     continue;
                 }
 
-                String strOption = UserUI.chooseInventory();
+                String strOption = chooseInventory();
 
-                int selectedInventory = -1;
+                Product chosenProduct = null;
                 if (strOption == null) {
                     continue;
                 } else if (strOption.equals("Laptops")) {
-                    selectedInventory = 0;
+                    chosenProduct = browse(inventory.getLaptopInventory());
                 } else if (strOption.equals("Keyboards")) {
-                    selectedInventory = 1;
+                    chosenProduct = browse(inventory.getKeyboardInventory());
                 }
 
-                Product chosenProduct = browse(inventory.getInventory(selectedInventory));
                 if (chosenProduct == null)
                     continue;
 

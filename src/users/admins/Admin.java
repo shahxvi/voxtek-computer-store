@@ -4,9 +4,6 @@
 package users.admins;
 
 import users.*;
-import products.Product;
-
-import java.io.File;
 
 public class Admin extends User {
     private int id;
