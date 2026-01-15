@@ -58,7 +58,6 @@ public class Inventory {
                 } else if (p instanceof Keyboard) {
                     this.inventory[i][j] = new Keyboard((Keyboard) p);
                 } else {
-                    // fallback, shallow copy
                     this.inventory[i][j] = p;
                 }
             }
