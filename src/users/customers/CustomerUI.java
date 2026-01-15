@@ -56,6 +56,7 @@ public class CustomerUI extends UserUI implements Processor {
                     if (removedProduct == -1) {
                         continue;
                     }
+
                     customer.removeProduct(removedProduct, inventory);
                 } else if (intOption == 1) {
                     checkout();

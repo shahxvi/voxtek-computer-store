@@ -40,11 +40,7 @@ public class Customer extends User implements Processor {
     /* Constructors */
 
     public void addProduct(Product product, Inventory inventory) {
-        if (productsCart == null || inventory == null || product == null) {
-            return;
-        }
-
-        productsCart[cartPointer++] = inventory.getProduct(product);
+        this.productsCart[cartPointer++] = inventory.getProduct(product);
     }
 
     public void removeProduct(int removeIndex, Inventory inventory) {
@@ -71,10 +67,7 @@ public class Customer extends User implements Processor {
     }
 
     public int getCartSize() {
-        if (productsCart == null) {
-            return 0;
-        }
-        return cartSize;
+        return cartPointer;
     }
 
     public Product getProduct(int index) {
