@@ -13,14 +13,14 @@ public class Inventory {
     private Product[][] inventory; // First array corresponds to type, the second is their datas
     private File[] file;
 
-    public Inventory(int laptopSize, int keyboardSize, String laptopFile, String keyboardFile) {
+    public Inventory(int laptopSize, int keyboardSize, File laptopFile, File keyboardFile) {
         this.inventory = new Product[numberOfProducts][];
         this.inventory[laptopIndex] = new Laptop[laptopSize];
         this.inventory[keyboardIndex] = new Keyboard[keyboardSize];
 
         this.file = new File[numberOfProducts];
-        this.file[laptopIndex] = new File(laptopFile);
-        this.file[keyboardIndex] = new File(keyboardFile);
+        this.file[laptopIndex] = laptopFile;
+        this.file[keyboardIndex] = keyboardFile;
 
         for (int i = 0; i < inventory.length; i++) {
             for (int j = 0; j < getRecordSize(file[i]); j++) {
@@ -36,26 +36,62 @@ public class Inventory {
     }
 
     public Inventory(Inventory other) {
-        this.inventory = new Product[other.inventory.length][];
-        for (int i = 0; i < other.inventory.length; i++) {
-            this.inventory[i] = new Product[other.inventory[i].length];
+        this.inventory = new Product[numberOfProducts][];
+
+        for (int i = 0; i < numberOfProducts; i++) {
+            if (other.inventory[i] instanceof Laptop[]) {
+                this.inventory[i] = new Laptop[other.inventory[i].length];
+            } else if (other.inventory[i] instanceof Keyboard[]) {
+                this.inventory[i] = new Keyboard[other.inventory[i].length];
+            } else {
+                this.inventory[i] = new Product[other.inventory[i].length];
+            }
+        }
+
+        for (int i = 0; i < numberOfProducts; i++) {
             for (int j = 0; j < other.inventory[i].length; j++) {
-                if (other.inventory[i][j] != null) {
-                    if (other.inventory[i][j] instanceof Laptop) {
-                        this.inventory[i][j] = new Laptop((Laptop) other.inventory[i][j]); // Deep copy
-                    } else if (other.inventory[i][j] instanceof Keyboard) {
-                        this.inventory[i][j] = new Keyboard((Keyboard) other.inventory[i][j]); // Deep copy
-                    }
+                Product p = other.inventory[i][j];
+                if (p == null) {
+                    this.inventory[i][j] = null;
+                } else if (p instanceof Laptop) {
+                    this.inventory[i][j] = new Laptop((Laptop) p);
+                } else if (p instanceof Keyboard) {
+                    this.inventory[i][j] = new Keyboard((Keyboard) p);
+                } else {
+                    // fallback, shallow copy
+                    this.inventory[i][j] = p;
                 }
             }
         }
 
-        // Recreate the files array (optional)
-        this.file = new File[other.file.length];
-        for (int i = 0; i < other.file.length; i++) {
-            if (other.file[i] != null) {
-                this.file[i] = new File(other.file[i].getPath()); // Reinitialize files
+        this.file = new File[numberOfProducts];
+        for (int i = 0; i < numberOfProducts; i++) {
+            File f = other.file[i];
+            this.file[i] = (f == null) ? null : new File(f.getPath());
+        }
+    }
+
+   public void copyFrom(Inventory other) {
+        // Deep copy inventory arrays
+        for (int i = 0; i < numberOfProducts; i++) {
+            // Deep copy Product objects
+            for (int j = 0; j < this.inventory[i].length; j++) {
+                Product p = other.inventory[i][j];
+                if (p == null) {
+                    this.inventory[i][j] = null;
+                } else if (p instanceof Laptop) {
+                    this.inventory[i][j] = new Laptop((Laptop) p);
+                } else if (p instanceof Keyboard) {
+                    this.inventory[i][j] = new Keyboard((Keyboard) p);
+                } else {
+                    this.inventory[i][j] = p;
+                }
             }
+        }
+
+        for (int i = 0; i < numberOfProducts; i++) {
+            File f = other.file[i];
+            this.file[i] = (f == null) ? null : new File(f.getPath());
         }
     }
 
@@ -71,7 +107,6 @@ public class Inventory {
 
     // int laptopIndex = 0, keyboardIndex = 1;
     public void removeProduct(int chosenIndex, int index) {
-
         int chosenInventory = -1;
         if (chosenIndex == laptopIndex) {
             chosenInventory = laptopIndex;

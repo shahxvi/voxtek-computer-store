@@ -7,12 +7,14 @@ import users.admins.AdminUI;
 import users.customers.CustomerUI;
 import products.Inventory;
 
+import java.io.File;
+
 public class Main {
     public static void main(String[] args) {
         int intOption;
         boolean choseCustomer, choseExit, choseAdmin;
 
-        Inventory inventory = new Inventory(50, 50, "laptops.txt", "keyboards.txt");
+        Inventory inventory = new Inventory(50, 50, new File("laptops.txt"), new File("keyboards.txt"));
 
         // The crux of the program
         do {

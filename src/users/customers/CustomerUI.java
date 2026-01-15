@@ -17,7 +17,6 @@ public class CustomerUI extends UserUI implements Processor {
     private static boolean exit = false;
 
     public static void run(Inventory inventory) {
-        // Create a backup inventory if the user cancels to restore the original product
         Inventory backupInventory = new Inventory(inventory);
 
         do {
@@ -67,7 +66,7 @@ public class CustomerUI extends UserUI implements Processor {
         } while (!exit);
 
         if (logout) {
-            inventory = backupInventory;
+            inventory.copyFrom(backupInventory);
         }
     }
 
