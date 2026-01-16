@@ -4,12 +4,11 @@
 package users.customers;
 
 import java.io.*;
-import javax.swing.JOptionPane;
 
 class CustomerFileHandler {
     static void printOrder(Customer customer) {
         File fileName = new File(customer.getName() + "_");
-        try (PrintWriter outputFile = new PrintWriter()) {
+        try (PrintWriter outputFile = new PrintWriter(fileName)) {
             outputFile.println("VoxTek Technology Store Order");
             outputFile.println("Customer's Name: " + customer.getName());
             outputFile.println("Customer's Phone Number: " + customer.getPhoneNumber());

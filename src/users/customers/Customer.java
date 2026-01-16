@@ -9,8 +9,7 @@ import processors.Processor;
 
 public class Customer extends User implements Processor {
     private Product[] productsCart;
-    private int cartSize;
-    private int cartPointer = 0;
+    private int cartPointer = 0; // doubles as a cartSize
 
     /* Constructors */
     public Customer() {
