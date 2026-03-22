@@ -1,11 +1,11 @@
 // MIT License
 // Copyright (c) 2025 Shah
 
-package users.admins;
+package com.voxtek.user.admin;
 
-import processors.Processor;
-import products.*;
-import users.UserUI;
+import com.voxtek.processor.Processor;
+import com.voxtek.product.*;
+import com.user.UserUI;
 
 import javax.swing.JOptionPane;
 

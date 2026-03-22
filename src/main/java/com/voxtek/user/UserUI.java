@@ -1,7 +1,7 @@
 // MIT License
 // Copyright (c) 2025 Shah
 
-package users;
+package com.voxtek.user;
 
 import javax.swing.JOptionPane;
 

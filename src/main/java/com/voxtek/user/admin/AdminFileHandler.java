@@ -1,9 +1,9 @@
 // MIT License
 // Copyright (c) 2025 Shah
 
-package users.admins;
+package com.voxtek.user.admin;
 
-import processors.Processor;
+import com.voxtek.processor.Processor;
 
 import java.io.*;
 import java.util.Scanner;

@@ -1,11 +1,11 @@
 // MIT License
 // Copyright (c) 2025 Shah
 
-package users.customers;
+package com.voxtek.user.customer;
 
-import users.User;
-import products.*;
-import processors.Processor;
+import com.voxtek.user.User;
+import com.voxtek.product.*;
+import com.voxtek.processor.Processor;
 
 public class Customer extends User implements Processor {
     private Product[] productsCart;

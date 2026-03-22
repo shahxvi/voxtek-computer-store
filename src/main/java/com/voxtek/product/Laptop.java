@@ -1,7 +1,7 @@
 // MIT License
 // Copyright (c) 2025 Shah
 
-package products;
+package com.voxtek.product;
 
 import java.io.*;
 import java.util.Scanner;
