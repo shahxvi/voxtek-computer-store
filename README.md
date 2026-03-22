@@ -8,30 +8,41 @@ CSC186 Group Project
 ```
 voxtek-technology-store
 ├── LICENSE
+├── pom.xml
 ├── README.md
 └── src
-    ├── admin.txt
-    ├── keyboards.txt
-    ├── laptops.txt
-    ├── Main.java
-    ├── processors
-    │   └── Processor.java
-    ├── products
-    │   ├── Inventory.java
-    │   ├── Keyboard.java
-    │   ├── Laptop.java
-    │   └── Product.java
-    └── users
-        ├── admins
-        │   ├── AdminFileHandler.java
-        │   ├── Admin.java
-        │   └── AdminUI.java
-        ├── customers
-        │   ├── CustomerFileHandler.java
-        │   ├── Customer.java
-        │   └── CustomerUI.java
-        ├── User.java
-        └── UserUI.java
+    ├── main
+    │   ├── java
+    │   │   └── com
+    │   │       └── voxtek
+    │   │           ├── Main.java
+    │   │           ├── processor
+    │   │           │   └── Processor.java
+    │   │           ├── product
+    │   │           │   ├── Inventory.java
+    │   │           │   ├── Keyboard.java
+    │   │           │   ├── Laptop.java
+    │   │           │   └── Product.java
+    │   │           └── user
+    │   │               ├── admin
+    │   │               │   ├── AdminFileHandler.java
+    │   │               │   ├── Admin.java
+    │   │               │   └── AdminUI.java
+    │   │               ├── customer
+    │   │               │   ├── CustomerFileHandler.java
+    │   │               │   ├── Customer.java
+    │   │               │   └── CustomerUI.java
+    │   │               ├── User.java
+    │   │               └── UserUI.java
+    │   └── resources
+    │       ├── keyboards.txt
+    │       ├── laptops.txt
+    │       └── voxtek-techonology-store-2.0.jar
+    └── test
+        └── java
+            └── com
+                └── voxtek
+                    └── AppTest.java
 
-7 directories, 19 files
+16 directories, 21 files
 ```
