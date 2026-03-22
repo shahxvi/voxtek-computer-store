@@ -68,7 +68,7 @@
           <configuration>
             <archive>
               <manifest>
-                <mainClass>com.voxtek.Main<mainClass>
+                <mainClass>com.voxtek.Main</mainClass>
               </manifest>
             </archive>
           </configuration>

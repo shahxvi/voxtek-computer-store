@@ -5,7 +5,7 @@ package com.voxtek.user.admin;
 
 import com.voxtek.processor.Processor;
 import com.voxtek.product.*;
-import com.user.UserUI;
+import com.voxtek.user.UserUI;
 
 import javax.swing.JOptionPane;
 
