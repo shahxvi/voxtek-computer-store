@@ -36,13 +36,11 @@ voxtek-technology-store
     │   │               └── UserUI.java
     │   └── resources
     │       ├── keyboards.txt
-    │       ├── laptops.txt
-    │       └── voxtek-techonology-store-2.0.jar
+    │       └── laptops.txt
     └── test
         └── java
             └── com
                 └── voxtek
                     └── AppTest.java
-
 16 directories, 21 files
 ```
