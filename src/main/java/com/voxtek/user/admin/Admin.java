@@ -1,9 +1,9 @@
 // MIT License
 // Copyright (c) 2025 Shah
 
-package users.admins;
+package com.voxtek.user.admin;
 
-import users.*;
+import com.voxtek.user.*;
 
 public class Admin extends User {
     private int id;

@@ -2,15 +2,17 @@
 // Copyright (c) 2025 Shah
 // Copyright (c) 2025 Marzell
 
-import users.UserUI;
-import users.admins.AdminUI;
-import users.customers.CustomerUI;
-import products.Inventory;
+package com.voxtek;
+
+import com.voxtek.user.UserUI;
+import com.voxtek.user.admin.AdminUI;
+import com.voxtek.user.customer.CustomerUI;
+import com.voxtek.product.Inventory;
 
 import java.io.File;
 
-public class Main {
-    public static void main(String[] args) {
+class Main {
+    static void main(String[] args) {
         int intOption;
         boolean choseCustomer, choseExit, choseAdmin;
 

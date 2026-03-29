@@ -1,9 +1,9 @@
 // MIT License
 // Copyright (c) 2025 Shah
 
-package processors;
+package com.voxtek.processor;
 
-import products.*;
+import com.voxtek.product.*;
 
 public interface Processor {
     public static boolean isInteger(String strInput) {

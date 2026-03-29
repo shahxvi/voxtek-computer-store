@@ -1,7 +1,7 @@
 // MIT License
 // Copyright (c) 2025 Shah
 
-package users.customers;
+package com.voxtek.user.customer;
 
 import java.io.*;
 
