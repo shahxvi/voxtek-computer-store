@@ -1,5 +1,5 @@
 # VoxTek Technology Store
-CSC186 Group Project
+CSC248 Group Project
 # Members
 1. shahxvi
 2. llezram
